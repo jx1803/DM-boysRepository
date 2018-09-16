@@ -8,7 +8,7 @@ public class UnitTest {
 
 	@Test
 	public void test() {
-		System.out.println("hello weiguo");
+		fail("Not yet implemented");
 	}
 
 }
