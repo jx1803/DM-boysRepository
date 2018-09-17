@@ -17,22 +17,22 @@ import java.util.Random;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
-// Éú³É  ÑéÖ¤Âë  ºÍ  ÑéÖ¤ÂëÍ¼Æ¬  µÄÀà
+// ç”Ÿæˆ  éªŒè¯ç   å’Œ  éªŒè¯ç å›¾ç‰‡  çš„ç±»
 public final class ImageUtil {
 	
 	private static final char[] chars = { '0', '1', '2', '3', '4', '5', '6',
 			'7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' };
 	
-	private static final int SIZE = 4;      // ÑéÖ¤ÂëÍ¼Æ¬ÖĞÎÄ×ÖµÄ¸öÊı
-	private static final int LINES = 3;     // ÑéÖ¤ÂëÍ¼Æ¬ÖĞµÄ¸ÉÈÅÏßµÄÊıÁ¿
-	private static final int WIDTH = 80;    // ÑéÖ¤ÂëÍ¼Æ¬µÄ¿í¶È
-	private static final int HEIGHT = 34;   // ÑéÖ¤ÂëÍ¼Æ¬µÄ¸ß¶È
-	private static final int FONT_SIZE = 19;// ÑéÖ¤ÂëÍ¼Æ¬ÖĞÎÄ×ÖµÄ´óĞ¡
+	private static final int SIZE = 4;      // éªŒè¯ç å›¾ç‰‡ä¸­æ–‡å­—çš„ä¸ªæ•°
+	private static final int LINES = 3;     // éªŒè¯ç å›¾ç‰‡ä¸­çš„å¹²æ‰°çº¿çš„æ•°é‡
+	private static final int WIDTH = 80;    // éªŒè¯ç å›¾ç‰‡çš„å®½åº¦
+	private static final int HEIGHT = 34;   // éªŒè¯ç å›¾ç‰‡çš„é«˜åº¦
+	private static final int FONT_SIZE = 19;// éªŒè¯ç å›¾ç‰‡ä¸­æ–‡å­—çš„å¤§å°
 
 	/**
-	 * Éú³ÉÑéÖ¤ÂëºÍÑéÖ¤ÂëÍ¼Æ¬µÄ·½·¨£¬²¢·â×°ÔÚMapÖĞ¡£ 
+	 * ç”ŸæˆéªŒè¯ç å’ŒéªŒè¯ç å›¾ç‰‡çš„æ–¹æ³•ï¼Œå¹¶å°è£…åœ¨Mapä¸­ã€‚ 
 	 * 
-	 * ÆäÖĞMapµÄkeyÊÇÑéÖ¤Âë£¬MapµÄvalueÊÇÑéÖ¤ÂëÍ¼Æ¬¡£
+	 * å…¶ä¸­Mapçš„keyæ˜¯éªŒè¯ç ï¼ŒMapçš„valueæ˜¯éªŒè¯ç å›¾ç‰‡ã€‚
 	 */
 	public static Map<String, BufferedImage> createImage() {
 		
@@ -44,16 +44,16 @@ public final class ImageUtil {
 		graphic.setColor(Color.LIGHT_GRAY);  
 		graphic.fillRect(0, 0, WIDTH, HEIGHT);
 		Random ran = new Random();
-		// »­Ëæ»ú×Ö·û
+		// ç”»éšæœºå­—ç¬¦
 		for (int i = 1; i <= SIZE; i++) {
 			int r = ran.nextInt(chars.length);
 			graphic.setColor(getRandomColor());
 			graphic.setFont(new Font(null, Font.BOLD + Font.ITALIC, FONT_SIZE));
 			graphic.drawString(chars[r] + "", (i - 1) * WIDTH / SIZE,
 					HEIGHT / 2);
-			sb.append(chars[r]);// ½«×Ö·û±£´æ£¬´æÈëSession
+			sb.append(chars[r]);// å°†å­—ç¬¦ä¿å­˜ï¼Œå­˜å…¥Session
 		}
-		// »­¸ÉÈÅÏß
+		// ç”»å¹²æ‰°çº¿
 		for (int i = 1; i <= LINES; i++) {
 			graphic.setColor(getRandomColor());
 			graphic.drawLine(ran.nextInt(WIDTH), ran.nextInt(HEIGHT), ran
@@ -67,7 +67,7 @@ public final class ImageUtil {
 	
 	
 	/**
-	 * ½«Í¼Æ¬´«ÈëÊäÈëÁ÷µÄ·½·¨
+	 * å°†å›¾ç‰‡ä¼ å…¥è¾“å…¥æµçš„æ–¹æ³•
 	 */
 	public static InputStream getInputStream(BufferedImage image)
 			throws IOException {
@@ -80,11 +80,11 @@ public final class ImageUtil {
 	}
 
 	
-	// ²úÉúËæ»úÑÕÉ«µÄ·½·¨
+	// äº§ç”Ÿéšæœºé¢œè‰²çš„æ–¹æ³•
 	private static Color getRandomColor() {
 		
-		Random ran = new Random();   // Ëæ»úº¯Êı
-		// ²úÉúËæ»úµÄRGBÑÕÉ«
+		Random ran = new Random();   // éšæœºå‡½æ•°
+		// äº§ç”Ÿéšæœºçš„RGBé¢œè‰²
 		Color color = new Color(ran.nextInt(256), ran.nextInt(256), ran
 				.nextInt(256));
 		return color;

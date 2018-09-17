@@ -12,7 +12,7 @@ public class EncryMd5 {
 
 	public String encoderByMd5(String str) {
 		try {
-			//¼ÓÃÜ·½·¨
+			//åŠ å¯†æ–¹æ³•
 			md5 = MessageDigest.getInstance("MD5");
 
 		} catch (NoSuchAlgorithmException e) {
@@ -21,7 +21,7 @@ public class EncryMd5 {
 		}
 		BASE64Encoder base64en = new BASE64Encoder();
 		try {
-			// ¼ÓÃÜºóµÄ×Ö·û´®
+			// åŠ å¯†åçš„å­—ç¬¦ä¸²
 			newStr = base64en.encode(md5.digest(str.getBytes("utf-8")));
 
 		} catch (UnsupportedEncodingException e) {
