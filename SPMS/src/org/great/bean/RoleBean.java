@@ -1,8 +1,8 @@
 package org.great.bean;
 
 public class RoleBean {
-	private int roleId;
-	private String roleName;
+	private int roleId;//角色id
+	private String roleName;//角色名
 	public RoleBean() {
 		// TODO Auto-generated constructor stub
 	}
