@@ -8,7 +8,7 @@ public class DrugApplyBean {
 	private int applyNum;// 申请数量
 	private String applyDate;// 申请时间
 	private int checkId;// 审核状态id
-	private int applyPypeId;// 请领/退库/报损id
+	private int applyTypeId;// 请领/退库/报损id
 	private String applyReason;// 申请理由
 
 	public DrugApplyBean() {
@@ -63,12 +63,14 @@ public class DrugApplyBean {
 		this.checkId = checkId;
 	}
 
-	public int getApplyPypeId() {
-		return applyPypeId;
+	
+
+	public int getApplyTypeId() {
+		return applyTypeId;
 	}
 
-	public void setApplyPypeId(int applyPypeId) {
-		this.applyPypeId = applyPypeId;
+	public void setApplyTypeId(int applyTypeId) {
+		this.applyTypeId = applyTypeId;
 	}
 
 	public String getApplyReason() {
