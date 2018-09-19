@@ -3,6 +3,7 @@ package org.great.controller;
 import javax.annotation.Resource;
 
 import org.great.bean.AdminBean;
+import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
 import org.great.biz.IDailyWorkBiz;
 import org.springframework.stereotype.Controller;
@@ -36,11 +37,17 @@ public class DailyWorkHandle {
 		
 		return null;
 	}
-	
+	//报损申请
 	@RequestMapping("/breakApply.action")
 	public String breakApply(DrugApplyBean drugApplyBean) {
-		
+		DrugApplyBean da=new DrugApplyBean(1, 1001, 1, 100,  5, 12, "破损");
+		dailyWorkBizImpl.breakApply(da);
 		return null;
+	}
+	//查看药品申请列表
+	@RequestMapping("/getDrugApply.action")
+	public ModelAndView getDrugApply(CondiBean condiBean) {
+		return dailyWorkBizImpl.selectDrugApply(condiBean);
 	}
 	
 	@RequestMapping("/toIndex.action")
