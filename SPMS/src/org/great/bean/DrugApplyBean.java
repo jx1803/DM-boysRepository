@@ -15,7 +15,7 @@ public class DrugApplyBean {
 	private String checkName;//审核结果
 	private String checkDate;//审核日期
 	private String manuBatch;//生产批号
-
+	private String putBatch;//入库批次
 	public DrugApplyBean() {
 		super();
 	}
@@ -26,6 +26,14 @@ public class DrugApplyBean {
 
 	public void setDrugApplyId(int drugApplyId) {
 		this.drugApplyId = drugApplyId;
+	}
+
+	public String getPutBatch() {
+		return putBatch;
+	}
+
+	public void setPutBatch(String putBatch) {
+		this.putBatch = putBatch;
 	}
 
 	public int getAdminId() {
