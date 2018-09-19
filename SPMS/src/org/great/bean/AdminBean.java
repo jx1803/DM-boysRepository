@@ -1,7 +1,7 @@
 package org.great.bean;
 
 //用户实体
-public class UserBean {
+public class AdminBean {
 	private int adminId;
 	private String adminName;
 	private String sex;//性别
@@ -18,7 +18,7 @@ public class UserBean {
 	private String address;//住址
 	private String password;//密码
 	private int paramId;//停用状态
-	public UserBean() {
+	public AdminBean() {
 		// TODO Auto-generated constructor stub
 	}
 	public int getAdminId() {
