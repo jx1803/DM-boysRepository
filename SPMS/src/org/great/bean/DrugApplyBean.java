@@ -14,7 +14,7 @@ public class DrugApplyBean {
 	private String applyType;//申请类别
 	private String checkName;//审核结果
 	private String checkDate;//审核日期
-	private String batchNum;//生产批号
+	private String manuBatch;//生产批号
 
 	public DrugApplyBean() {
 		super();
@@ -68,12 +68,14 @@ public class DrugApplyBean {
 		this.checkDate = checkDate;
 	}
 
-	public String getBatchNum() {
-		return batchNum;
+
+
+	public String getManuBatch() {
+		return manuBatch;
 	}
 
-	public void setBatchNum(String batchNum) {
-		this.batchNum = batchNum;
+	public void setManuBatch(String manuBatch) {
+		this.manuBatch = manuBatch;
 	}
 
 	public int getDrugId() {
