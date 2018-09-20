@@ -1,6 +1,7 @@
 package org.great.bean;
 
 public class CondiBean {
+
 	/**
 	 * 申请记录搜索条件
 	 * 陈文炽
@@ -124,6 +125,7 @@ public class CondiBean {
 		this.pagedown = pagedown;
 	}
 	
+
 	
 
 }
