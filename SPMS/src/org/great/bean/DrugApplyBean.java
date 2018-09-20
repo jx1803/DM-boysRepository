@@ -11,6 +11,7 @@ public class DrugApplyBean {
 	private int applyTypeId;// 请领/退库/报损id
 	private String applyReason;// 申请理由
 
+
 	private AdminBean adminBean;//管理员
 
 	private StoDrugBean stoDrugBean;//药品信息
@@ -19,6 +20,7 @@ public class DrugApplyBean {
 	private String checkDate;//审核日期
 	private String manuBatch;//生产批号
 	private String putBatch;//入库批次
+
 
 	private BatchDetailBean bdBean;//获取批次详情
 	public DrugApplyBean() {
@@ -42,6 +44,7 @@ public class DrugApplyBean {
 	public String getCheckDate() {
 		return checkDate;
 
+
 	public DrugApplyBean() {
 		super();
 	}
@@ -63,7 +66,6 @@ public class DrugApplyBean {
 	public void setPutBatch(String putBatch) {
 		this.putBatch = putBatch;
 	}
-
 
 
 	public BatchDetailBean getBdBean() {
@@ -113,6 +115,7 @@ public class DrugApplyBean {
 
 
 
+
 	public int getAdminId() {
 		return adminId;
 	}
@@ -151,6 +154,7 @@ public class DrugApplyBean {
 	}
 
 
+
 	public int getAdminId() {
 		return adminId;
 	}
@@ -158,6 +162,7 @@ public class DrugApplyBean {
 	public void setAdminId(int adminId) {
 		this.adminId = adminId;
   }
+
 	public String getCheckDate() {
 		return checkDate;
 	}
