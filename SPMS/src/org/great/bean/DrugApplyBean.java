@@ -10,7 +10,12 @@ public class DrugApplyBean {
 	private int checkId;// 审核状态id
 	private int applyTypeId;// 请领/退库/报损id
 	private String applyReason;// 申请理由
-
+	private StoDrugBean stoDrugBean;//药品信息
+	private String applyType;//申请类别
+	private String checkName;//审核结果
+	private String checkDate;//审核日期
+	private String manuBatch;//生产批号
+	private String putBatch;//入库批次
 	public DrugApplyBean() {
 		super();
 	}
@@ -23,12 +28,62 @@ public class DrugApplyBean {
 		this.drugApplyId = drugApplyId;
 	}
 
+	public String getPutBatch() {
+		return putBatch;
+	}
+
+	public void setPutBatch(String putBatch) {
+		this.putBatch = putBatch;
+	}
+
 	public int getAdminId() {
 		return adminId;
 	}
 
 	public void setAdminId(int adminId) {
 		this.adminId = adminId;
+	}
+
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
+	}
+
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
+	}
+
+	public String getApplyType() {
+		return applyType;
+	}
+
+	public void setApplyType(String applyType) {
+		this.applyType = applyType;
+	}
+
+	public String getCheckName() {
+		return checkName;
+	}
+
+	public void setCheckName(String checkName) {
+		this.checkName = checkName;
+	}
+
+	public String getCheckDate() {
+		return checkDate;
+	}
+
+	public void setCheckDate(String checkDate) {
+		this.checkDate = checkDate;
+	}
+
+
+
+	public String getManuBatch() {
+		return manuBatch;
+	}
+
+	public void setManuBatch(String manuBatch) {
+		this.manuBatch = manuBatch;
 	}
 
 	public int getDrugId() {

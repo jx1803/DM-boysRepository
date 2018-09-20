@@ -31,9 +31,28 @@ public class StoDrugBean {
 	private String dosage;// 次剂量
 	private int dailyNum;// 日次数
 	private int typeId;// 药品类别ID
-
+	private String drugmanu;//药品厂家
+	private String proPlace;//药品产地
+	
+	private DfBean dfBean;//剂型实体
 	public StoDrugBean() {
 		super();
+	}
+
+	public String getDrugmanu() {
+		return drugmanu;
+	}
+
+	public void setDrugmanu(String drugmanu) {
+		this.drugmanu = drugmanu;
+	}
+
+	public String getProPlace() {
+		return proPlace;
+	}
+
+	public void setProPlace(String proPlace) {
+		this.proPlace = proPlace;
 	}
 
 	public int getDrugId() {
@@ -147,6 +166,16 @@ public class StoDrugBean {
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
 	}
+	
+	
+
+	public DfBean getDfBean() {
+		return dfBean;
+	}
+
+	public void setDfBean(DfBean dfBean) {
+		this.dfBean = dfBean;
+	}
 
 	@Override
 	public String toString() {
@@ -154,8 +183,10 @@ public class StoDrugBean {
 				+ ", specific=" + specific + ", unit=" + unit + ", retailPrice=" + retailPrice + ", dosageId="
 				+ dosageId + ", usage=" + usage + ", invoiceTitle=" + invoiceTitle + ", pinyinCode=" + pinyinCode
 				+ ", antibiotic=" + antibiotic + ", dosage=" + dosage + ", dailyNum=" + dailyNum + ", typeId=" + typeId
-				+ "]";
+				+ ", drugmanu=" + drugmanu + ", proPlace=" + proPlace + "]";
 	}
+
+	
 
 	
 }
