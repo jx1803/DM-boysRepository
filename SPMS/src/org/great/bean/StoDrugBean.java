@@ -35,8 +35,10 @@ public class StoDrugBean {
 	private String proPlace;//药品产地
 
 
+
 	private DfBean dfBean;//剂型实体
 	private DrugTypeBean dtBean;//药品类型bean
+
 
 	public StoDrugBean() {
 		super();
@@ -181,13 +183,7 @@ public class StoDrugBean {
 	}
 
 
-	public DfBean getDfBean() {
-		return dfBean;
-	}
-
-	public void setDfBean(DfBean dfBean) {
-		this.dfBean = dfBean;
-	}
+	
 
 	public DrugTypeBean getDtBean() {
 		return dtBean;
