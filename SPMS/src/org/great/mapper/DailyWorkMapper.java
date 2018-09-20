@@ -32,7 +32,7 @@ public interface DailyWorkMapper {
 	public int selDrugNumBydDrugId(int id);
 
 	// 查找退库列表(lp)
-	public List<DrugApplyBean> selectCancellingApply(CondiBean condiBean);
+	public List<DrugApplyBean> selectDrugApply(CondiBean condiBean);
 
 	// 查找退库条数(lp)
 	public int selectCancellingApplyCount(CondiBean condiBean);

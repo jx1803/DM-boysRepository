@@ -37,7 +37,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	@Override
 	public ModelAndView selectCancellingApply(CondiBean condiBean) {
 		condiBean.setApplyTypeId(11);
-		List<DrugApplyBean> list = dailyWorkMapper.selectCancellingApply(condiBean);
+		List<DrugApplyBean> list = dailyWorkMapper.selectDrugApply(condiBean);
 		int count = dailyWorkMapper.selectCancellingApplyCount(condiBean);
 		ModelAndView mav = new ModelAndView("pharmacy/cancellingApplyList");
 		mav.addObject("drugApplyList", list);

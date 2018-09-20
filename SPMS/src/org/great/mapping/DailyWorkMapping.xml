@@ -46,7 +46,7 @@
 		TBLPhaDrug where drugId=#{id}
 	</select>
 	<!-- 查看申请记录(lp) -->
-	<select id="selectCancellingApply"
+	<select id="selectDrugApply"
 		parameterType="org.great.bean.CondiBean" resultMap="drugApply">
 		select * from(select d.*,a.adminname,s.drugname, p1.param
 		checkname,s.drugmanu,b.purPrice,p2.param applytype,rownum r from
