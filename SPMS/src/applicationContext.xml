@@ -17,8 +17,8 @@
 	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl" />
-		<property name="username" value="jx180327" />
+		<property name="url" value="jdbc:oracle:thin:@119.23.200.33:1521:orcl" />
+		<property name="username" value="spms" />
 		<property name="password" value="123456" />
 		 
 	</bean>
