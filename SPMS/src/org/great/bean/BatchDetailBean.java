@@ -3,10 +3,8 @@ package org.great.bean;
 public class BatchDetailBean {
 	private int batchDetailId;//批次详情id
 	private String putBatch;//进货批次
-	private String drugmanu;//药品厂家
 	private String manuBatch;//厂家批号
 	private int drugId;//药品编号
-	private String proPlace;//药品产地
 	private String proDate;//生产日期
 	private int handleNum;//数量
 	private double purPrice;//进价
@@ -34,13 +32,6 @@ public class BatchDetailBean {
 		this.putBatch = putBatch;
 	}
 
-	public String getDrugmanu() {
-		return drugmanu;
-	}
-
-	public void setDrugmanu(String drugmanu) {
-		this.drugmanu = drugmanu;
-	}
 
 	public String getManuBatch() {
 		return manuBatch;
@@ -56,14 +47,6 @@ public class BatchDetailBean {
 
 	public void setDrugId(int drugId) {
 		this.drugId = drugId;
-	}
-
-	public String getProPlace() {
-		return proPlace;
-	}
-
-	public void setProPlace(String proPlace) {
-		this.proPlace = proPlace;
 	}
 
 	public String getProDate() {
@@ -113,6 +96,14 @@ public class BatchDetailBean {
 	public void setTotalMoney(double totalMoney) {
 		this.totalMoney = totalMoney;
 	}
+
+	@Override
+	public String toString() {
+		return "BatchDetailBean [batchDetailId=" + batchDetailId + ", putBatch=" + putBatch + ", manuBatch=" + manuBatch
+				+ ", drugId=" + drugId + ", proDate=" + proDate + ", handleNum=" + handleNum + ", purPrice=" + purPrice
+				+ ", sellPrice=" + sellPrice + ", inDate=" + inDate + ", totalMoney=" + totalMoney + "]";
+	}
+	
 	
 
 }
