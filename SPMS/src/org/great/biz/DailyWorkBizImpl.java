@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
 import org.great.mapper.DailyWorkMapper;
+import org.great.tools.PageUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,7 +43,11 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	@Override
 	public ModelAndView selectDrugApply(CondiBean condiBean) {
 		List<DrugApplyBean> list = dailyWorkMapper.selectDrugApply(condiBean);
+		int count=dailyWorkMapper.getDrugApplyCount(condiBean);
+		int pageTotal=PageUtil.pageTotal(count);
 		ModelAndView mav=new ModelAndView("pharmacy/breakApplyList");
+		mav.addObject("pageTotal", pageTotal);
+		mav.addObject("count", count);
 		mav.addObject("drugApplyList", list);
 		return mav;
 	}

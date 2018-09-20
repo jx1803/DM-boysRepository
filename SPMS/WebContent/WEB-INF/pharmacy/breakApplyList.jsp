@@ -29,14 +29,20 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="text-c"> 日期范围：
+	<div class="text-c"> 申请日期范围：
 		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
 		-
 		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="" id="" name="">
+		<br>
+		申请人：<input type="text" class="input-text" style="width:250px" placeholder="请输入申请人" id="" name="">
+		审核状态：<select name="checkId" >
+		<option value="6" >审核通过</option>
+		<option value="8" >审核未通过</option>
+		<option value="7" >未审核</option>
+		 </select>
 		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20">  <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">  <span class="r">共有数据：<strong>${count }</strong> 条</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>
@@ -75,6 +81,57 @@
 		</tbody>
 	</table>
 </div>
+<button type="button" class="btn btn-info" id=""
+					onclick="showModal()">按钮</button>
+
+<!-- 文档上传模态框 -->
+	 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="">我要上传</h4>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="${pageContext.request.contextPath}/front/upload.action" method="post" enctype="multipart/form-data">
+					<div class="modal-body" >
+					<input type="hidden" name="dom.userId" value="${userInfo.userId }">
+					<table border="0" style="heigth:300px">
+					<tr>
+						<td width="170px" align="center">文档标题：</td>
+						<td><input type="text" class="form-control" name="dom.domName"></td>
+					</tr>
+						<tr align="center">
+						<td width="170px" >文档简介：</td>
+						<td><textarea name="dom.domInfo" 
+							cols="50" rows="5"></textarea></td>
+					</tr>
+					</tr>
+						<tr>
+						<td width="170px" align="center">选择上传文档：</td>
+						<td>	<input type="file" name="myfile">
+							</td>
+					</tr>
+						<tr>
+						<td width="170px" align="center">设置下载积分：</td>
+						<td>	<input type="text" name="dom.integral">
+							</td>
+					</tr>
+				
+					 </table>
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="btupload">上传</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
@@ -82,10 +139,14 @@
 <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script> 
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
-<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+	function showModal(){
+		$("#uploadModal").modal("show");
+	}
+
 /*
 	参数解释：
 	title	标题

@@ -23,4 +23,5 @@ public interface DailyWorkMapper {
 	public int breakCheck(DrugApplyBean drugApplyBean);//报损审核
 	public int breakApply(DrugApplyBean drugApplyBean);//报损申请
 	public List<DrugApplyBean> selectDrugApply(CondiBean condiBean);//查询申请记录
+	public int getDrugApplyCount(CondiBean condiBean);//获取药品申请记录数
 }
