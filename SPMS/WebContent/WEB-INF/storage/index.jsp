@@ -44,7 +44,7 @@
 					class="logo navbar-slogan f-l mr-10 hidden-xs">V1.0</span> <a
 					aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs"
 					href="javascript:;">&#xe667;</a>
-
+				
 				<nav id="Hui-userbar"
 					class="nav navbar-nav navbar-userbar hidden-xs">
 					<ul class="cl">
@@ -89,8 +89,6 @@
 							href="javascript:;">药品请领</a></li>
 						<li><a data-href="feedback-list.html" data-title="意见反馈"
 							href="javascript:void(0)">退库申请</a></li>
-						<li><a data-href="toCancellingApplyList.action"
-							data-title="退库申请" href="javascript:void(0)">退库审核</a></li>
 					</ul>
 				</dd>
 			</dl>
@@ -126,16 +124,15 @@
 	<div class="contextMenu" id="Huiadminmenu">
 		<ul>
 			<li id="closethis">关闭当前</li>
-			<li id="closeall"><iframe scrolling="yes" frameborder="0" src=""></iframe>
-				关闭全部</li>
+			<li id="closeall"><iframe scrolling="yes" frameborder="0"
+					src="welcome.html"></iframe> 关闭全部</li>
 		</ul>
 	</div>
 	<!--_footer 作为公共模版分离出去-->
 	<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
 	<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
-	<script type="text/javascript"
-		src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+	<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script>
 	<!--/_footer 作为公共模版分离出去-->
 
 	<!--请在下方写此页面业务相关的脚本-->
