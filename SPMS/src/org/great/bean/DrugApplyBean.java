@@ -10,18 +10,13 @@ public class DrugApplyBean {
 	private int checkId;// 审核状态id
 	private int applyTypeId;// 请领/退库/报损id
 	private String applyReason;// 申请理由
-
-
 	private AdminBean adminBean;//管理员
-
 	private StoDrugBean stoDrugBean;//药品信息
 	private String applyType;//申请类别
 	private String checkName;//审核结果
 	private String checkDate;//审核日期
 	private String manuBatch;//生产批号
 	private String putBatch;//入库批次
-
-
 	private BatchDetailBean bdBean;//获取批次详情
 	public DrugApplyBean() {
 		super();
@@ -43,19 +38,10 @@ public class DrugApplyBean {
 
 	public String getCheckDate() {
 		return checkDate;
-
-
-	public DrugApplyBean() {
-		super();
 	}
 
-	public int getDrugApplyId() {
-		return drugApplyId;
-	}
 
-	public void setDrugApplyId(int drugApplyId) {
-		this.drugApplyId = drugApplyId;
-	}
+
 
 
 	public String getPutBatch() {
@@ -114,17 +100,6 @@ public class DrugApplyBean {
 	}
 
 
-
-
-	public int getAdminId() {
-		return adminId;
-	}
-
-	public void setAdminId(int adminId) {
-		this.adminId = adminId;
-	}
-
-
 	public StoDrugBean getStoDrugBean() {
 		return stoDrugBean;
 	}
@@ -138,6 +113,7 @@ public class DrugApplyBean {
 	public String getApplyType() {
 		return applyType;
 	}
+
 
 	public void setApplyType(String applyType) {
 		this.applyType = applyType;
@@ -154,32 +130,12 @@ public class DrugApplyBean {
 	}
 
 
-
 	public int getAdminId() {
 		return adminId;
 	}
 
 	public void setAdminId(int adminId) {
 		this.adminId = adminId;
-  }
-
-	public String getCheckDate() {
-		return checkDate;
-	}
-
-	public void setCheckDate(String checkDate) {
-		this.checkDate = checkDate;
-	}
-
-
-
-	public String getManuBatch() {
-		return manuBatch;
-	}
-
-	public void setManuBatch(String manuBatch) {
-		this.manuBatch = manuBatch;
-
 	}
 
 	public int getDrugId() {

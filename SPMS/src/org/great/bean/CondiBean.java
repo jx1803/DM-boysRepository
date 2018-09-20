@@ -1,13 +1,6 @@
 package org.great.bean;
 
-
-import org.springframework.stereotype.Component;
-
-@Component
 public class CondiBean {
-	
-
-
 	/**
 	 * 申请记录搜索条件
 	 * 陈文炽
@@ -131,8 +124,6 @@ public class CondiBean {
 		this.pagedown = pagedown;
 	}
 	
-
 	
-
 
 }

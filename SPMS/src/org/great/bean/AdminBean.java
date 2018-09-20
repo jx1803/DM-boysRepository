@@ -18,13 +18,10 @@ public class AdminBean {
 	private String address;//住址
 	private String password;//密码
 	private int paramId;//停用状态
-
-
 	private RoleBean rolebean;//角色bean
 	private DeptBean deptbean;//部门bean
 	private ParamBean parambean;//状态bean
 	
-
 	public AdminBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -94,8 +91,6 @@ public class AdminBean {
 	public void setEntryDate(String entryDate) {
 		this.entryDate = entryDate;
 	}
-
-
 	public RoleBean getRolebean() {
 		return rolebean;
 	}
@@ -114,7 +109,6 @@ public class AdminBean {
 	public void setParambean(ParamBean parambean) {
 		this.parambean = parambean;
 	}
-
 	public String getBirthDate() {
 		return birthDate;
 	}

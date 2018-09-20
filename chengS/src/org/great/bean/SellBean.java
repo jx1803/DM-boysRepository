@@ -21,7 +21,7 @@ public class SellBean {
 	private int drugId;// 药品编号
 	private int adminId;// 销售人员ID
 	private int sellNum;// 销售数量
-	private int sales;// 销售额
+	private double sales;// 销售额
 	private String sellDate;// 销售时间
 
 	public SellBean() {
@@ -44,8 +44,14 @@ public class SellBean {
 		return sellNum;
 	}
 
-	public int getSales() {
+	
+
+	public double getSales() {
 		return sales;
+	}
+
+	public void setSales(double sales) {
+		this.sales = sales;
 	}
 
 	public String getSellDate() {

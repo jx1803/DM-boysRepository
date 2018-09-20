@@ -32,7 +32,6 @@ public class BatchDetailBean {
 		this.putBatch = putBatch;
 	}
 
-	
 
 	public String getManuBatch() {
 		return manuBatch;
@@ -97,6 +96,14 @@ public class BatchDetailBean {
 	public void setTotalMoney(double totalMoney) {
 		this.totalMoney = totalMoney;
 	}
+
+	@Override
+	public String toString() {
+		return "BatchDetailBean [batchDetailId=" + batchDetailId + ", putBatch=" + putBatch + ", manuBatch=" + manuBatch
+				+ ", drugId=" + drugId + ", proDate=" + proDate + ", handleNum=" + handleNum + ", purPrice=" + purPrice
+				+ ", sellPrice=" + sellPrice + ", inDate=" + inDate + ", totalMoney=" + totalMoney + "]";
+	}
+	
 	
 
 }

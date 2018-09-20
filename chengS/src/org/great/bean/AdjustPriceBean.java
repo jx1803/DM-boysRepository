@@ -1,6 +1,5 @@
 package org.great.bean;
 //调价记录
-
 public class AdjustPriceBean {
 	private int adjustPriceId;//
 	private String adjustDate;//调价时间
