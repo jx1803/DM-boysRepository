@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.great.mapper.DrugAllocatMapper">
+	
+	<!-- 添加药品剂型 -->
+	<insert id="addDf" parameterType="org.great.bean.DfBean">
+	    insert into tblDf(dosageId,dosageForm)  values(SPMSSEQ.nextval, #{dosageForm,jdbcType=VARCHAR})
+	</insert>
+	<!-- 查询药品剂型 -->
+	<select id="findDf" parameterType="org.great.bean.CondiBean"
+		resultType="org.great.bean.DfBean">
+		select * from (select ROWNUM rn,d.* from tblDf d where 1=1
+		<if test="null!=dosageForm and ''!=dosageForm">
+			and d.dosageForm like concat(concat('%',#{dosageForm,jdbcType=VARCHAR}),'%')
+		</if>
+		 and ROWNUM&lt;=#{pageup,jdbcType=NUMERIC}) where rn&gt;=#{pagedown,jdbcType=NUMERIC}
+	</select>
+	<!-- 修改药品剂型名称 -->
+	<update id="updDf" parameterType="org.great.bean.DfBean" >
+		update tbldf set dosageForm=#{dosageForm} where dosageId=#{dosageId}
+	</update>
+	<!-- 删除药品剂型 -->
+	<delete id="delDf" parameterType="org.great.bean.DfBean">
+		delete from tblDf where dosageId = #{dosageId}
+	</delete>
+	
+	
+ <!--
+	修改药品剂型
+	<update id="updDf" parameterType="org.great.bean.DfBean">
+		update tblDf set dosageForm =#{dosageForm} where dosageId=#{dosageForm}
+	</update>
+	 -->
+	
+	
+	
+	<!-- <select id="userLogin" parameterType="org.xmgreat.bean.UserBean"
+		resultType="org.xmgreat.bean.UserBean">
+		select * from USERTAB where username=#{userName} and userpwd=#{userPasw}
+	</select>
+
+
+	<select id="selectUser"
+		parameterType="org.xmgreat.bean.SearchBean"
+		resultType="org.xmgreat.bean.UserBean">
+		select * from (select ROWNUM rn,u.* from USERTAB u where 1=1
+		<if test="null!=frontDate and ''!=frontDate">
+			and u.regTime&gt;=#{frontDate}
+		</if>
+		<if test="null!=endDate and ''!=endDate">
+			and u.regTime&lt;=#{endDate}
+		</if>
+		<if test="null!=fuzzytitle and ''!=fuzzytitle">
+			and u.userName like concat(concat('%',#{fuzzytitle}),'%')
+		</if>
+		and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
+	</select>
+
+
+	<select id="resultComm" resultType="Integer">
+		select count(*) as result from USERTAB
+	</select>
+
+
+
+	<select id="selectUserOne" parameterType="Integer"
+		resultType="org.xmgreat.bean.UserBean">
+		select * from USERTAB u where u.userid=#{userid}
+	</select>
+	
+	<update id="updateUserState"
+		parameterType="org.xmgreat.bean.SearchBean" >
+		update USERTAB u set u.state=#{state} where u.userid=#{uid}
+	</update>
+
+
+	<insert id="insertUser" parameterType="org.xmgreat.bean.UserBean" >
+		<selectKey keyProperty="userid" order="BEFORE" resultType="java.lang.Integer">
+			select SEQUID.nextval from dual
+		</selectKey>
+		insert into USERTAB u (u.username,userpwd,usersex,edbackground,occupation,userphone,useremail,userid,regtime,points,state) values (#{userName},#{userPasw},#{usersex},#{edbackground},#{occupation},#{userphone},#{useremail},#{userid},to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),0,'已启用')
+	</insert>
+
+ 	<select id="documentuser" parameterType="java.lang.String" resultMap="docuMap">
+		select b.username,a.* from DOCUMENT a,USERTAB b where a.userid=b.userid 
+	</select> 
+	<resultMap type="org.xmgreat.bean.DocumentBean" id="docuMap">
+		<id property="documentid" column="DOCUMENTID"/>
+		<result property="updownload" column="UPDOWNLOAD"/>
+		<result property="time" column="TIME"/>
+		<result property="documentType" column="DOCUMENTTYPE"/>
+		<result property="documentName" column="DOCUMENTNAME"/>
+		<result property="documentState" column="DOCUMENTSTATE"/>
+		<result property="downpoint" column="DOWNPOINT"/>
+		<result property="downtimes" column="DOWNTIMES"/>
+		<association property="user" column="USERID" javaType="org.xmgreat.bean.UserBean">
+		<id property="userid" column="USERID"/>
+		<result property="userName" column="USERNAME"/>
+		</association>
+	</resultMap> -->
+
+
+</mapper>
