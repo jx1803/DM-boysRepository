@@ -81,7 +81,7 @@
 				<ul>
 					<li><a data-href="product-brand.html" data-title="品牌管理" href="javascript:void(0)">药品请领</a></li>
 					<li><a data-href="product-category.html" data-title="分类管理" href="javascript:void(0)">药品退库</a></li>
-					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品报损</a></li>
+					<li><a data-href="breakApply.action" data-title="产品管理" href="javascript:void(0)">药品报损</a></li>
 					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品调价</a></li>
 					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品停用</a></li>
 					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品发药</a></li>

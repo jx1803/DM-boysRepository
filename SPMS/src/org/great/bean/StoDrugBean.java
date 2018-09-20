@@ -33,6 +33,8 @@ public class StoDrugBean {
 	private int typeId;// 药品类别ID
 	private String drugmanu;//药品厂家
 	private String proPlace;//药品产地
+	private DfBean dfBean;//剂型实体
+	private DrugTypeBean dtBean;//药品类型bean
 	public StoDrugBean() {
 		super();
 	}
@@ -163,6 +165,22 @@ public class StoDrugBean {
 
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
+	}
+
+	public DfBean getDfBean() {
+		return dfBean;
+	}
+
+	public void setDfBean(DfBean dfBean) {
+		this.dfBean = dfBean;
+	}
+
+	public DrugTypeBean getDtBean() {
+		return dtBean;
+	}
+
+	public void setDtBean(DrugTypeBean dtBean) {
+		this.dtBean = dtBean;
 	}
 
 	@Override

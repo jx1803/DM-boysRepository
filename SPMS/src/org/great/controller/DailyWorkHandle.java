@@ -40,9 +40,10 @@ public class DailyWorkHandle {
 	//报损申请
 	@RequestMapping("/breakApply.action")
 	public String breakApply(DrugApplyBean drugApplyBean) {
-		DrugApplyBean da=new DrugApplyBean(1, 1001, 1, 100,  5, 12, "破损");
-		dailyWorkBizImpl.breakApply(da);
-		return null;
+//		DrugApplyBean da=new DrugApplyBean(1, 1001, 1, 100,  5, 12, "破损");
+//		dailyWorkBizImpl.breakApply(da);
+		
+		return "pharmacy/breakApply";
 	}
 	//查看药品申请列表
 	@RequestMapping("/getDrugApply.action")
