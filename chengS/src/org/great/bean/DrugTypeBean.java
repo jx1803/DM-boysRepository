@@ -20,9 +20,17 @@ public class DrugTypeBean {
 	private int typeId;// 类别ID
 	private int pid;// pid
 	private String drugType;// 药品分类名
-
+	private String pidName;	//pid名
 	public DrugTypeBean() {
 		super();
+	}
+
+	public String getPidName() {
+		return pidName;
+	}
+
+	public void setPidName(String pidName) {
+		this.pidName = pidName;
 	}
 
 	public int getTypeId() {

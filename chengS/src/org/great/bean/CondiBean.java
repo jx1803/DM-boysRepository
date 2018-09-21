@@ -30,13 +30,27 @@ public class CondiBean {
 	 * @Description:程帅搜索条件
 	 */
 	private String dosageForm;	//药品剂型名称
+
+	private String drugType;	//药品类型名称
+
+
+
 	private DfBean dfBean;//药品剂型bean
 	private DrugTypeBean dtBean;//药品类型bean
 	
-	
+
 	public CondiBean() {
 		// TODO Auto-generated constructor stub
 	}
+	
+
+	public String getDrugType() {
+		return drugType;
+	}
+
+
+	public void setDrugType(String drugType) {
+		this.drugType = drugType;
 
 	public String getAdminName() {
 		return adminName;
@@ -100,7 +114,9 @@ public class CondiBean {
 
 	public void setPageNum(int pageNum) {
 		this.pageNum = pageNum;
+
 	}
+
 
 	public String getDosageForm() {
 		return dosageForm;
