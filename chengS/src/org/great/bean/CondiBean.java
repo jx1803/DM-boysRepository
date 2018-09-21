@@ -12,25 +12,24 @@ package org.great.bean;
 public class CondiBean {
 	
 	private String dosageForm;	//药品剂型名称
+	private String drugType;	//药品类型名称
 	private int page=1;//分页初始值
 	private int pageup;//最后一条
 	private int pagedown;//第一条
 	public CondiBean() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
-	public CondiBean(String dosageForm) {
-		super();
-		this.dosageForm = dosageForm;
+	public String getDrugType() {
+		return drugType;
 	}
 
-	public CondiBean(String dosageForm, int page, int pageup, int pagedown) {
-		super();
-		this.dosageForm = dosageForm;
-		this.page = page;
-		this.pageup = pageup;
-		this.pagedown = pagedown;
+
+	public void setDrugType(String drugType) {
+		this.drugType = drugType;
 	}
+
 
 	public String getDosageForm() {
 		return dosageForm;

@@ -3,6 +3,7 @@
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="org.great.mapper.DrugAllocatMapper">
 	
+	<!-- ********************************药品剂型************************************ -->
 	<!-- 添加药品剂型 -->
 	<insert id="addDf" parameterType="org.great.bean.DfBean">
 	    insert into tblDf(dosageId,dosageForm)  values(SPMSSEQ.nextval, #{dosageForm,jdbcType=VARCHAR})
@@ -16,72 +17,80 @@
 		</if>
 		 and ROWNUM&lt;=#{pageup,jdbcType=NUMERIC}) where rn&gt;=#{pagedown,jdbcType=NUMERIC}
 	</select>
+	
+	<!-- 查询药品剂型总数 -->
+	<select id="findDfCount" parameterType="org.great.bean.CondiBean"
+		resultType="java.lang.Integer">
+		select count(*) from  tblDf d where 1=1
+		<if test="null!=dosageForm and ''!=dosageForm">
+			and d.dosageForm like concat(concat('%',#{dosageForm,jdbcType=VARCHAR}),'%')
+		</if>
+	</select>
+	
 	<!-- 修改药品剂型名称 -->
 	<update id="updDf" parameterType="org.great.bean.DfBean" >
 		update tbldf set dosageForm=#{dosageForm} where dosageId=#{dosageId}
 	</update>
+	
 	<!-- 删除药品剂型 -->
 	<delete id="delDf" parameterType="org.great.bean.DfBean">
 		delete from tblDf where dosageId = #{dosageId}
 	</delete>
 	
+	<!-- ********************************药品类型************************************ -->
 	
- <!--
-	修改药品剂型
-	<update id="updDf" parameterType="org.great.bean.DfBean">
-		update tblDf set dosageForm =#{dosageForm} where dosageId=#{dosageForm}
-	</update>
-	 -->
-	
-	
-	
-	<!-- <select id="userLogin" parameterType="org.xmgreat.bean.UserBean"
-		resultType="org.xmgreat.bean.UserBean">
-		select * from USERTAB where username=#{userName} and userpwd=#{userPasw}
-	</select>
-
-
-	<select id="selectUser"
-		parameterType="org.xmgreat.bean.SearchBean"
-		resultType="org.xmgreat.bean.UserBean">
-		select * from (select ROWNUM rn,u.* from USERTAB u where 1=1
-		<if test="null!=frontDate and ''!=frontDate">
-			and u.regTime&gt;=#{frontDate}
-		</if>
-		<if test="null!=endDate and ''!=endDate">
-			and u.regTime&lt;=#{endDate}
-		</if>
-		<if test="null!=fuzzytitle and ''!=fuzzytitle">
-			and u.userName like concat(concat('%',#{fuzzytitle}),'%')
-		</if>
-		and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
-	</select>
-
-
-	<select id="resultComm" resultType="Integer">
-		select count(*) as result from USERTAB
-	</select>
-
-
-
-	<select id="selectUserOne" parameterType="Integer"
-		resultType="org.xmgreat.bean.UserBean">
-		select * from USERTAB u where u.userid=#{userid}
-	</select>
-	
-	<update id="updateUserState"
-		parameterType="org.xmgreat.bean.SearchBean" >
-		update USERTAB u set u.state=#{state} where u.userid=#{uid}
-	</update>
-
-
-	<insert id="insertUser" parameterType="org.xmgreat.bean.UserBean" >
-		<selectKey keyProperty="userid" order="BEFORE" resultType="java.lang.Integer">
-			select SEQUID.nextval from dual
-		</selectKey>
-		insert into USERTAB u (u.username,userpwd,usersex,edbackground,occupation,userphone,useremail,userid,regtime,points,state) values (#{userName},#{userPasw},#{usersex},#{edbackground},#{occupation},#{userphone},#{useremail},#{userid},to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),0,'已启用')
+	<!-- 添加药品类型 -->
+	<insert id="addDrugType" parameterType="org.great.bean.DrugTypeBean">
+		insert into TBLDRUGTYPE (typeId,pid,drugType) values(SPMSSEQ.nextval,#{pid,jdbcType=NUMERIC},#{drugType,jdbcType=VARCHAR})
 	</insert>
-
+	<!--查询药品类型-->
+	<select id="findDfDrugType" parameterType="org.great.bean.CondiBean"
+		resultType="org.great.bean.DrugTypeBean">
+		select * from (select ROWNUM rn,d.*,b.drugType pidName from TBLDRUGTYPE d,TBLDRUGTYPE b where d.pid=b.typeId
+		<if test="null!=drugType and ''!=drugType">
+			
+			and d.drugType like concat(concat('%',#{drugType,jdbcType=VARCHAR}),'%')
+		</if>
+		and d.pid&gt;0  and ROWNUM&lt;=#{pageup,jdbcType=NUMERIC}) 
+		where rn&gt;=#{pagedown,jdbcType=NUMERIC}
+	</select>
+	<!--查询药品类型总数-->
+	<select id="findDtCount" parameterType="org.great.bean.CondiBean"
+		resultType="java.lang.Integer">
+		select count(*) from TBLDRUGTYPE d where  d.pid&gt;0
+		<if test="null!=drugType and ''!=drugType">
+			and d.drugType like concat(concat('%',#{drugType,jdbcType=VARCHAR}),'%')
+		</if>
+	</select>
+	<!-- 查询药品一级类型 -->
+	<select id="findTopType" parameterType="org.great.bean.DrugTypeBean" resultType="org.great.bean.DrugTypeBean">
+		select * FROM TBLDRUGTYPE where pid=#{pid}
+	</select> 
+	<!-- 删除药品类型 -->
+	<delete id="delDrugType" parameterType="org.great.bean.DrugTypeBean">
+		delete from TBLDRUGTYPE where typeId=#{typeId}
+	</delete>
+	<!-- 修改药品类型 -->
+	<update id="updDrugType" parameterType="org.great.bean.DrugTypeBean">
+		update TBLDRUGTYPE set drugType=#{drugType,jdbcType=VARCHAR},
+		pid=#{pid,jdbcType=NUMERIC} where typeId=#{typeId,jdbcType=NUMERIC}
+	</update>
+	
+	<!-- ********************************药品信息************************************ -->
+	<!-- 添加药品信息 -->
+	<insert id="addDrugInfo" parameterType="org.great.bean.StoDrugBean">
+		insert into TBLSTODRUG(drugId,drugName,generalName,specific,unit,retailPrice,dosageId,usage,invoiceTitle,pinyinCode,antibiotic,dosage,dailyNum,typeId,drugmanu,proPlace)
+		
+		values(DRUGSEQ.nextval,#{drugName,jdbcType=VARCHAR},#{generalName,jdbcType=VARCHAR},#{specific,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},#{retailPrice,jdbcType=NUMERIC},
+		
+		#{dosageId,jdbcType=NUMERIC},#{usage,jdbcType=VARCHAR},#{invoiceTitle,jdbcType=VARCHAR},#{pinyinCode,jdbcType=VARCHAR},#{antibiotic,jdbcType=VARCHAR},#{dosage,jdbcType=VARCHAR},
+		
+		#{dailyNum,jdbcType=NUMERIC},#{typeId,jdbcType=NUMERIC},#{drugmanu,jdbcType=VARCHAR},#{proPlace,jdbcType=VARCHAR})
+	</insert>
+	
+	
+	
+<!-- 
  	<select id="documentuser" parameterType="java.lang.String" resultMap="docuMap">
 		select b.username,a.* from DOCUMENT a,USERTAB b where a.userid=b.userid 
 	</select> 
@@ -98,7 +107,7 @@
 		<id property="userid" column="USERID"/>
 		<result property="userName" column="USERNAME"/>
 		</association>
-	</resultMap> -->
-
+	</resultMap>
+ -->
 
 </mapper>
