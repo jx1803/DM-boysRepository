@@ -45,7 +45,7 @@
 			
 		</where>
 	
-	and rownum &lt;=#{pageNum}*#{pageLimit})where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1
+	)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and r&lt;=#{pageNum}*#{pageLimit}
 	</select>
 	<!--  查询药品申请记录-->
 	<select id="getDrugApplyCount" parameterType="org.great.bean.CondiBean" resultType="Integer">

@@ -51,7 +51,7 @@ public class CondiBean {
 
 	public void setDrugType(String drugType) {
 		this.drugType = drugType;
-
+	}
 	public String getAdminName() {
 		return adminName;
 	}
