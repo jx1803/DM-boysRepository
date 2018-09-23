@@ -25,7 +25,7 @@ public class OutAndInBean {
 	private String destination;// 目的地
 	private String handleDate;// 操作时间
 	private int adminId;// 操作人员ID
-
+	private String drugSource;//入库来源
 	public OutAndInBean() {
 		super();
 	}
@@ -92,6 +92,14 @@ public class OutAndInBean {
 
 	public void setOutAndInId(int outAndInId) {
 		this.outAndInId = outAndInId;
+	}
+
+	public String getDrugSource() {
+		return drugSource;
+	}
+
+	public void setDrugSource(String drugSource) {
+		this.drugSource = drugSource;
 	}
 
 }
