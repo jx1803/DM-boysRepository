@@ -18,8 +18,7 @@ public class UnitTest {
 		ApplicationContext ac = new ClassPathXmlApplicationContext(conf);
 		DailyWorkMapper dailyWorkMapper = ac.getBean(DailyWorkMapper.class);
 
-		List<StoDrugBean> dbList = dailyWorkMapper.selDrugByName("");
-		System.out.println(dbList.size());
+	
 
 	}
 

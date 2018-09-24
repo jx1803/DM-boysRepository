@@ -69,43 +69,43 @@
 		<table class="table table-border table-bordered table-bg">
 			<thead>
 				<tr>
-					<th scope="col" colspan="11">退库列表</th>
+					<th scope="col" colspan="12">退库列表</th>
 				</tr>
 				<tr class="text-c">
-					<th width="100">退库药品名称</th>
-					<th width="90">退库药品厂家</th>
-					<th width="150">退库数量</th>
-					<th width="90">退库药品厂家批号</th>
-					<th width="90">退库药品金额(元)</th>
-					<th width="150">退库申请人</th>
-					<th width="90">退库原因</th>
-					<th width="150">申请日期</th>
-					<th width="130">审核日期</th>
-					<th width="100">审核情况</th>
-					<th width="200">操作</th>
+					<th>退库药品编号</th>
+					<th>退库药品名称</th>
+					<th>退库数量</th>
+					<th>退库药品厂家批号</th>
+					<th>退库药品金额(元)</th>
+					<th>退库申请人</th>
+					<th>退库原因</th>
+					<th>申请日期</th>
+					<th>审核日期</th>
+					<th>审核情况</th>
+					<th>操作</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${drugApplyList }" var="breakApply">
+				<c:forEach items="${drugApplyList }" var="caceApply">
 					<tr class="text-c">
-						<td>${breakApply.stoDrugBean.drugName }</td>
-						<td>${breakApply.stoDrugBean.drugmanu }</td>
-						<td>${breakApply.applyNum }</td>
-						<td>${breakApply.manuBatch }</td>
-						<td>${breakApply.applyNum*breakApply.bdBean.purPrice }</td>
-						<td>${breakApply.adminBean.adminName }</td>
-						<td>${breakApply.applyReason}</td>
-						<td>${breakApply.applyDate}</td>
-						<td>${breakApply.checkDate}</td>
+						<td>${caceApply.stoDrugBean.drugId }</td>
+						<td>${caceApply.stoDrugBean.drugName }</td>
+						<td>${caceApply.applyNum }</td>
+						<td>${caceApply.manuBatch }</td>
+						<td>${caceApply.applyNum*caceApply.bdBean.purPrice }</td>
+						<td>${caceApply.adminBean.adminName }</td>
+						<td>${caceApply.applyReason}</td>
+						<td>${caceApply.applyDate}</td>
+						<td>${caceApply.checkDate}</td>
 						<td class="td-status"><span
-							class="label label-success radius">${breakApply.checkName}</span></td>
-
-						<c:if test="${breakApply.checkName=='未审核'}">
-							<td><button type="submit" class="btn btn-success">通过</button>
-								<button type="submit" class="btn btn-error">不通过</button></td>
+							class="label label-success radius">${caceApply.checkName}</span></td>
+						<c:if test="${caceApply.checkName == '未审核'}">
+							<td><a href="chickSuccess.action?drugApplyId=${caceApply.drugApplyId}&drugId=${caceApply.stoDrugBean.drugId }&handleNum=${caceApply.applyNum }&manuBatch=${caceApply.manuBatch }"><button
+										type="button" class="btn btn-success">通过</button></a>
+								<button type="button" class="btn btn-default">不通过</button></td>
 						</c:if>
-						<c:if test="${breakApply.checkName=='已审核'}">
-							<td><button type="submit" class="btn btn-success">查看详情</button></td>
+						<c:if test="${caceApply.checkName != '未审核'}">
+							<td><button type="button" class="btn btn-success">查看详情</button></td>
 						</c:if>
 					</tr>
 				</c:forEach>
@@ -121,11 +121,7 @@
 					type="button" class="btn btn-success">下一页</button></a>
 		</div>
 	</div>
-	
-	
-	
-	
-	
+
 	<!--_footer 作为公共模版分离出去-->
 	<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>

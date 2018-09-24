@@ -16,6 +16,7 @@ package org.great.bean;
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午3:41:42
  */
+
 public class StoDrugBean {
 	private int drugId;// 药品编码
 	private String drugName;// 药品名称
@@ -31,8 +32,16 @@ public class StoDrugBean {
 	private String dosage;// 次剂量
 	private int dailyNum;// 日次数
 	private int typeId;// 药品类别ID
-	private String drugmanu;//药品厂家
-	private String proPlace;//药品产地
+	private String drugmanu;// 药品厂家
+	private String proPlace;// 药品产地
+	/**
+	 * 查找药品(lp)
+	 */
+	private DfBean dfBean;// 剂型实体
+	private InventoryBean inventoryBean;// 库存实体
+	private BatchDetailBean batchDetailBean;// 批次详情
+	private PhaDrugBean phaDrugBean;// 药房药品
+
 	public StoDrugBean() {
 		super();
 	}
@@ -171,10 +180,40 @@ public class StoDrugBean {
 				+ ", specific=" + specific + ", unit=" + unit + ", retailPrice=" + retailPrice + ", dosageId="
 				+ dosageId + ", usage=" + usage + ", invoiceTitle=" + invoiceTitle + ", pinyinCode=" + pinyinCode
 				+ ", antibiotic=" + antibiotic + ", dosage=" + dosage + ", dailyNum=" + dailyNum + ", typeId=" + typeId
-				+ ", drugmanu=" + drugmanu + ", proPlace=" + proPlace + "]";
+				+ ", drugmanu=" + drugmanu + ", proPlace=" + proPlace + ", dfBean=" + dfBean + ", inventoryBean="
+				+ inventoryBean + "]";
 	}
 
-	
+	public DfBean getDfBean() {
+		return dfBean;
+	}
 
-	
+	public void setDfBean(DfBean dfBean) {
+		this.dfBean = dfBean;
+	}
+
+	public InventoryBean getInventoryBean() {
+		return inventoryBean;
+	}
+
+	public void setInventoryBean(InventoryBean inventoryBean) {
+		this.inventoryBean = inventoryBean;
+	}
+
+	public BatchDetailBean getBatchDetailBean() {
+		return batchDetailBean;
+	}
+
+	public void setBatchDetailBean(BatchDetailBean batchDetailBean) {
+		this.batchDetailBean = batchDetailBean;
+	}
+
+	public PhaDrugBean getPhaDrugBean() {
+		return phaDrugBean;
+	}
+
+	public void setPhaDrugBean(PhaDrugBean phaDrugBean) {
+		this.phaDrugBean = phaDrugBean;
+	}
+
 }

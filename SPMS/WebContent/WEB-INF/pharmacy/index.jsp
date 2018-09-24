@@ -87,10 +87,10 @@
 					<ul>
 						<li><a data-href="toTakeDA.action" data-title="药品请领"
 							href="javascript:;">药品请领</a></li>
-						<li><a data-href="feedback-list.html" data-title="意见反馈"
+						<li><a data-href="toCaceApply.action" data-title="退库申请"
 							href="javascript:void(0)">退库申请</a></li>
 						<li><a data-href="toCancellingApplyList.action"
-							data-title="退库申请" href="javascript:void(0)">退库审核</a></li>
+							data-title="退库审核" href="javascript:void(0)">退库审核</a></li>
 					</ul>
 				</dd>
 			</dl>

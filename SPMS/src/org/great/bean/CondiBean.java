@@ -13,6 +13,17 @@ public class CondiBean {
 	private int checkId;//审核情况id
 	private int applyTypeId;// 请领/退库/报损/采购id
 	
+	/**
+	 * 
+	 * 用户搜索条件
+	 * 王伟国
+	 */
+	private String entrytime;// 入职时间
+	private String quitDate;// 离职时间
+	private int page=1;
+	private int pageup;//上一页
+	private int pagedown;//下一页
+	
 	public CondiBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -71,6 +82,46 @@ public class CondiBean {
 
 	public void setPageLimit(int pageLimit) {
 		this.pageLimit = pageLimit;
+	}
+
+	public String getEntrytime() {
+		return entrytime;
+	}
+
+	public void setEntrytime(String entrytime) {
+		this.entrytime = entrytime;
+	}
+
+	public String getQuitDate() {
+		return quitDate;
+	}
+
+	public void setQuitDate(String quitDate) {
+		this.quitDate = quitDate;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getPageup() {
+		return pageup;
+	}
+
+	public void setPageup(int pageup) {
+		this.pageup = pageup;
+	}
+
+	public int getPagedown() {
+		return pagedown;
+	}
+
+	public void setPagedown(int pagedown) {
+		this.pagedown = pagedown;
 	}
 	
 	

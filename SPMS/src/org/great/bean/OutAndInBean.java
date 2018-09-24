@@ -23,6 +23,7 @@ public class OutAndInBean {
 	private int placeId;// 药房/药库
 	private int outInId;// 出库/入库
 	private String destination;// 目的地
+	private String  drugSource;//来源
 	private String handleDate;// 操作时间
 	private int adminId;// 操作人员ID
 
@@ -92,6 +93,14 @@ public class OutAndInBean {
 
 	public void setOutAndInId(int outAndInId) {
 		this.outAndInId = outAndInId;
+	}
+
+	public String getDrugSource() {
+		return drugSource;
+	}
+
+	public void setDrugSource(String drugSource) {
+		this.drugSource = drugSource;
 	}
 
 }
