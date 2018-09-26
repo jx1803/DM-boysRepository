@@ -35,54 +35,34 @@ public class StoDrugBean {
 	private int typeId;// 药品类别ID
 	private String drugmanu;//药品厂家
 	private String proPlace;//药品产地
+
 	
 	@Resource
 	private DfBean dfBean;//药品剂型bean
 	@Resource
 	private DrugTypeBean drugTypeBean;//药品类型bean
 	
+
 	public StoDrugBean() {
 		super();
 	}
 
-	
-	public DfBean getDfBean() {
-		return dfBean;
-	}
-
-
-	public void setDfBean(DfBean dfBean) {
-		this.dfBean = dfBean;
-	}
-
-	public DrugTypeBean getDrugTypeBean() {
-		return drugTypeBean;
-	}
-
-
-	public void setDrugTypeBean(DrugTypeBean drugTypeBean) {
-		this.drugTypeBean = drugTypeBean;
-	}
 
 	public String getDrugmanu() {
 		return drugmanu;
 	}
 
-
 	public void setDrugmanu(String drugmanu) {
 		this.drugmanu = drugmanu;
 	}
-
 
 	public String getProPlace() {
 		return proPlace;
 	}
 
-
 	public void setProPlace(String proPlace) {
 		this.proPlace = proPlace;
 	}
-
 
 	public int getDrugId() {
 		return drugId;
@@ -196,14 +176,32 @@ public class StoDrugBean {
 		this.typeId = typeId;
 	}
 
+	public DfBean getDfBean() {
+		return dfBean;
+	}
+
+	public void setDfBean(DfBean dfBean) {
+		this.dfBean = dfBean;
+	}
+
+	public DrugTypeBean getDtBean() {
+		return dtBean;
+	}
+
+	public void setDtBean(DrugTypeBean dtBean) {
+		this.dtBean = dtBean;
+	}
+
 	@Override
 	public String toString() {
 		return "StoDrugBean [drugId=" + drugId + ", drugName=" + drugName + ", generalName=" + generalName
 				+ ", specific=" + specific + ", unit=" + unit + ", retailPrice=" + retailPrice + ", dosageId="
 				+ dosageId + ", usage=" + usage + ", invoiceTitle=" + invoiceTitle + ", pinyinCode=" + pinyinCode
 				+ ", antibiotic=" + antibiotic + ", dosage=" + dosage + ", dailyNum=" + dailyNum + ", typeId=" + typeId
-				+ "]";
+				+ ", drugmanu=" + drugmanu + ", proPlace=" + proPlace + "]";
 	}
+
+	
 
 	
 }
