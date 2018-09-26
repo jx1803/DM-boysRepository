@@ -21,7 +21,6 @@ public class InventoryBean {
 	private int drugId;// 药品编码
 	private int inventoryNum;// 库存量
 	private int minimum;// 低限值
-	private int maximum;//最大值
 
 	public InventoryBean() {
 		super();
@@ -57,16 +56,6 @@ public class InventoryBean {
 
 	public void setMinimum(int minimum) {
 		this.minimum = minimum;
-	}
-	
-	
-
-	public int getMaximum() {
-		return maximum;
-	}
-
-	public void setMaximum(int maximum) {
-		this.maximum = maximum;
 	}
 
 	@Override
