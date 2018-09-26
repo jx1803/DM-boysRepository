@@ -5,25 +5,26 @@
 	<insert id="purchaseApply"
 		parameterType="org.great.bean.DrugApplyBean">
 		insert into
-		tblDrugApply(drugApplyID,adminId,drugId,applyNum,applyDate,checkId,applyTypeId,applyReason)
-		values(SPMSSEQ.NEXTVAL,#{adminId,jdbcType=NUMERIC},#{drugId,jdbcType=NUMERIC},#{applyNum,jdbcType=NUMERIC},(select
+		tblDrugApply(drugApplyID,adminId,drugId,applyNum,applyDate,checkId,ApplyTypeId,applyReason)
+		values(SPMSSEQ.NEXTVAL,#{adminId},#{drugId},#{applyNum},(select
 		to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')from
-		dual),#{checkId,jdbcType=NUMERIC},#{applyTypeId,jdbcType=NUMERIC},#{applyReason,jdbcType=VARCHAR})
+		dual),#{checkId},#{ApplyTypeId},#{applyReason})
 	</insert>
+	<!-- <update id=""></update> -->
 
 	<!--根据药品编码，药品名称，药品拼音码模糊搜索 -->
 	<select id="stoDrugSearch" resultMap="drugMap"
 		parameterType="org.great.bean.StoDrugBean">
-		select s.*,d.DOSAGEFORM,i.INVENTORYID,i.INVENTORYNUM,i.MAXIMUM,i.MINIMUM from tblStoDrug s,tblDf d,tblInventory i where s.DOSAGEID =
-		d.DOSAGEID and s.DRUGID =i.DRUGID
+		select s.*,d.DOSAGEFORM from tblStoDrug s,tblDf d where s.DOSAGEID =
+		d.DOSAGEID
 		<if test="null != pinyinCode and !''.equals(pinyinCode)">
 			and s.pinyinCode like concat(concat('%',#{pinyinCode}),'%')
 		</if>
 		<if test="null != drugName and !''.equals(drugName)">
 			and s.drugName like concat(concat('%',#{drugName}),'%')
 		</if>
-		<if test="0!= drugId">
-		and s.drugId like concat(concat('%',#{drugId}),'%')
+		<if test="null != drugId and ''!= drugId">
+			and and s.drugId like concat(concat('%',#{drugId}),'%')
 		</if>
 	</select>
 	
@@ -44,85 +45,9 @@
 	   <result property="typeId" column="typeId"/>
 	   <result property="drugmanu" column="drugmanu"/>
 	   <result property="proPlace" column="proPlace"/>
-	   
-	<!--剂型bean -->
 	   <association property="dfBean" javaType="org.great.bean.DfBean">
 	   	 <id property="dosageId" column="dosageId"/>
 	   	 <result property="dosageForm" column="dosageForm"/>
 	   </association>
-	 <!-- 药品库存bean -->
-	 <association property="inventoryBean" javaType="org.great.bean.InventoryBean">
-	     <id property="inventoryId" column="inventoryId"/>
-	     <result property="inventoryNum" column="inventoryNum"/>
-	     <result property="maximum" column="maximum"/>
-	     <result property="minimum" column="minimum"/>
-	 </association>   
 	</resultMap>
-	
-	<!-- 药品采购申请不通过 -->
-	<update id="purchaseAuditFail" parameterType="org.great.bean.DrugApplyBean">
-	update tblDrugApply set checkId=#{checkId},checkDate=(select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')from dual) where drugApplyId=#{drugApplyId} and APPLYTYPEID =#{applyTypeId}
-	</update>
-   
-   <!-- 根据药品ID获取药品信息 -->
-   <select id="getStoDrugBean" resultMap="drugBeanMap"
-        parameterType="org.great.bean.StoDrugBean">
-        select s.*,d.DOSAGEFORM,i.INVENTORYID,i.INVENTORYNUM,i.MAXIMUM,i.MINIMUM from tblStoDrug s,tblDf d,tblInventory i where s.DOSAGEID =
-        d.DOSAGEID and s.DRUGID =i.DRUGID and s.DRUGID=#{drugId}
-    </select>
-    
-    <!-- 查找药品返回的结果集 -->
-    <resultMap type="org.great.bean.StoDrugBean" id="drugBeanMap">
-       <id property="drugId" column="drugId"/>
-       <result property="drugName" column="drugName"/>
-       <result property="generalName" column="generalName"/>
-       <result property="specific" column="specific"/>
-       <result property="unit" column="unit"/>
-       <result property="retailPrice" column="retailPrice"/>
-       <result property="dosageId" column="dosageId"/>
-       <result property="usage" column="usage"/>
-       <result property="invoiceTitle" column="invoiceTitle"/>
-       <result property="pinyinCode" column="pinyinCode"/>
-       <result property="antibiotic" column="antibiotic"/>
-       <result property="dailyNum" column="dailyNum"/>
-       <result property="typeId" column="typeId"/>
-       <result property="drugmanu" column="drugmanu"/>
-       <result property="proPlace" column="proPlace"/>
-       
-    <!--剂型bean -->
-       <association property="dfBean" javaType="org.great.bean.DfBean">
-         <id property="dosageId" column="dosageId"/>
-         <result property="dosageForm" column="dosageForm"/>
-       </association>
-     <!-- 药品库存bean -->
-     <association property="inventoryBean" javaType="org.great.bean.InventoryBean">
-         <id property="inventoryId" column="inventoryId"/>
-         <result property="inventoryNum" column="inventoryNum"/>
-         <result property="maximum" column="maximum"/>
-         <result property="minimum" column="minimum"/>
-     </association>   
-    </resultMap>
-    
-    <!-- 添加药品入库批次详情表 -->
-    <insert id="addBatchDetail" parameterType="org.great.bean.BatchDetailBean">
-        insert into TBLBATCHDETAIL(BATCHDETAILID,PUTBATCH,MANUBATCH,DRUGID,PRODATE,HANDLENUM,PURPRICE,INDATE,TOTALMONEY)
-        values(SPMSSEQ.NEXTVAL,#{putBatch},#{manuBatch},#{drugId},#{proDate},#{handleNum},#{purPrice},#{inDate},#{totalMoney})
-    </insert>
-    
-  <!--添加药品采购入库记录 -->
-   <insert id="addPurOutAndIn" parameterType="org.great.bean.OutAndInBean">
-        insert into TBLOUTANDIN(OUTANDINID,PUTBATCH,TOTALMONEY,PLACEID,OUTINID,DRUGSOURCE,HANDLEDATE,ADMINID)
-        values(SPMSSEQ.NEXTVAL,#{putBatch},#{totalMoney},#{placeId,jdbcType=NUMERIC},#{outInId,jdbcType=NUMERIC},#{drugSource},(select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')from dual),#{adminId,jdbcType=NUMERIC})
-   </insert>
-   
-   <!--  药品采购入库，增加药品库存 -->
-   <update id="updateInventory" parameterType="org.great.bean.BatchDetailBean">
-    update TBLINVENTORY set INVENTORYNUM=#{inventoryNum} where DRUGID=#{drugId}
-   </update>
-   
-   <!-- 修改药品采购状态，确认购买入库 -->
-   <update id="updatePurState" parameterType="org.great.bean.BatchDetailBean">
-   update tblDrugApply set checkId=#{checkId},checkDate=(select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')from dual) where drugApplyId=#{drugApplyId}
-   </update>
-   
 </mapper>
