@@ -29,7 +29,7 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>药品采购申请</title>
+<title>退还厂家申请</title>
 <link rel="stylesheet"
 	href="<%=path%>lib/zTree/v3/css/zTreeStyle/zTreeStyle.css"
 	type="text/css">
@@ -39,7 +39,7 @@
 	<div style="margin-left: 0px;">
 		<nav class="breadcrumb">
 			<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-			药库工作 <span class="c-gray en">&gt;</span>药品采购<a
+			药库工作 <span class="c-gray en">&gt;</span>退还厂家<a
 				class="btn btn-success radius r"
 				style="line-height: 1.6em; margin-top: 3px"
 				href="javascript:location.replace(location.href);" title="刷新"><i

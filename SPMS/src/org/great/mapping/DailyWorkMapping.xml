@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.great.mapper.DailyWorkMapper"> 
+
+<!-- 陈文炽完成功能 -->
+
+<!-- 报损审核 -->
+	<update id="breakCheck" parameterType="org.great.bean.DrugApplyBean" >
+		update tbldrugapply set checkid=#{checkId} where drugapplyid=#{drugapplyId}
+	</update>
+	
+<!-- 报损申请 -->
+	<insert id="breakApply" parameterType="org.great.bean.DrugApplyBean">
+		insert into tbldrugapply (DRUGAPPLYID,ADMINID,DRUGID,APPLYNUM,APPLYDATE,CHECKID,APPLYTYPEID,APPLYREASON,manubatch,checkdate)
+  values (SPMSSEQ.NEXTVAL,#{adminId,jdbcType=NUMERIC},#{drugId,jdbcType=NUMERIC},#{applyNum,jdbcType=NUMERIC},
+  to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'),#{checkId,jdbcType=NUMERIC},#{applyTypeId,jdbcType=NUMERIC},#{applyReason,jdbcType=VARCHAR},#{manuBatch,jdbcType=VARCHAR},#{checkDate,jdbcType=VARCHAR})
+	</insert>
+
+<!-- 查看申请记录 -->
+	<select id="selectDrugApply" parameterType="org.great.bean.CondiBean" resultMap="drugApply">
+	select * from(select d.*,a.adminname,s.drugname, p1.param checkname,s.drugmanu,b.purPrice,p2.param applytype,rownum r from tbldrugapply d
+ 	left join tblparam p1 on d.checkid=p1.paramid 
+	left join tblparam p2 on d.applytypeid=p2.paramid 
+	left join tbladmin a on d.adminid=a.adminid 
+	left join tblstodrug s on d.drugid=s.drugid
+	left join tblBatchDetail b on d.drugid=b.drugid and b.manubatch=d.manubatch and b.putbatch=d.putbatch
+	<where>
+			 
+			<if test="adminName!=null and adminName!=''">
+				and a.adminName like concat(concat('%',#{adminName}),'%')  
+			</if>
+			<if test="afterDate!=null and afterDate!='' ">
+				and d.applydate &gt;=#{afterDate} 
+			</if>
+			<if test="beforeDate!=null and beforeDate!='' ">
+				and d.applydate &lt;=#{beforeDate} 
+			</if>
+			<if test="checkId!=0 ">
+				and d.checkid=#{checkId}
+			</if>
+			<if test="applyTypeId!=0 ">
+				and d.applytypeid =#{applyTypeId}
+			</if>
+			
+		</where>
+	
+	)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and r&lt;=#{pageNum}*#{pageLimit}
+	</select>
+	<!--  查询药品申请记录-->
+	<select id="getDrugApplyCount" parameterType="org.great.bean.CondiBean" resultType="Integer">
+		select count(drugapplyid) from tbldrugapply d
+		 left join tbladmin a on d.adminid=a.adminid 
+		 left join tblstodrug s on d.drugid=s.drugid 
+		 <where>
+					 
+					<if test="adminName!=null and adminName!=''">
+						and a.adminName like concat(concat('%',#{adminName}),'%')  
+					</if>
+					<if test="afterDate!=null and afterDate!='' ">
+						and d.applydate &gt;=#{afterDate} 
+					</if>
+					<if test="beforeDate!=null and beforeDate!='' ">
+						and d.applydate &lt;=#{beforeDate} 
+					</if>
+					<if test="checkId!=0 ">
+						and d.checkid=#{checkId}
+					</if>
+					<if test="applyTypeId!=0 ">
+						and d.applytypeid =#{applyTypeId}
+					</if>
+			
+		</where>
+ 
+	</select>
+	
+	
+	<resultMap type="org.great.bean.DrugApplyBean" id="drugApply">
+		<id property="drugApplyId" column="DRUGAPPLYID"/>
+		<result property="applyNum" column="applynum"/>
+		<result property="adminId" column="ADMINID"/>
+		<result property="applyDate" column="applydate"/>
+		<result property="applyReason" column="applyreason"/>
+		<result property="applyType" column="applytype"/>
+		<result property="checkId" column="checkId"/>
+		<result property="checkName" column="checkname"/>
+		<result property="checkDate" column="checkdate"/>
+		<result property="manuBatch" column="manubatch"/>
+		<result property="putBatch" column="putbatch"/>
+		
+		
+		<association property="adminBean" column="ADMINID" javaType="org.great.bean.AdminBean">
+			<id property="adminId" column="adminid"></id>
+			<result property="adminName" column="adminname"/>
+		</association>
+		<association property="stoDrugBean" column="drugid" javaType="org.great.bean.StoDrugBean"> 
+			<id property="drugId" column="drugid"/>
+			<result property="drugName" column="drugname"/>
+			<result property="drugmanu" column="drugmanu"/>
+			<result property="proPlace" column="proplace"/>
+		</association>
+		<association property="bdBean" javaType="org.great.bean.BatchDetailBean">
+			<id property="batchDetailId" column="batchdetailid"/>
+			<result property="purPrice" column="purprice"/>
+		</association>
+	</resultMap>
+
+</mapper>

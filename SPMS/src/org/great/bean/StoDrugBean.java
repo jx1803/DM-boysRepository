@@ -33,8 +33,9 @@ public class StoDrugBean {
 	private int typeId;// 药品类别ID
 	private String drugmanu;//药品厂家
 	private String proPlace;//药品产地
-	
 	private DfBean dfBean;//剂型实体
+	private DrugTypeBean dtBean;//药品类型bean
+	private InventoryBean inventoryBean;//药品库存bean 新增用于查库存量
 	public StoDrugBean() {
 		super();
 	}
@@ -166,8 +167,6 @@ public class StoDrugBean {
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
 	}
-	
-	
 
 	public DfBean getDfBean() {
 		return dfBean;
@@ -175,6 +174,23 @@ public class StoDrugBean {
 
 	public void setDfBean(DfBean dfBean) {
 		this.dfBean = dfBean;
+	}
+
+	public DrugTypeBean getDtBean() {
+		return dtBean;
+	}
+
+	public void setDtBean(DrugTypeBean dtBean) {
+		this.dtBean = dtBean;
+	}
+
+	
+	public InventoryBean getInventoryBean() {
+		return inventoryBean;
+	}
+
+	public void setInventoryBean(InventoryBean inventoryBean) {
+		this.inventoryBean = inventoryBean;
 	}
 
 	@Override
