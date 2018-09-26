@@ -7,6 +7,8 @@ public class AdjustPriceBean {
 	private double beforeAdjust;//调价前的价格
 	private double afterAdjust;//调价后的价格
 	private int adminId;//调价人
+	private AdminBean adminBean;//管理员信息
+	private StoDrugBean stoDrugBean;//药品信息
 	public AdjustPriceBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -45,6 +47,18 @@ public class AdjustPriceBean {
 	}
 	public void setAdminId(int adminId) {
 		this.adminId = adminId;
+	}
+	public AdminBean getAdminBean() {
+		return adminBean;
+	}
+	public void setAdminBean(AdminBean adminBean) {
+		this.adminBean = adminBean;
+	}
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
+	}
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
 	}
 	
 }

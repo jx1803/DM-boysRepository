@@ -35,32 +35,42 @@
 	</table>
 	
 	<table class="table table-border table-bordered table-bg" id="tblSelect">
-			<tr>
+			<tr><input type="hidden" id="batchDetailId" >
 				<td  width="100">报损药品名称:</td>
 				<td width="100"><input class="form-control" id="drugName" readonly="readonly"><button type="button" class="btn btn-default" id=""
-					onclick="showModal()">查询</button></td>
-				<td width="100">报损药品批次：</td>
-				<td width="100"> <input class="form-control" id="drugBatch" readonly="readonly"></td>
+					onclick="selectDrug('查询药品','selectPutDrug.action','800','500')">查询</button></td>
+				<td width="100">药品编号：</td>
+				<td width="100"> <input class="form-control" id="drugId" readonly="readonly"></td>
 				<td width="100">报损药品厂家:</td>
 				<td width="100"><input class="form-control" id="drugManu" readonly="readonly"></td>
-				<td width="100">报损药品厂家批号:</td>
+				<td width="100">报损药品产品批号:</td>
 				<td width="100"><input class="form-control" id="manuBatch" readonly="readonly"></td>
+				<td width="100">报损药品产品批号:</td>
+				<td width="100"><input class="form-control" id="" readonly="readonly"></td>
+				
 			</tr>
 			<tr>
+			<td width="100">药品剩余数量:</td>
+				<td width="100"><input class="form-control" id="drugNum" readonly="readonly"></td>
+			<td width="100">药品进价:</td>
+				<td width="100"><input class="form-control" id="purPrice" readonly="readonly"></td>
 				<td width="100">报损数量:</td>
-				<td width="100"><input class="form-control" id="applyNum" ></td>
+				<td width="100"><input class="form-control" id="applyNum" onkeyup="this.value=this.value.replace(/\D/g,''),setSales()" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></td>
 				<td width="100">报损药品金额(元):</td>
 				<td width="100"><input class="form-control" id="applyMoney" readonly="readonly" ></td>
 				<th width="90">报损原因:</th>
 				<td width="100"><input class="form-control" id="applyReason" placeholer="输入报损原因"></td>
-				<td colspan="2"><button type="button" class="btn btn-default" id=""
-					onclick="addApply()">添加</button></td>
 			</tr>
-			
-		
-	
-		
 	</table>
+	<div style="float:right;"><button type="button" class="btn btn-default" id=""
+					onclick="addApply()">添加</button>&nbsp;&nbsp;
+					<button type="button" class="btn btn-primary" id=""
+					onclick="empty()">清空</button>&nbsp;&nbsp;
+					<button type="button" class="btn btn-default" id=""
+					onclick="subApply()">提交申请</button></div>
+	<form id="fapply" action="breakApply.action"  method="post">
+	
+	</form>
 	
 	<table class="table table-border table-bordered table-bg" id="tblDrugList">
 		<thead>
@@ -69,62 +79,18 @@
 				<th width="100">报损药品名称</th>
 				<th width="90">报损药品厂家</th>
 				<th width="80">报损数量</th>
-				<th width="100">报损药品批次</th>
-				<th width="90">报损药品厂家批号</th>
+				<th width="100">报损药品进价</th>
+				<th width="90">报损药品产品批号</th>
 				<th width="90">报损药品金额(元)</th>
-				<th width="150">报损申请人</th>
 				<th width="90">报损原因</th>
 			</tr>
 		</thead>
-		<tbody>
-		<c:forEach items="${arr }" var="breakApply">
-			<tr class="text-c">
-			<td><input name="applyList[${count }].stoDrugBean.drugName" value=""${breakApply[0] } style="border-style: none"></td>
-			<td><input name="applyList[${count }].bdBean.drugmanu" value=""${breakApply[1] } style="border-style: none"></td>
-			<td><input name="applyList[${count }].bdBean.drugBatch" value=""${breakApply[2] } style="border-style: none"></td>
-			<td><input name="applyList[${count }].bdBean.manuBatch" value=""${breakApply[3] } style="border-style: none"></td>
-			<td><input name="applyList[${count }].applyNum" value=""${breakApply[4] } style="border-style: none"></td>
-			<td><input name="applyList[${count }].applyMoney" value=""${breakApply[5] } style="border-style: none"></td>
-			<td><input name="applyList[${count }].applyReason" value=""${breakApply[6] } style="border-style: none"></td>
-			<%-- 	<td>${breakApply.stoDrugBean.drugName }</td>
-				<td>${breakApply.bdBean.drugmanu }</td>
-				<td>${breakApply.applyNum }</td>
-				<td>${breakApply.manuBatch }</td>
-				<td>${breakApply.applyNum*breakApply.bdBean.purPrice }</td>
-				<td>${breakApply.adminBean.adminName }</td>
-				<td>${breakApply.applyReason}</td> --%>
-			</tr>
-			</c:forEach>
-		</tbody>
+		<tbody id="tbodyId"></tbody>
 	</table>
 	
 </div>
 
 
-<!-- 模态框 -->
-	 <div class="modal fade" id="drugModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="">药品查询</h4>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-					<div class="modal-body" >
-						<input id="drugName1" value="阿莫西林">
-						
-					</div>
-
-					<div class="modal-footer">
-						<!-- <button type="submit" class="btn btn-primary" id="btupload">上传</button> -->
-						<button type="button" class="btn btn-default" data-dismiss="modal" onclick="getDrug()">关闭</button>
-				</form>
-			</div>
-		</div>
-	</div>
 
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -156,27 +122,91 @@
 		$("#drugName").val($("#drugName1").val());
 	}
 
+	/*  增加药品报损记录*/
 	function addApply(){
-		var drugName=$("#drugName");
-		var drugmanu=$("#drugManu");
-		var drugBatch=$("#drugBatch");
-		var manuBatch=$("#manuBatch");
-		var applyNum=$("#applyNum");
-		var applyMoney=$("#applyMoney");
-		var applyReason=$("#applyReason");
-		arr[count][0]=drugName;
-		arr[count][1]=drugmanu;
-		arr[count][2]=drugBatch;
-		arr[count][3]=manuBatch;
-		arr[count][4]=applyNum;
-		arr[count][5]=applyMoney;
-		arr[count][6]=applyReason;
 		
+		var drugName=$("#drugName").val();
+		var drugmanu=$("#drugManu").val();
+		var purPrice=$("#purPrice").val();
+		var manuBatch=$("#manuBatch").val();
+		var applyNum=$("#applyNum").val();
+		var applyMoney=$("#applyMoney").val();
+		var applyReason=$("#applyReason").val();
+		var drugId=$("#drugId").val();
+		var batchDetailId=$("#batchDetailId").val();
+		if(drugName=="" || applyNum=="" || applyReason=="" ){
+			alert("请完善报损药品信息");
+			return;
+		}
+		var input="<input type='hidden' name='applyList["+count+"].drugId' value='"+drugId+
+		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.drugName' value='"+drugName+
+		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.drugmanu' value='"+drugmanu+
+		"'><input type='hidden' name='applyList["+count+"].bdBean.purPrice' value='"+purPrice+
+		"'><input type='hidden' name='applyList["+count+"].manuBatch' value='"+manuBatch+
+		"'><input type='hidden' name='applyList["+count+"].bdBean.batchDetailId' value='"+batchDetailId+
+		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+
+		"'><input type='hidden' name='applyList["+count+"].applyMoney' value='"+applyMoney+
+		"'><input type='hidden' name='applyList["+count+"].applyReason' value='"+applyReason+
+		"'><input type='hidden' name='applyList["+count+"].applyTypeId' value='12'><input type='hidden' name='applyList["+count+"].checkId' value='7'>";
+		$("#fapply").append(input);
 		count+=1;
 		
 	
-		 var str="<tr><td>"+drugName+"</td><td>"+drugmanu+"</td><td>"+drugBatch+"</td><td>"+manuBatch+"</td><td>"+applyNum+"</td><td>"+applyMoney+"</td><td>"+applyReason+"</td></tr>";
+		 var str="<tr id='tr"+count+"' class='text-c'><td>"+drugName+"</td><td>"+drugmanu+"</td><td>"+applyNum+"</td><td>"+
+		 purPrice+"</td><td>"+manuBatch+"</td><td>"+applyMoney+"</td><td>"+applyReason+"</td></tr>";
+		
+		  $("#tblDrugList").append(str); 
 	}
+	
+	
+	/* 清空申请记录 */
+	function empty(){
+		$("#tbodyId").html("");
+		$("#fapply").html("");
+		count=0;
+	}
+	
+	/* 提交申请 */
+	function subApply(){
+		var d=$("#tbodyId").html();
+		if(d.length==0){
+			
+		alert("请选择报损药品");
+		return;
+		}
+		var r=confirm("确定提交吗?");
+		if(r){
+			$("#fapply").submit();
+		}
+	}
+	
+  
+	
+	/* 计算合计金额 */
+  	function setSales(){
+  		var drugName=$("#drugName").val();
+  		if(drugName==""){
+  			alert("请先选择药品");
+  			$("#applyNum").val("");
+  			return;
+  		}
+  		var m=$("#purPrice").val();
+  		var num=$("#applyNum").val();
+  		var am=m*num;
+  		$("#applyMoney").val(am);
+	}
+	/*
+	参数解释：
+	title	标题
+	url		请求的url
+	id		需要操作的数据id
+	w		弹出层宽度（缺省调默认值）
+	h		弹出层高度（缺省调默认值）
+*/
+/*查询药品出入库记录*/
+function selectDrug(title,url,w,h){
+	layer_show(title,url,w,h);
+}
 
 </script>
 </body>
