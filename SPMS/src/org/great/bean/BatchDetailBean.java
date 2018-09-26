@@ -1,5 +1,9 @@
 package org.great.bean;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+@Component
 public class BatchDetailBean {
 	private int batchDetailId;//批次详情id
 	private String putBatch;//进货批次
@@ -11,7 +15,10 @@ public class BatchDetailBean {
 	private double sellPrice;//销售价
 	private String inDate;//有效日期
 	private double totalMoney;//总价
-	
+	@Resource
+	private StoDrugBean stoDrugBean;//药品信息
+	@Resource
+	private OutAndInBean outAndInbean;//入库批次
 	public BatchDetailBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -32,6 +39,22 @@ public class BatchDetailBean {
 		this.putBatch = putBatch;
 	}
 
+
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
+	}
+
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
+	}
+
+	public OutAndInBean getOutAndInbean() {
+		return outAndInbean;
+	}
+
+	public void setOutAndInbean(OutAndInBean outAndInbean) {
+		this.outAndInbean = outAndInbean;
+	}
 
 	public String getManuBatch() {
 		return manuBatch;

@@ -10,12 +10,17 @@
 
 package org.great.bean;
 
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 /**
  * @ClassName: StoDrugBean
  * @Description: 药库药品表实体类
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午3:41:42
  */
+@Component
 public class StoDrugBean {
 	private int drugId;// 药品编码
 	private String drugName;// 药品名称
@@ -35,6 +40,10 @@ public class StoDrugBean {
 	private String proPlace;//药品产地
 	private DfBean dfBean;//剂型实体
 	private DrugTypeBean dtBean;//药品类型bean
+	private BatchDetailBean batchDetailBean;//药品入库批次详情对象
+	private PhaDrugBean phaDrugBean;//药房药品信息对象
+	private SellBean sellBean;//销售记录对象
+	private List<StoDrugBean> drugList;//卖药的信息列表
 	public StoDrugBean() {
 		super();
 	}
@@ -181,6 +190,38 @@ public class StoDrugBean {
 
 	public void setDtBean(DrugTypeBean dtBean) {
 		this.dtBean = dtBean;
+	}
+
+	public BatchDetailBean getBatchDetailBean() {
+		return batchDetailBean;
+	}
+
+	public void setBatchDetailBean(BatchDetailBean batchDetailBean) {
+		this.batchDetailBean = batchDetailBean;
+	}
+
+	public PhaDrugBean getPhaDrugBean() {
+		return phaDrugBean;
+	}
+
+	public void setPhaDrugBean(PhaDrugBean phaDrugBean) {
+		this.phaDrugBean = phaDrugBean;
+	}
+
+	public SellBean getSellBean() {
+		return sellBean;
+	}
+
+	public void setSellBean(SellBean sellBean) {
+		this.sellBean = sellBean;
+	}
+
+	public List<StoDrugBean> getDrugList() {
+		return drugList;
+	}
+
+	public void setDrugList(List<StoDrugBean> drugList) {
+		this.drugList = drugList;
 	}
 
 	@Override
