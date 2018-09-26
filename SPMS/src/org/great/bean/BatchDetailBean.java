@@ -3,6 +3,7 @@ package org.great.bean;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+
 @Component
 public class BatchDetailBean {
 	private int batchDetailId;//批次详情id
@@ -15,10 +16,15 @@ public class BatchDetailBean {
 	private double sellPrice;//销售价
 	private String inDate;//有效日期
 	private double totalMoney;//总价
+
 	@Resource
 	private StoDrugBean stoDrugBean;//药品信息
 	@Resource
-	private OutAndInBean outAndInbean;//入库批次
+	private OutAndInBean outAndInbean;//入库批次	
+	private InventoryBean inventoryBean;//库存实体bean，用于采购药品入库时更新库存
+	
+	private DrugApplyBean drugApplyBean;//药品申请实体bean，用于更改采购药品购买入库状态
+
 	public BatchDetailBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -120,6 +126,45 @@ public class BatchDetailBean {
 		this.totalMoney = totalMoney;
 	}
 
+
+	
+	public OutAndInBean getOutAndInBean() {
+		return outAndInBean;
+	}
+
+	public void setOutAndInBean(OutAndInBean outAndInBean) {
+		this.outAndInBean = outAndInBean;
+	}
+
+
+
+	
+	public InventoryBean getInventoryBean() {
+		return inventoryBean;
+	}
+
+	public void setInventoryBean(InventoryBean inventoryBean) {
+		this.inventoryBean = inventoryBean;
+	}
+
+	
+	public DrugApplyBean getDrugApplyBean() {
+		return drugApplyBean;
+	}
+
+	public void setDrugApplyBean(DrugApplyBean drugApplyBean) {
+		this.drugApplyBean = drugApplyBean;
+	}
+
+	
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
+	}
+
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
+	}
+
 	@Override
 	public String toString() {
 		return "BatchDetailBean [batchDetailId=" + batchDetailId + ", putBatch=" + putBatch + ", manuBatch=" + manuBatch
@@ -127,6 +172,4 @@ public class BatchDetailBean {
 				+ ", sellPrice=" + sellPrice + ", inDate=" + inDate + ", totalMoney=" + totalMoney + "]";
 	}
 	
-	
-
 }

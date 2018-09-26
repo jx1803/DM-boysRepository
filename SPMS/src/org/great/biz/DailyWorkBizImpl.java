@@ -1,5 +1,7 @@
 package org.great.biz;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,15 +10,18 @@ import org.great.bean.AdjustPriceBean;
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
+
 import org.great.bean.OutAndInBean;
 import org.great.bean.ParamBean;
 import org.great.bean.PhaDrugBean;
 import org.great.bean.SellBean;
+
 import org.great.bean.StoDrugBean;
 import org.great.mapper.DailyWorkMapper;
 import org.great.tools.PageUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
+
 
 /**
  * 
@@ -111,6 +116,29 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 		mav.addObject("count", count);
 		mav.addObject("drugApplyList", list);
 		return mav;
+
+
+	@Override
+	// 请领申请(lp)
+	public ModelAndView takeDrugAppleFor(DrugApplyBean drugApplyBean) {
+		Date day = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = df.format(day);
+		drugApplyBean.setApplyDate(time);
+		drugApplyBean.setCheckId(7);
+		drugApplyBean.setApplyTypeId(10);
+		dailyWorkMapper.takeDrugAppleFor(drugApplyBean);
+		return null;
+
+	}
+
+	
+	// 查找药品(lp)
+	@Override
+	public List<StoDrugBean> selectDrug(StoDrugBean stoDrugBean) {
+		// TODO Auto-generated method stub
+		return null;
+
 	}
 
 	// 查询药品入库批次详情列表

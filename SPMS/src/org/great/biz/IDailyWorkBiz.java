@@ -1,23 +1,22 @@
 package org.great.biz;
 
-import java.util.*;
+import java.util.List;
 
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
+
 import org.great.bean.SellBean;
 import org.great.bean.StoDrugBean;
 import org.springframework.ui.Model;
+
+import org.great.bean.StoDrugBean;
+
 import org.springframework.web.servlet.ModelAndView;
-/**
- * 
- * @ClassName: IDailyWorkBiz 
- * @Description: TODO
- * @author: JX180327_陈文炽(wc)  
- * @date: 2018年9月18日 下午3:04:28
- */
+
 public interface IDailyWorkBiz {
+
 	public String breakCheck(DrugApplyBean drugApplyBean);//报损审核
 	public String breakApply(DrugApplyBean drugApplyBean);//报损申请
 	public ModelAndView selectDrugApply(CondiBean condiBean);//获取药品申请列表
@@ -28,4 +27,15 @@ public interface IDailyWorkBiz {
 	public String adjustPrice(AdjustPriceBean adjustPriceBean);//调整药品价格
 	public String sellDrug(StoDrugBean stoDrugBean);//卖药
 	public ModelAndView sellDrugLayer(CondiBean condiBean);//卖药弹窗
+
+	// 请领申请(lp)
+	public ModelAndView takeDrugAppleFor(DrugApplyBean drugApplyBean);
+
+	// 获取药品退库列表(lp)
+	public ModelAndView selectCancellingApply(CondiBean condiBean);
+
+	// 通过ajax拼音码/编号/名称查找药品信息(lp)
+	public List<StoDrugBean> selectDrug(StoDrugBean stoDrugBean);
+
+
 }

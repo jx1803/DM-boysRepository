@@ -3,7 +3,9 @@ package org.great.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.stereotype.Component;
+
 
 //申请表
 @Component
@@ -25,8 +27,10 @@ public class DrugApplyBean {
 	private String putBatch;//入库批次
 	private double applyMoney;//金额
 	private BatchDetailBean bdBean;//获取批次详情
+
 	private ArrayList<DrugApplyBean> applyList;//申请记录列表
 	private int auditorId;//审核人id
+
 	public DrugApplyBean() {
 		super();
 	}
@@ -227,5 +231,6 @@ public class DrugApplyBean {
 	public void setApplyMoney(double applyMoney) {
 		this.applyMoney = applyMoney;
 	}
+
 
 }

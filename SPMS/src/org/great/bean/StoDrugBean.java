@@ -40,10 +40,16 @@ public class StoDrugBean {
 	private String proPlace;//药品产地
 	private DfBean dfBean;//剂型实体
 	private DrugTypeBean dtBean;//药品类型bean
+
 	private BatchDetailBean batchDetailBean;//药品入库批次详情对象
 	private PhaDrugBean phaDrugBean;//药房药品信息对象
 	private SellBean sellBean;//销售记录对象
 	private List<StoDrugBean> drugList;//卖药的信息列表
+
+
+	private InventoryBean inventoryBean;//药品库存bean 新增用于查库存量
+
+
 	public StoDrugBean() {
 		super();
 	}
@@ -192,6 +198,7 @@ public class StoDrugBean {
 		this.dtBean = dtBean;
 	}
 
+
 	public BatchDetailBean getBatchDetailBean() {
 		return batchDetailBean;
 	}
@@ -223,6 +230,18 @@ public class StoDrugBean {
 	public void setDrugList(List<StoDrugBean> drugList) {
 		this.drugList = drugList;
 	}
+
+
+	
+	public InventoryBean getInventoryBean() {
+		return inventoryBean;
+	}
+
+	public void setInventoryBean(InventoryBean inventoryBean) {
+		this.inventoryBean = inventoryBean;
+	}
+
+
 
 	@Override
 	public String toString() {

@@ -28,7 +28,19 @@ public class CondiBean {
 	private int page=1;
 	private int pageup;//上一页
 	private int pagedown;//下一页
+
 	
+	/**
+	 * 
+	 * @Title:CondiBean
+	 * @Description:程帅搜索条件
+	 */
+	private String dosageForm;	//药品剂型名称
+	private DfBean dfBean;//药品剂型bean
+	private DrugTypeBean dtBean;//药品类型bean
+	
+	
+
 	public CondiBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -40,6 +52,24 @@ public class CondiBean {
 	public void setAdminName(String adminName) {
 		this.adminName = adminName;
 	}
+
+
+	public DfBean getDfBean() {
+		return dfBean;
+	}
+
+	public void setDfBean(DfBean dfBean) {
+		this.dfBean = dfBean;
+	}
+
+	public DrugTypeBean getDtBean() {
+		return dtBean;
+	}
+
+	public void setDtBean(DrugTypeBean dtBean) {
+		this.dtBean = dtBean;
+	}
+
 
 	public String getAfterDate() {
 		return afterDate;
@@ -104,6 +134,15 @@ public class CondiBean {
 	public void setPageNum(int pageNum) {
 		this.pageNum = pageNum;
 	}
+
+	public String getDosageForm() {
+		return dosageForm;
+	}
+
+	public void setDosageForm(String dosageForm) {
+		this.dosageForm = dosageForm;
+	}
+
 
 	public int getPageLimit() {
 		return pageLimit;
