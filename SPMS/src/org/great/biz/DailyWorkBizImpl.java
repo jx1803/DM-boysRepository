@@ -1,33 +1,23 @@
 package org.great.biz;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.great.bean.AdjustPriceBean;
-import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
-import org.great.bean.OutAndInBean;
-import org.great.bean.ParamBean;
-import org.great.bean.PhaDrugBean;
-import org.great.bean.SellBean;
 import org.great.bean.StoDrugBean;
 import org.great.mapper.DailyWorkMapper;
 import org.great.tools.PageUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * 
- * @ClassName: DailyWorkBizImpl
- * @Description: 日常工作biz实现类
- * @author: JX180327_陈文炽(wc)
- * @date: 2018年9月18日 下午2:58:48
- */
 @Service
 public class DailyWorkBizImpl implements IDailyWorkBiz {
 	@Resource
+
 	private DailyWorkMapper dailyWorkMapper;// 映射器（日常工作）
 	@Resource
 	private OutAndInBean outAndInBean;// 出入库对象
@@ -70,54 +60,27 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 		return "redirect:toBreakCheck.action";
 	}
 
-	// 报损申请
+
 	@Override
-	public String breakApply(DrugApplyBean drugApplyBean) {
-//		 AdminBean admin=(AdminBean) req.getSession().getAttribute("User");//获取管理员信息
-		List<DrugApplyBean> list=drugApplyBean.getApplyList();
-		for (int i = 0; i < list.size(); i++) {
-			DrugApplyBean da=list.get(i);
-			da.setAdminId(1001);// 模拟操作人员数据
-			
-			/*预先扣除药房药品库存*/
-			phaDrugBean=dailyWorkMapper.selectOnePhaDrug(da.getDrugId());
-			String specific=phaDrugBean.getStoDrugBean().getSpecific();//获取药品规格
-			String[] str=specific.split("-");
-			int n=Integer.parseInt(str[0]);
-			da.setApplyNum(da.getApplyNum()*n);//将报损数量单位设为最小规格单位
-			dailyWorkMapper.reducePhaDrugNum2(da);// 减少库存
-			
-			/*预先扣除药房入库批次详情中的药品数量*/
-			sellBean.setPutBatch(""+da.getBdBean().getBatchDetailId());
-			sellBean.setSellNum(da.getApplyNum());
-			dailyWorkMapper.reducePhaPutDrugNum(sellBean);
-			
-			
-			/*增加申请记录*/
-			da.setPutBatch(""+da.getBdBean().getBatchDetailId());
-			dailyWorkMapper.breakApply(da);
-		}
-		return "pharmacy/breakApply";
+	// 请领申请(lp)
+	public ModelAndView takeDrugAppleFor(DrugApplyBean drugApplyBean) {
+		Date day = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = df.format(day);
+		drugApplyBean.setApplyDate(time);
+		drugApplyBean.setCheckId(7);
+		drugApplyBean.setApplyTypeId(10);
+		dailyWorkMapper.takeDrugAppleFor(drugApplyBean);
+		return null;
+
 	}
 
-	// 申请记录查询
+	
+	// 查找药品(lp)
 	@Override
-	public ModelAndView selectDrugApply(CondiBean condiBean) {
-		List<DrugApplyBean> list = dailyWorkMapper.selectDrugApply(condiBean);
-		int count = dailyWorkMapper.getDrugApplyCount(condiBean);
-		int pageTotal = PageUtil.pageTotal(count);
-		ModelAndView mav = new ModelAndView("pharmacy/breakApplyList");
-		mav.addObject("pageNum", condiBean.getPageNum());
-		mav.addObject("pageTotal", pageTotal);
-		mav.addObject("count", count);
-		mav.addObject("drugApplyList", list);
-		return mav;
-	}
-
-	// 查询药品入库批次详情列表
-	@Override
-	public ModelAndView selectPutDrug(CondiBean condiBean) {
+	public List<StoDrugBean> selectDrug(StoDrugBean stoDrugBean) {
 		// TODO Auto-generated method stub
+
 		List<StoDrugBean> list = dailyWorkMapper.selectCanSellDrug(condiBean);
 		ModelAndView mav = new ModelAndView("pharmacy/putDrugList");
 		mav.addObject("drugList", list);
@@ -207,6 +170,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 		ModelAndView mav = new ModelAndView("pharmacy/sellDrugLayer");
 		mav.addObject("drugList", list);
 		return mav;
+
 	}
 
 }

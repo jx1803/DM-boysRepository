@@ -1,9 +1,6 @@
 package org.great.bean;
 
-import org.springframework.stereotype.Component;
-
 //药房药品表
-@Component
 public class PhaDrugBean {
 	private int phaDrugId;// 药房药品id
 	private int drugId;// 药品编号
@@ -11,7 +8,6 @@ public class PhaDrugBean {
 	private int useableId;// 停用启用状态
 	private int minimum;// 底限
 	private int maximum;//上限值
-	private StoDrugBean stoDrugBean;//药品信息
 
 	public PhaDrugBean() {
 		super();
@@ -65,14 +61,6 @@ public class PhaDrugBean {
 
 	public void setUseableId(int useableId) {
 		this.useableId = useableId;
-	}
-
-	public StoDrugBean getStoDrugBean() {
-		return stoDrugBean;
-	}
-
-	public void setStoDrugBean(StoDrugBean stoDrugBean) {
-		this.stoDrugBean = stoDrugBean;
 	}
 
 	
