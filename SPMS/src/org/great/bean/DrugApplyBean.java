@@ -1,5 +1,8 @@
 package org.great.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //申请表
 public class DrugApplyBean {
 	private int drugApplyId;// 申请记录id
@@ -18,6 +21,9 @@ public class DrugApplyBean {
 	private String manuBatch;//生产批号
 	private String putBatch;//入库批次
 	private BatchDetailBean bdBean;//获取批次详情
+
+	private ArrayList<DrugApplyBean> applyList;//申请记录列表
+
 	public DrugApplyBean() {
 		super();
 	}
@@ -188,4 +194,16 @@ public class DrugApplyBean {
 		this.applyReason = applyReason;
 	}
 
+
+	public ArrayList<DrugApplyBean> getApplyList() {
+		return applyList;
+	}
+
+
+	public void setApplyList(ArrayList<DrugApplyBean> applyList) {
+		this.applyList = applyList;
+	}
+
+
+	
 }

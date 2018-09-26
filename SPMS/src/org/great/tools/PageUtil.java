@@ -8,8 +8,7 @@ public class PageUtil {
 		} else if (count % 5 == 0) {
 			pageTotal = count/5;
 		} else {
-
-			pageTotal = count/5+1;
+			pageTotal = count/5+1; 
 		}
 		return pageTotal;
 	}

@@ -93,16 +93,23 @@
 			</ul>
 		</dd>
 	</dl>	
-			<dl id="menu-product">
+	
+	<dl id="menu-product">
 			<dt><i class="Hui-iconfont">&#xe620;</i> 库存工作<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a data-href="<%=path%>storage/purchaseApplyShow.action" data-title="药品采购" href="javascript:void(0)">药品采购</a></li>
+					<li><a data-href="<%=path%>storage/purchaseApplyShow.action" data-title="药品采购申请" href="javascript:void(0)">药品采购申请</a></li>
+					<li><a data-href="<%=path%>storage/purchaseApplyLook.action" data-title="药品采购申请记录" href="javascript:void(0)">药品采购申请记录</a></li>
+					<li><a data-href="<%=path%>storage/pdInstorage.action" data-title="药品采购入库" href="javascript:void(0)">药品采购入库</a></li>
 					<li><a data-href="admin-permission.html" data-title="退还厂家" href="javascript:void(0)">退还厂家</a></li>
 					<li><a data-href="admin-list.html" data-title="出库审核" href="javascript:void(0)">出库审核</a></li>
+					<li><a data-href="<%=path%>storage/drugApplyAudit.action" data-title="药品采购审核" href="javascript:void(0)">药品采购审核</a></li>
+					<li><a data-href="admin-list.html" data-title="退还审核" href="javascript:void(0)">退还审核</a></li>
 			</ul>
 		</dd>
 	</dl>
+	
+	
 </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

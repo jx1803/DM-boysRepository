@@ -35,6 +35,9 @@ public class StoDrugBean {
 	private String proPlace;//药品产地
 	private DfBean dfBean;//剂型实体
 	private DrugTypeBean dtBean;//药品类型bean
+
+	private InventoryBean inventoryBean;//药品库存bean 新增用于查库存量
+
 	public StoDrugBean() {
 		super();
 	}
@@ -182,6 +185,17 @@ public class StoDrugBean {
 	public void setDtBean(DrugTypeBean dtBean) {
 		this.dtBean = dtBean;
 	}
+
+
+	
+	public InventoryBean getInventoryBean() {
+		return inventoryBean;
+	}
+
+	public void setInventoryBean(InventoryBean inventoryBean) {
+		this.inventoryBean = inventoryBean;
+	}
+
 
 	@Override
 	public String toString() {
