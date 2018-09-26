@@ -48,8 +48,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<!-- 模态框（添加药品剂型） -->
 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<form action="addDfInfo.action" method="post"
-								onsubmit="window.opener=null;window.close();">
+		<form action="addDfInfo.action" method="post">
 		<div class="modal-dialog" style="width: 450px">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -117,7 +116,6 @@ String path = request.getScheme() +"://"+request.getServerName()
 										</tr>
 									</tbody>
 								</table>
-							
 						</div>
 					</div>
 				</div>
@@ -134,13 +132,13 @@ String path = request.getScheme() +"://"+request.getServerName()
 	
 	<!-- 主页面 -->
 	<div class="page-container">
-		<form action="findDfInfo.action" method="post"  >
+		<form action="findDfInfo.action" method="post" id="formDf" >
 		<div class="text-c">
 			药品名称: <input type="text" class="input-text" id="" name="dosageForm" value="${dosageForm==null?"":dosageForm}" style="width: 150px">
 			<button type="submit" class="btn btn-primary radius" id="" name="">
 				搜索剂型</button>
-			<button type="submit" class="btn btn-primary radius" id="" name=""
-				data-toggle="modal" data-target="#addModal">
+			<button type="button" class="btn btn-primary radius" id="" name=""
+				onclick="addModel()">
 				<i class="Hui-iconfont">&#xe600;</i> 添加剂型
 			</button>
 		</div>
@@ -157,9 +155,9 @@ String path = request.getScheme() +"://"+request.getServerName()
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach items="${dfList }" var="dfList">
+				<c:forEach items="${dfList }" var="dfList" varStatus="vs">
 					<tr class="text-c">
-						<td>${dfList.dosageId}</td>
+						<td>${vs.index+1}</td>
 						<td>${dfList.dosageForm }</td>
 						<td class="f-14">
 							<a style="text-decoration: none" 
@@ -176,12 +174,12 @@ String path = request.getScheme() +"://"+request.getServerName()
 		</div>
 		<br />
 		<div style="float: right; margain-top: 20px;">
-			<button type="submit" class="btn btn-secondary-outline radius" id=""
-				name="">上一页</button>
-			<button type="submit" class="btn btn-primary size-S radius" id=""
-				name="">1</button>
-			<button type="submit" class="btn btn-secondary-outline radius" id=""
-				name="">下一页</button>
+			<span ><font size="2">共${pageTotal}页  &nbsp;当前页${condi.page}/${pageTotal}</font></span>  &nbsp; &nbsp; &nbsp;
+			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condi.page}')">上一页</button>
+			<c:forEach var="page" begin="1" end="${pageTotal}">
+			 <button type="submit" class="btn btn-primary size-S radius" onclick="skipPage('${page}')">${page}</button>
+			</c:forEach>
+			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal }')">下一页</button>
 		</div>
 	</div>
 	<!--_footer 作为公共模版分离出去-->
@@ -202,6 +200,11 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
+		//弹出添加模态框
+		function addModel(){
+			$('#addModal').modal('show');
+		}
+	
 		//弹出修改模态框
 		function updModel(id,name){
 			$('#updModal').modal('show');
@@ -210,8 +213,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 			
 		}
 	
-	
-		/*数据字典-删除*/
+		/*删除*/
 		function upd() {
 			var k =confirm('是否删除数据？')
 			if(k==true){
@@ -219,6 +221,45 @@ String path = request.getScheme() +"://"+request.getServerName()
 			}else{
 				return false;
 			}
+		}
+		
+		//上一页
+		function upPage(page) {
+			var str = "";
+			if (page > 1) {
+				page -= 1;
+				str = "findDfInfo.action?page="+page;
+				//attr更改form表单的action属性，改为str1
+				$("#formDf").attr("action",str);
+				//把form表单提交。
+				$("#formDf").submit();
+			} else {
+				return;
+			}
+			//location.href = str1;
+		}
+
+		//下一页,pageNum,当前页数，total 总页数
+		function nextPage(page, total) {
+			var str = "";
+			if (page < total) {
+				page = Number(page) + 1;
+				str = "findDfInfo.action?page="+page;
+				//attr更改form表单的action属性，改为str1
+				$("#formDf").attr("action",str);
+				//把form表单提交。
+				$("#formDf").submit();
+			} else {
+				return;
+			}
+		}
+		//点击按钮跳转页面
+		function skipPage(page){
+			var str = "";
+			str = "findDfInfo.action?page="+page;
+			$("#formDf").attr("action",str);
+			//把form表单提交。
+			$("#formDf").submit();
 		}
 	</script>
 </body>

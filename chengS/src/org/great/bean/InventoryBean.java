@@ -10,20 +10,31 @@
 
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @ClassName: InventoryBean
  * @Description: 库存表实体类
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午3:55:03
  */
+@Component
 public class InventoryBean {
 	private int inventoryId;// 库存ID
 	private int drugId;// 药品编码
 	private int inventoryNum;// 库存量
 	private int minimum;// 低限值
-
+	private int maximum;//上限值
 	public InventoryBean() {
 		super();
+	}
+
+	public int getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
 	}
 
 	public int getInventoryId() {

@@ -33,12 +33,12 @@ String path = request.getScheme() +"://"+request.getServerName()
 <script type="text/javascript" src="<%=path%>lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>药品类型</title>
+<title>配伍禁忌</title>
 </head>
 <body>
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-		药品管理 <span class="c-gray en">&gt;</span> 药品类型 <a
+		药品管理 <span class="c-gray en">&gt;</span> 配伍禁忌 <a
 			class="btn btn-success radius r"
 			style="line-height: 1.6em; margin-top: 3px"
 			href="javascript:location.replace(location.href);" title="刷新"><i
@@ -48,14 +48,14 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<!-- 模态框（添加药品类型） -->
 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true" >
-		<form action="addDrugTypeInfo.action" method="post"
+		<form action="addCompTaboo.action" method="post"
 			onsubmit="window.opener=null;window.close();">
 			<div class="modal-dialog" style="width: 450px">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">添加药品类型</h4>
+						<h4 class="modal-title" id="myModalLabel">添加配伍禁忌</h4>
 					</div>
 					<div class="modal-body">
 						<div class="pd-20">
@@ -65,22 +65,28 @@ String path = request.getScheme() +"://"+request.getServerName()
 									<tbody>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
-												药品类型：</th>
+												药品名称1：</th>
 											<td><input type="text" style="width: 250px"
-												class="input-text" value="" placeholder="" id="user-name"
-												name="drugType" datatype="*2-16" nullmsg="用户名不能为空"></td>
+												class="input-text" value="" placeholder="" id="drugId1"
+												name="drugId1" datatype="*2-16" nullmsg="用户名不能为空">
+												<span id="name1" style="color:red"></span>
+												</td>
 										</tr>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
-												上级类型：</th>
-											<td><span id="topType" class="select-box"> <select
-													class="select" size="1" name="pid">
-														<option value="1" >中药</option>
-														<option value="2" >西药</option>
-														<option value="3" >特殊药物</option>
-														
-												</select>
-											</span></td>
+												药品名称2：</th>
+											<td><input type="text" style="width: 250px"
+												class="input-text" value="" placeholder="" id="drugId2"
+												name="drugId2" datatype="*2-16" nullmsg="用户名不能为空">
+													<span id="name2" style="color:red"></span>
+												</td>
+										</tr>
+										<tr>
+											<th width="100" class="text-r"><span class="c-red">*</span>
+												产生作用：</th>
+											<td><input type="textarea" style="width: 250px"
+												class="textarea" value="" placeholder="" id="sideeffect"
+												name="sideeffect" datatype="*2-16" nullmsg="用户名不能为空"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -91,7 +97,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
 						</button>
-						<button type="submit" class="btn btn-primary">提交更改</button>
+						<button type="submit" class="btn btn-primary" onclick="return comfSub()">提交更改</button>
 					</div>
 				</div>
 				<!-- /.modal-content -->
@@ -102,7 +108,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 <!-- 模态框（修改药品类型） -->
 	<div class="modal fade" id="updModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<form action="updDrugTypeInfo.action" method="post" >
+		<form action="updCompTaboo.action" method="post" >
 			<div class="modal-dialog" style="width: 450px">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -118,24 +124,27 @@ String path = request.getScheme() +"://"+request.getServerName()
 									<tbody>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
-												药品类型：</th>
+												药品名称1：</th>
 											<td><input type="text" style="width: 250px"
-												class="input-text" value="" placeholder="" id="drugType"
-												name="drugType" datatype="*2-16" nullmsg="用户名不能为空">
-												<input type="hidden" name="typeId" id="typeId" value=""/>	
+												class="input-text" value="" placeholder="" id="updDrugId1"
+												name="drugId1" datatype="*2-16" nullmsg="用户名不能为空" 
+												readonly unselectable="on" />
+												<input type="hidden" id="tabuId" name="tabuId" value=""/>
 											</td>
 										</tr>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
-												上级类型：</th>
-											<td><span class="select-box" id="topType2"> 
-											    <select class="select" size="1" name="pid" id="selectVal">
-														<option value="1" >中药</option>
-														<option value="2" >西药</option>
-														<option value="3" >特殊药物</option>
-														
-												</select>
-											</span></td>
+												药品名称2：</th>
+											<td><input type="text" style="width: 250px"
+												class="input-text" value="" placeholder="" id="updDrugId2"
+												name="drugId2" datatype="*2-16" nullmsg="用户名不能为空"></td>
+										</tr>
+										<tr>
+											<th width="100" class="text-r"><span class="c-red">*</span>
+												产生作用：</th>
+											<td><input type="textarea" style="width: 250px"
+												class="textarea" value="" placeholder="" id="updSideeffect"
+												name="sideeffect" datatype="*2-16" nullmsg="用户名不能为空"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -146,7 +155,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
 						</button>
-						<button type="submit" class="btn btn-primary">提交更改</button>
+						<button type="submit" class="btn btn-primary" onclick="return comfSub()">提交更改</button>
 					</div>
 				</div>
 				<!-- /.modal-content -->
@@ -156,9 +165,9 @@ String path = request.getScheme() +"://"+request.getServerName()
 
 	<!-- 主页面 -->
 	<div class="page-container">
-		<form action="findDrugTypeInfo.action" method="post" id="formDt" >
+		<form action="findCompTaboo.action" method="post" id="formCt" >
 		<div class="text-c">
-			类型名称: <input type="text" class="input-text" id="" name="drugType" value="${drugType==null?"":drugType}"
+				药品名称: <input type="text" class="input-text" id="drugId1" name="drugId1" value="${condi.drugId1}"
 				style="width: 150px"> <input type="hidden" id="" name="">
 			<button type="submit" class="btn btn-primary radius" id="" name="">
 				搜索</button>
@@ -173,24 +182,26 @@ String path = request.getScheme() +"://"+request.getServerName()
 				class="table table-border table-bordered table-bg table-hover table-sort">
 				<thead>
 					<tr class="text-c">
-
-						<th>类型ID</th>
-						<th>类型名称</th>
-						<th>上级类型名称</th>
+						<th>序号</th>
+						<th>药品名称1</th>
+						<th>药品名称2</th>
+						<th>副作用</th>
 						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach items="${drugTypeList}" var="drugType" varStatus="vs">
+				<c:forEach items="${tabuList}" var="tabuList" varStatus="vs">
 					<tr class="text-c">
 						
-						<td>${vs.index+1 }</td>
-						<td>${drugType.drugType }</td>
-						<td>${drugType.pidName}</td>
+						<td>${vs.index+1}</td>
+						<td>${tabuList.drugId1}</td>
+						<td>${tabuList.drugId2}</td>
+						<td>${tabuList.sideeffect}</td>
 						<td class="f-14"><a style="text-decoration: none" 
-							onclick="updModel('${drugType.typeId }','${drugType.drugType }','${drugType.pid }')"
+							onclick="updModel('${tabuList.tabuId }','${tabuList.drugId1 }','${tabuList.drugId2 }'
+							 ,'${tabuList.sideeffect}')"
 							href="#" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
-							<a title="删除" href="delDrugTypeInfo.action?typeId=${drugType.typeId }" onclick="return del()" class="ml-5"
+							<a title="删除" href="delCompTaboo.action?tabuId=${tabuList.tabuId  }" onclick="return del()" class="ml-5"
 							style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
 						</td>
 					</tr>
@@ -205,7 +216,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 			<c:forEach var="page" begin="1" end="${pageTotal}">
 			 <button type="submit" class="btn btn-primary size-S radius" onclick="skipPage('${page}')">${page}</button>
 			</c:forEach>
-			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal }')">下一页</button>
+			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal}')">下一页</button>
 		</div>
 	
 	</div>
@@ -227,6 +238,61 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
+		var k=1;
+		//验证第一个药品名(添加配伍禁忌)
+		$(function(){
+			$("#drugId1").blur(function(){
+				$.ajax({
+					url:"findfirstName.action?drugId1="+$("#drugId1").val(),
+					type:"post",
+					dataType:"text",
+					success: function(data) {
+						$("#name1").html(data);
+						if(data=="此药品不存在"){
+							k=-1;
+						}
+					}
+				})
+			})
+		})
+		//验证第二个药品名(添加配伍禁忌)
+		$(function(){
+			$("#drugId2").blur(function(){
+				$.ajax({
+					url:"findSecondName.action?drugId2="+$("#drugId2").val(),
+					type:"post",
+					dataType:"text",
+					success: function(data) {
+						$("#name2").html(data);
+						if(data=="此药品不存在"){
+							k=-1;
+						}
+					}
+				})
+			})
+		})
+		//验证第二个药品名(修改配伍禁忌)
+		$(function(){
+			$("#updDrugId2").blur(function(){
+				$.ajax({
+					url:"findSecondName.action?drugId2="+$("#updDrugId2").val(),
+					type:"post",
+					dataType:"text",
+					success: function(data) {
+						$("#name2").html(data);
+						if(data=="此药品不存在"){
+							k=-1;
+						}
+					}
+				})
+			})
+		})
+		function comfSub(){
+			if(k==-1){
+				return false;
+			}
+		}
+		
 		//弹出添加模态框
 		function addModal(){
 			$('#addModal').modal('show');
@@ -234,11 +300,12 @@ String path = request.getScheme() +"://"+request.getServerName()
 	
 	
 		//弹出修改模态框
-		function updModel(id,name,pid){
+		function updModel(tabuId ,drugId1 ,drugId2,sideeffect){
 			
-			$("#drugType").val(name)
-			$("#typeId").val(id)
-			$("#selectVal").val(pid)
+			$("#tabuId").val(tabuId);
+			$("#updDrugId1").val(drugId1);
+			$("#updDrugId2").val(drugId2);
+			$("#updSideeffect").val(sideeffect);
 			$('#updModal').modal('show');
 			
 		}
@@ -258,15 +325,15 @@ String path = request.getScheme() +"://"+request.getServerName()
 			var str = "";
 			if (page > 1) {
 				page -= 1;
-				str = "findDrugTypeInfo.action?page="+page;
-				//attr更改form表单的action属性，改为str1
-				$("#formDt").attr("action",str);
+				str = "findCompTaboo.action?page="+page;
+				//attr更改form表单的action属性，改为str
+				$("#formCt").attr("action",str);
 				//把form表单提交。
-				$("#formDt").submit();
+				$("#formCt").submit();
 			} else {
 				return;
 			}
-			//location.href = str1;
+			//location.href = str;
 		}
 
 		//下一页,pageNum,当前页数，total 总页数
@@ -274,11 +341,11 @@ String path = request.getScheme() +"://"+request.getServerName()
 			var str = "";
 			if (page < total) {
 				page = Number(page) + 1;
-				str = "findDrugTypeInfo.action?page="+page;
+				str = "findCompTaboo.action?page="+page;
 				//attr更改form表单的action属性，改为str1
-				$("#formDt").attr("action",str);
+				$("#formCt").attr("action",str);
 				//把form表单提交。
-				$("#formDt").submit();
+				$("#formCt").submit();
 			} else {
 				return;
 			}
@@ -286,10 +353,10 @@ String path = request.getScheme() +"://"+request.getServerName()
 		//点击按钮跳转页面
 		function skipPage(page){
 			var str = "";
-			str = "findDrugTypeInfo.action?page="+page;
-			$("#formDt").attr("action",str);
+			str = "findCompTaboo.action?page="+page;
+			$("#formCt").attr("action",str);
 			//把form表单提交。
-			$("#formDt").submit();
+			$("#formCt").submit();
 		}
 	</script>
 </body>

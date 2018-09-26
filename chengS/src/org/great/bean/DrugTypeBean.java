@@ -10,12 +10,15 @@
 
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @ClassName: DrugTypeBean
  * @Description: 药品分类表实体类
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午3:44:09
  */
+@Component
 public class DrugTypeBean {
 	private int typeId;// 类别ID
 	private int pid;// pid

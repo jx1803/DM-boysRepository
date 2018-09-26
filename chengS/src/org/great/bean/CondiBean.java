@@ -33,6 +33,16 @@ public class CondiBean {
 
 	private String drugType;	//药品类型名称
 
+	
+	private String drugName;	//药品名称
+	private String pinyinCode;	//拼音码
+	private int drugId;			//药品编码
+	private int typeId;			//药品分类id
+	private String drugId1;		//药品名
+	
+
+
+
 
 
 	private DfBean dfBean;//药品剂型bean
@@ -43,6 +53,56 @@ public class CondiBean {
 		// TODO Auto-generated constructor stub
 	}
 	
+
+	public String getDrugId1() {
+		return drugId1;
+	}
+
+
+	public void setDrugId1(String drugId1) {
+		this.drugId1 = drugId1;
+	}
+
+
+	public String getDrugName() {
+		return drugName;
+	}
+
+
+	public void setDrugName(String drugName) {
+		this.drugName = drugName;
+	}
+
+
+	public String getPinyinCode() {
+		return pinyinCode;
+	}
+
+
+	public void setPinyinCode(String pinyinCode) {
+		this.pinyinCode = pinyinCode;
+	}
+
+
+	public int getDrugId() {
+		return drugId;
+	}
+
+
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
+	}
+
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
+	}
+
 
 	public String getDrugType() {
 		return drugType;
