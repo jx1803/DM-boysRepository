@@ -12,12 +12,7 @@ public class CondiBean {
 	private String beforeDate;//之前的日期
 	private int checkId;//审核情况id
 	private int applyTypeId;// 请领/退库/报损/采购id
-	private String pinyinCode;//拼音码
-	private String drugName;//药品名
-	private String manuBatch;//厂家批号
-	private int useableId;//药房药品可用状态2：启用，3：禁用
-	private int miniId;//药品数量是否低于低限值，0：否，1：低于低限
-	private int drugId;//药品编号
+	
 	/**
 	 * 
 	 * 用户搜索条件
@@ -77,30 +72,6 @@ public class CondiBean {
 
 	public void setAfterDate(String afterDate) {
 		this.afterDate = afterDate;
-	}
-
-	public String getPinyinCode() {
-		return pinyinCode;
-	}
-
-	public void setPinyinCode(String pinyinCode) {
-		this.pinyinCode = pinyinCode;
-	}
-
-	public String getDrugName() {
-		return drugName;
-	}
-
-	public void setDrugName(String drugName) {
-		this.drugName = drugName;
-	}
-
-	public String getManuBatch() {
-		return manuBatch;
-	}
-
-	public void setManuBatch(String manuBatch) {
-		this.manuBatch = manuBatch;
 	}
 
 	public String getBeforeDate() {
@@ -190,30 +161,6 @@ public class CondiBean {
 
 	public void setPagedown(int pagedown) {
 		this.pagedown = pagedown;
-	}
-
-	public int getUseableId() {
-		return useableId;
-	}
-
-	public void setUseableId(int useableId) {
-		this.useableId = useableId;
-	}
-
-	public int getMiniId() {
-		return miniId;
-	}
-
-	public void setMiniId(int miniId) {
-		this.miniId = miniId;
-	}
-
-	public int getDrugId() {
-		return drugId;
-	}
-
-	public void setDrugId(int drugId) {
-		this.drugId = drugId;
 	}
 	
 	

@@ -10,29 +10,22 @@
 
 package org.great.bean;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @ClassName: OutAndInBean
  * @Description: 药品出入库表实体类
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午4:03:34
  */
-@Component
 public class OutAndInBean {
 	private int outAndInId;// 出入库记录ID
 	private double totalMoney;// 价格合计
 	private String putBatch;// 入库批次
-	private int placeId;// 21药房/22药库
-	private int outInId;// 17出库/18入库
-	private String destination;// 出库目的地
+	private int placeId;// 药房/药库
+	private int outInId;// 出库/入库
+	private String destination;// 目的地
 	private String handleDate;// 操作时间
 	private int adminId;// 操作人员ID
-
-	private String drugSource;//入库来源
-
 	private String drugSource;//药品来源
-
 
 	public OutAndInBean() {
 		super();
@@ -109,6 +102,7 @@ public class OutAndInBean {
 	public void setDrugSource(String drugSource) {
 		this.drugSource = drugSource;
 	}
-
+	
+	
 
 }

@@ -112,12 +112,11 @@
 				<ul>
 					<li><a data-href="product-brand.html" data-title="品牌管理" href="javascript:void(0)">药品请领</a></li>
 					<li><a data-href="product-category.html" data-title="分类管理" href="javascript:void(0)">药品退库</a></li>
-					<li><a data-href="toBreakApply.action" data-title="产品管理" href="javascript:void(0)">药品报损</a></li>
-					<li><a data-href="toAdjustPrice.action" data-title="产品管理" href="javascript:void(0)">药品调价</a></li>
+					<li><a data-href="breakApply.action" data-title="产品管理" href="javascript:void(0)">药品报损</a></li>
+					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品调价</a></li>
 					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品停用</a></li>
-					<li><a data-href="toSellDrug.action" data-title="产品管理" href="javascript:void(0)">药品发药</a></li>
+					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品发药</a></li>
 					<li><a data-href="product-list.html" data-title="产品管理" href="javascript:void(0)">药品盘点</a></li>
-					<li><a data-href="toBreakCheck.action?checkId=7&applyTypeId=12" data-title="报损审核" href="javascript:void(0)">药品报损审核</a></li>
 			</ul>
 		</dd>
 	</dl>
@@ -125,8 +124,7 @@
 			<dt><i class="Hui-iconfont">&#xe622;</i> 统计报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a data-href="getDrugApply.action?applyTypeId=12" data-title="报损记录" href="javascript:;">报损记录</a></li>
-					<li><a data-href="selectAdjustPrice.action" data-title="药品调价记录" href="javascript:;">药品调价记录</a></li>
+					<li><a data-href="getDrugApply.action?applyTypeId=12" data-title="评论列表" href="javascript:;">报损记录</a></li>
 					<li><a data-href="feedback-list.html" data-title="意见反馈" href="javascript:void(0)">意见反馈</a></li>
 			</ul>
 		</dd>
