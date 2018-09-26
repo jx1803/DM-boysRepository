@@ -23,6 +23,7 @@ public class CondiBean {
 	private int page=1;
 	private int pageup;//上一页
 	private int pagedown;//下一页
+
 	
 	/**
 	 * 
@@ -34,6 +35,7 @@ public class CondiBean {
 	private DrugTypeBean dtBean;//药品类型bean
 	
 	
+
 	public CondiBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -45,6 +47,7 @@ public class CondiBean {
 	public void setAdminName(String adminName) {
 		this.adminName = adminName;
 	}
+
 
 	public DfBean getDfBean() {
 		return dfBean;
@@ -61,6 +64,7 @@ public class CondiBean {
 	public void setDtBean(DrugTypeBean dtBean) {
 		this.dtBean = dtBean;
 	}
+
 
 	public String getAfterDate() {
 		return afterDate;
@@ -109,6 +113,7 @@ public class CondiBean {
 	public void setDosageForm(String dosageForm) {
 		this.dosageForm = dosageForm;
 	}
+
 
 	public int getPageLimit() {
 		return pageLimit;

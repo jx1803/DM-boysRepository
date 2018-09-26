@@ -109,6 +109,7 @@ public class BatchDetailBean {
 		this.totalMoney = totalMoney;
 	}
 
+
 	
 	public OutAndInBean getOutAndInBean() {
 		return outAndInBean;
@@ -117,6 +118,8 @@ public class BatchDetailBean {
 	public void setOutAndInBean(OutAndInBean outAndInBean) {
 		this.outAndInBean = outAndInBean;
 	}
+
+
 
 	
 	public InventoryBean getInventoryBean() {

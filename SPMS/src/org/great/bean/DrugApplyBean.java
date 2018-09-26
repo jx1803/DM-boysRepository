@@ -21,7 +21,9 @@ public class DrugApplyBean {
 	private String manuBatch;//生产批号
 	private String putBatch;//入库批次
 	private BatchDetailBean bdBean;//获取批次详情
+
 	private ArrayList<DrugApplyBean> applyList;//申请记录列表
+
 	public DrugApplyBean() {
 		super();
 	}
