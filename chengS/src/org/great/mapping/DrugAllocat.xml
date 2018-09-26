@@ -8,6 +8,7 @@
 	<insert id="addDf" parameterType="org.great.bean.DfBean">
 	    insert into tblDf(dosageId,dosageForm)  values(SPMSSEQ.nextval, #{dosageForm,jdbcType=VARCHAR})
 	</insert>
+
 	<!-- 查询药品剂型 -->
 	<select id="findDf" parameterType="org.great.bean.CondiBean"
 		resultType="org.great.bean.DfBean">
@@ -62,14 +63,12 @@
 			and d.drugType like concat(concat('%',#{drugType,jdbcType=VARCHAR}),'%')
 		</if>
 	</select>
-	<!-- 查询药品一级类型 -->
-	<select id="findTopType" parameterType="org.great.bean.DrugTypeBean" resultType="org.great.bean.DrugTypeBean">
-		select * FROM TBLDRUGTYPE where pid=#{pid}
-	</select> 
+	 
 	<!-- 删除药品类型 -->
 	<delete id="delDrugType" parameterType="org.great.bean.DrugTypeBean">
 		delete from TBLDRUGTYPE where typeId=#{typeId}
 	</delete>
+	
 	<!-- 修改药品类型 -->
 	<update id="updDrugType" parameterType="org.great.bean.DrugTypeBean">
 		update TBLDRUGTYPE set drugType=#{drugType,jdbcType=VARCHAR},
@@ -77,37 +76,149 @@
 	</update>
 	
 	<!-- ********************************药品信息************************************ -->
+	
 	<!-- 添加药品信息 -->
 	<insert id="addDrugInfo" parameterType="org.great.bean.StoDrugBean">
+	<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="drugId">
+			select DRUGSEQ.nextval  from DUAL
+		</selectKey>
 		insert into TBLSTODRUG(drugId,drugName,generalName,specific,unit,retailPrice,dosageId,usage,invoiceTitle,pinyinCode,antibiotic,dosage,dailyNum,typeId,drugmanu,proPlace)
 		
-		values(DRUGSEQ.nextval,#{drugName,jdbcType=VARCHAR},#{generalName,jdbcType=VARCHAR},#{specific,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},#{retailPrice,jdbcType=NUMERIC},
+		values(#{drugId,jdbcType=NUMERIC},#{drugName,jdbcType=VARCHAR},#{generalName,jdbcType=VARCHAR},#{specific,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},#{retailPrice,jdbcType=NUMERIC},
 		
 		#{dosageId,jdbcType=NUMERIC},#{usage,jdbcType=VARCHAR},#{invoiceTitle,jdbcType=VARCHAR},#{pinyinCode,jdbcType=VARCHAR},#{antibiotic,jdbcType=VARCHAR},#{dosage,jdbcType=VARCHAR},
 		
 		#{dailyNum,jdbcType=NUMERIC},#{typeId,jdbcType=NUMERIC},#{drugmanu,jdbcType=VARCHAR},#{proPlace,jdbcType=VARCHAR})
 	</insert>
+	<!-- 药品入库信息 -->
+	<insert id="addInventory" parameterType="org.great.bean.InventoryBean" >
+		insert into tblinventory(inventoryid,drugid,inventorynum,minimum,maximum)
+		values(SPMSSEQ.nextval,#{drugId,jdbcType=NUMERIC},#{inventoryNum,jdbcType=NUMERIC},
+		#{minimum,jdbcType=NUMERIC},#{maximum,jdbcType=NUMERIC})
+	</insert>
+	<!-- 药房药品信息 -->
+	<insert id="addPhaDrug" parameterType="org.great.bean.PhaDrugBean" >
+		insert into tblphadrug (phadrugid,drugid,drugnum,useableid,minimum,maximum)
+		values(SPMSSEQ.nextval,#{drugId,jdbcType=NUMERIC},#{drugNum,jdbcType=NUMERIC},
+		#{useableId,jdbcType=NUMERIC},#{minimum,jdbcType=NUMERIC},#{maximum,jdbcType=NUMERIC})
+	</insert>
 	
+	<!-- 查询所有剂型 -->
+	<select id="findAllDf" resultType="org.great.bean.DfBean"> 
+		select * from tblDf
+	</select>	
+	<!-- 查询对pid对应的药品类型 -->
+	<select id="findSecondType" resultType="org.great.bean.DrugTypeBean" parameterType="org.great.bean.DrugTypeBean">
+		select * FROM TBLDRUGTYPE where pid=#{pid}
+	</select>
+	<!-- 查询所有二级药品信息 -->
+		<select id="findAllSecondType" resultType="org.great.bean.DrugTypeBean" parameterType="org.great.bean.DrugTypeBean">
+		select * FROM TBLDRUGTYPE where pid &gt;0
+	</select>
 	
+	<!-- 删除药品信息 -->
+
+	<!-- 修改药品信息 -->
+	<update id="updDrugInfo"  parameterType="org.great.bean.StoDrugBean">
+		update tblstodrug set drugName =#{drugName,jdbcType=VARCHAR},generalName=#{generalName,jdbcType=VARCHAR},specific=#{specific,jdbcType=VARCHAR},unit=#{unit},
+		retailPrice=#{retailPrice}, dosageId=#{dosageId},usage=#{usage},invoiceTitle=#{invoiceTitle},pinyinCode=#{pinyinCode},antibiotic=#{antibiotic},dosage=#{dosage},
+		dailyNum=#{dailyNum},typeId=#{typeId},drugmanu=#{drugmanu},proPlace=#{proPlace} where drugId=#{drugId,jdbcType=NUMERIC}
+	</update>
 	
-<!-- 
- 	<select id="documentuser" parameterType="java.lang.String" resultMap="docuMap">
-		select b.username,a.* from DOCUMENT a,USERTAB b where a.userid=b.userid 
-	</select> 
-	<resultMap type="org.xmgreat.bean.DocumentBean" id="docuMap">
-		<id property="documentid" column="DOCUMENTID"/>
-		<result property="updownload" column="UPDOWNLOAD"/>
-		<result property="time" column="TIME"/>
-		<result property="documentType" column="DOCUMENTTYPE"/>
-		<result property="documentName" column="DOCUMENTNAME"/>
-		<result property="documentState" column="DOCUMENTSTATE"/>
-		<result property="downpoint" column="DOWNPOINT"/>
-		<result property="downtimes" column="DOWNTIMES"/>
-		<association property="user" column="USERID" javaType="org.xmgreat.bean.UserBean">
-		<id property="userid" column="USERID"/>
-		<result property="userName" column="USERNAME"/>
+	<!-- 查询药品信息总数 -->
+	<select id="findDrugCount"  parameterType="org.great.bean.CondiBean" resultType="java.lang.Integer">
+	 	select count(*) from tblstodrug a where 1=1
+	 	<if test=" ''!=drugName and null !=drugName">and a.drugName like concat(concat('%',#{drugName,jdbcType=VARCHAR}),'%')</if>
+		<if test=" ''!=drugId and 0 !=drugId">and a.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')</if>
+		<if test=" ''!=pinyinCode and null !=pinyinCode">and a.pinyinCode like concat(concat('%',#{pinyinCode,jdbcType=VARCHAR}),'%')</if>
+		<if test=" ''!=typeId and 0 !=typeId">and a.typeId =#{typeId,jdbcType=NUMERIC}</if>
+		
+	</select>
+	
+	<!-- 查询药品信息 -->
+	<select id="findDrugInfo" parameterType="org.great.bean.CondiBean" resultMap="stoDrugMap">
+		select * from(select ROWNUM r,  a.*,b.dosageform,c.drugtype,c.pid from tblstodrug a ,tbldf b ,tbldrugtype c  where 1=1 
+		<if test=" ''!=drugName and null !=drugName">
+		and a.drugName like concat(concat('%',#{drugName,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=drugId and 0 !=drugId">
+		and a.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=pinyinCode and null !=pinyinCode">
+		and a.pinyinCode like concat(concat('%',#{pinyinCode,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+		and a.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		and a.typeid=c.typeid and a.dosageid=b.dosageid and ROWNUM&lt;=#{pageup,jdbcType=NUMERIC}) where r&gt;=#{pagedown,jdbcType=NUMERIC}
+	</select>
+	<resultMap type="org.great.bean.StoDrugBean" id="stoDrugMap" >
+		<id property="drugId" column="drugId"/>
+		<result property="drugName" column="drugName"/>
+		<result property="generalName" column="generalName"/>
+		<result property="specific" column="specific"/>
+		<result property="unit" column="unit"/>
+		<result property="retailPrice" column="retailPrice"/>
+		<result property="dosageId" column="dosageId"/>
+		<result property="usage" column="usage"/>
+		<result property="invoiceTitle" column="invoiceTitle"/>
+		<result property="pinyinCode" column="pinyinCode"/>
+		<result property="antibiotic" column="antibiotic"/>
+		<result property="dosage" column="dosage"/>
+		<result property="dailyNum" column="dailyNum"/>
+		<result property="typeId" column="typeId"/>
+		<result property="drugmanu" column="drugmanu"/>
+		<result property="proPlace" column="proPlace"/>
+		<association property="dfBean" javaType="org.great.bean.DfBean">
+			<id property="dosageId" column="dosageId"/>
+			<result property="dosageForm" column="dosageForm"/>
+		</association>
+		<association property="drugTypeBean" javaType="org.great.bean.DrugTypeBean">
+			<id property="typeId" column="typeId"/>
+			<result property="pid" column="pid"/>
+			<result property="drugType" column="drugType"/>
 		</association>
 	</resultMap>
- -->
-
+	
+<!-- ********************************配伍禁忌************************************ -->
+	<!-- 查询第一个药品名 -->
+	<select id="findfirstName" parameterType="org.great.bean.TabuBean" resultType="java.lang.Integer">
+		select count(*) from tblstodrug where generalName=#{drugId1}
+	</select>
+	
+	<!-- 查询第二个药品名 -->
+	<select id="findSecondName" parameterType="org.great.bean.TabuBean" resultType="java.lang.Integer">
+		select count(*) from tblstodrug where generalName=#{drugId2,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 添加配伍禁忌 -->
+ 	<insert id="addCompTaboo" parameterType="org.great.bean.TabuBean">
+		insert into TBLTABU (tabuId,drugId1,drugId2,sideeffect)
+		values(DRUGSEQ.nextval,#{drugId1,jdbcType=VARCHAR},#{drugId2,jdbcType=VARCHAR},#{sideeffect,jdbcType=VARCHAR})
+	</insert> 
+	
+	<!-- 查询配伍禁忌 -->
+	<select id="findCompTaboo" parameterType="org.great.bean.CondiBean" resultType="org.great.bean.TabuBean">
+		select * from(select ROWNUM r,  a.* from TBLTABU a   where 1=1 
+		<if test=" ''!=drugId1 and null !=drugId1">
+		and a.drugId1 like concat(concat('%',#{drugId1,jdbcType=VARCHAR}),'%')
+		</if>
+		and  ROWNUM&lt;=#{pageup,jdbcType=NUMERIC}) where r&gt;=#{pagedown,jdbcType=NUMERIC}
+	</select>
+	<!-- 查询配伍禁忌总数 -->
+	<select id="findCompTabooCount" parameterType="org.great.bean.CondiBean" resultType="java.lang.Integer">
+		select count(*) from  TBLTABU a   where 1=1 
+		<if test=" ''!=drugId1 and null !=drugId1">
+		and a.drugId1 like concat(concat('%',#{drugId1,jdbcType=VARCHAR}),'%')
+		</if>
+	</select>
+	
+	<!-- 修改配伍禁忌 -->
+	<update id="updCompTaboo" parameterType="org.great.bean.TabuBean" >
+		update TBLTABU set drugId1=#{drugId1},drugId2=#{drugId2}, sideeffect=#{sideeffect} where tabuId=#{tabuId}
+	</update>
+	<!-- 删除配伍禁忌 -->
+	<delete id="delCompTaboo" parameterType="org.great.bean.TabuBean" >
+		delete from TBLTABU where tabuId=#{tabuId}
+	</delete>
 </mapper>

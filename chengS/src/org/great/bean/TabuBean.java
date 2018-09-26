@@ -3,8 +3,8 @@ package org.great.bean;
 //配伍禁忌表
 public class TabuBean {
 	private int tabuId;// 配伍禁忌id
-	private int drugId1;// 药品1
-	private int drugId2;// 药品2
+	private String drugId1;// 药品1
+	private String drugId2;// 药品2
 	private String sideeffect;// 产生作用
 
 	public TabuBean() {
@@ -19,19 +19,19 @@ public class TabuBean {
 		this.tabuId = tabuId;
 	}
 
-	public int getDrugId1() {
+	public String getDrugId1() {
 		return drugId1;
 	}
 
-	public void setDrugId1(int drugId1) {
+	public void setDrugId1(String drugId1) {
 		this.drugId1 = drugId1;
 	}
 
-	public int getDrugId2() {
+	public String getDrugId2() {
 		return drugId2;
 	}
 
-	public void setDrugId2(int drugId2) {
+	public void setDrugId2(String drugId2) {
 		this.drugId2 = drugId2;
 	}
 

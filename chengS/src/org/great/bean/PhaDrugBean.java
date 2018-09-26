@@ -1,13 +1,16 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 //药房药品表
+@Component
 public class PhaDrugBean {
 	private int phaDrugId;// 药房药品id
 	private int drugId;// 药品编号
 	private double drugNum;// 数量
 	private int useableId;// 停用启用状态
 	private double minimum;// 底限
-
+	private double maximum;//上限
 	public PhaDrugBean() {
 		super();
 	}
@@ -50,6 +53,14 @@ public class PhaDrugBean {
 
 	public void setMinimum(double minimum) {
 		this.minimum = minimum;
+	}
+
+	public double getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(double maximum) {
+		this.maximum = maximum;
 	}
 
 }

@@ -10,6 +10,8 @@
 
 package org.great.bean;
 
+import javax.annotation.Resource;
+
 /**
  * @ClassName: StoDrugBean
  * @Description: 药库药品表实体类
@@ -33,8 +35,12 @@ public class StoDrugBean {
 	private int typeId;// 药品类别ID
 	private String drugmanu;//药品厂家
 	private String proPlace;//药品产地
+	
+	@Resource
 	private DfBean dfBean;//药品剂型bean
-	private DrugTypeBean dtBean;//药品类型bean
+	@Resource
+	private DrugTypeBean drugTypeBean;//药品类型bean
+	
 	public StoDrugBean() {
 		super();
 	}
@@ -49,16 +55,14 @@ public class StoDrugBean {
 		this.dfBean = dfBean;
 	}
 
-
-	public DrugTypeBean getDtBean() {
-		return dtBean;
+	public DrugTypeBean getDrugTypeBean() {
+		return drugTypeBean;
 	}
 
 
-	public void setDtBean(DrugTypeBean dtBean) {
-		this.dtBean = dtBean;
+	public void setDrugTypeBean(DrugTypeBean drugTypeBean) {
+		this.drugTypeBean = drugTypeBean;
 	}
-
 
 	public String getDrugmanu() {
 		return drugmanu;
