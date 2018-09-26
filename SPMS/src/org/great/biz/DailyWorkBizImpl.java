@@ -42,7 +42,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	@Override
 	public String breakCheck(DrugApplyBean drugApplyBean) {
 		int i = dailyWorkMapper.breakCheck(drugApplyBean);
-		// 如果审核通过，
+		// 如果审核通过，增加药品出库记录
 		if (drugApplyBean.getCheckId() == 6) {
 			batchDetailBean.setDrugId(drugApplyBean.getDrugId());
 			batchDetailBean.setHandleNum(drugApplyBean.getApplyNum());
@@ -53,14 +53,15 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			outAndInBean.setTotalMoney(drugApplyBean.getApplyMoney());
 			outAndInBean.setPutBatch(""+batchDetailBean.getBatchDetailId());
 			dailyWorkMapper.insertDrugOut(outAndInBean);// 插入药房出库记录
-		}else {
+		}
+		/*如果审核不通过，则将药房药品数量加回*/
+		else {
 			
-			/*预先扣除药房药品库存*/
-			
+			/*增加药房药品库存*/
 			drugApplyBean.setApplyNum(-drugApplyBean.getApplyNum());//将报损数量单位设为最小规格单位
 			dailyWorkMapper.reducePhaDrugNum2(drugApplyBean);// 减少库存
 			
-			/*预先扣除药房入库批次详情中的药品数量*/
+			/*增加药房入库批次详情中的药品数量*/
 			sellBean.setPutBatch(""+drugApplyBean.getBdBean().getBatchDetailId());
 			sellBean.setSellNum(drugApplyBean.getApplyNum());
 			dailyWorkMapper.reducePhaPutDrugNum(sellBean);
@@ -126,6 +127,8 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	// 获取报损未审核列表
 	@Override
 	public ModelAndView selectBreakCheck(CondiBean condiBean) {
+		condiBean.setCheckId(7);
+		condiBean.setApplyTypeId(12);
 		List<DrugApplyBean> list = dailyWorkMapper.selectDrugApply(condiBean);
 		int count = dailyWorkMapper.getDrugApplyCount(condiBean);
 		int pageTotal = PageUtil.pageTotal(count);
@@ -188,7 +191,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			batchDetailBean.setManuBatch(sellBean.getManuBatch());
 			dailyWorkMapper.insertBatchDetail(batchDetailBean);//插入药品出库批次详情记录
 			outAndInBean.setAdminId(1001);//模拟管理员数据
-			outAndInBean.setDestination("病人");
+			outAndInBean.setDestination("顾客");
 			outAndInBean.setTotalMoney(sellBean.getSales());
 			outAndInBean.setPutBatch(""+batchDetailBean.getBatchDetailId());
 			dailyWorkMapper.insertDrugOut(outAndInBean);// 插入药房出库记录
