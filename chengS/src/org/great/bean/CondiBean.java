@@ -24,6 +24,8 @@ public class CondiBean {
 	private int pageup;//上一页
 	private int pagedown;//下一页
 	
+	
+	
 	/**
 	 * 
 	 * @Title:CondiBean

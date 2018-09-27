@@ -44,7 +44,7 @@ public class StoDrugBean {
 	private PhaDrugBean phaDrugBean;//药房药品信息对象
 	private SellBean sellBean;//销售记录对象
 	private List<StoDrugBean> drugList;//卖药的信息列表
-	private DrugTypeBean drugTypeBean;//药品类别对象
+
 	public StoDrugBean() {
 		super();
 	}
@@ -177,21 +177,9 @@ public class StoDrugBean {
 		this.typeId = typeId;
 	}
 
-	public DfBean getDfBean() {
-		return dfBean;
-	}
 
-	public void setDfBean(DfBean dfBean) {
-		this.dfBean = dfBean;
-	}
 
-	public DrugTypeBean getDtBean() {
-		return dtBean;
-	}
 
-	public void setDtBean(DrugTypeBean dtBean) {
-		this.dtBean = dtBean;
-	}
 
 	public BatchDetailBean getBatchDetailBean() {
 		return batchDetailBean;
@@ -225,12 +213,22 @@ public class StoDrugBean {
 		this.drugList = drugList;
 	}
 
-	public DrugTypeBean getDrugTypeBean() {
-		return drugTypeBean;
+
+
+	public DfBean getDfBean() {
+		return dfBean;
 	}
 
-	public void setDrugTypeBean(DrugTypeBean drugTypeBean) {
-		this.drugTypeBean = drugTypeBean;
+	public void setDfBean(DfBean dfBean) {
+		this.dfBean = dfBean;
+	}
+
+	public DrugTypeBean getDtBean() {
+		return dtBean;
+	}
+
+	public void setDtBean(DrugTypeBean dtBean) {
+		this.dtBean = dtBean;
 	}
 
 	@Override
