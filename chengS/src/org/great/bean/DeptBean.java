@@ -1,5 +1,8 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DeptBean {
 	private int deptId;
 	private String dept;//部门名称

@@ -1,5 +1,8 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CondiBean {
 	/**
 	 * 申请记录搜索条件

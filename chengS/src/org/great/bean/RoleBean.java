@@ -1,5 +1,8 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RoleBean {
 	private int roleId;//角色id
 	private String roleName;//角色名

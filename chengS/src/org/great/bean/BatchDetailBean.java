@@ -1,5 +1,8 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BatchDetailBean {
 	private int batchDetailId;//批次详情id
 	private String putBatch;//进货批次

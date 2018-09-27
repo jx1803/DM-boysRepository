@@ -1,6 +1,9 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 //用户实体
+@Component
 public class AdminBean {
 	private int adminId;
 	private String adminName;

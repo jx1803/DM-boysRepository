@@ -132,6 +132,8 @@ public class DailyWorkHandle {
 		return new ModelAndView("pharmacy/index");
 	}
 	
+	
+	
 	// 到主界面(lp)
 		@RequestMapping("/toMain.action")
 		public ModelAndView toPharmacyMain(HttpServletRequest requsest) {

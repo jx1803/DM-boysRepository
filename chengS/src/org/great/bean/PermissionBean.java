@@ -1,5 +1,8 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class PermissionBean {
 	private int permissionId;
 	private String permission;//权限

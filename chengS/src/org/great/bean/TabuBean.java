@@ -1,6 +1,9 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 //配伍禁忌表
+@Component
 public class TabuBean {
 	private int tabuId;// 配伍禁忌id
 	private String drugId1;// 药品1

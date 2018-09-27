@@ -1,9 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
+	String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ request.getContextPath() + "/";
+%> 
 <html>
 <head>
 <meta charset="utf-8">
@@ -78,6 +77,36 @@
 	</header>
 	<aside class="Hui-aside">
 		<div class="menu_dropdown bk_2">
+		
+		<dl id="menu-system">
+			<dt><i class="Hui-iconfont">&#xe62e;</i> 药品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="<%=path%>storage/findDrugTypeInfo.action" data-title="药品类型" href="javascript:void(0)">药品类型</a></li>
+					<li><a data-href="<%=path%>storage/findDfInfo.action" data-title="药品剂型" href="javascript:void(0)">药品剂型</a></li>
+					<li><a data-href="<%=path%>storage/findDrugInfo.action" data-title="药品字典" href="javascript:void(0)">药品字典</a></li>
+					<li><a data-href="<%=path%>storage/findCompTaboo.action" data-title="配伍禁忌" href="javascript:void(0)">配伍禁忌</a></li>
+					<li><a data-href="system-log.html" data-title="系统日志" href="javascript:void(0)">系统日志</a></li>
+			</ul>
+		</dd>
+	</dl>
+		
+		<dl id="menu-product">
+			<dt><i class="Hui-iconfont">&#xe620;</i> 库存工作<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="<%=path%>storage/purchaseApplyShow.action" data-title="药品采购申请" href="javascript:void(0)">药品采购申请</a></li>
+					<li><a data-href="<%=path%>storage/purchaseApplyLook.action" data-title="药品采购申请记录" href="javascript:void(0)">药品采购申请记录</a></li>
+					<li><a data-href="<%=path%>storage/pdInstorage.action" data-title="药品采购入库" href="javascript:void(0)">药品采购入库</a></li>
+					<li><a data-href="admin-permission.html" data-title="退还厂家" href="javascript:void(0)">退还厂家</a></li>
+					<li><a data-href="admin-list.html" data-title="出库审核" href="javascript:void(0)">出库审核</a></li>
+					<li><a data-href="<%=path%>storage/drugApplyAudit.action" data-title="药品采购审核" href="javascript:void(0)">药品采购审核</a></li>
+					<li><a data-href="admin-list.html" data-title="退还审核" href="javascript:void(0)">退还审核</a></li>
+			</ul>
+		</dd>
+	</dl>
+	
+		
 			<dl id="menu-comments">
 				<dt>
 					<i class="Hui-iconfont">&#xe622;</i> 日常工作<i
@@ -97,9 +126,43 @@
 							href="javascript:void(0)">查看请领记录</a></li>
 						<li><a data-href="toAllCancApply.action" data-title="查看退库记录"
 							href="javascript:void(0)">查看退库记录</a></li>
+							
+							
+							<li><a data-href="<%=path%>pharmacy/toBreakApply.action" data-title="产品管理" href="javascript:void(0)">药品报损</a></li>
+					<li><a data-href="<%=path%>pharmacy/toAdjustPrice.action" data-title="药品调价" href="javascript:void(0)">药品调价</a></li>
+					<li><a data-href="<%=path%>pharmacy/product-list.html" data-title="产品管理" href="javascript:void(0)">药品停用</a></li>
+					<li><a data-href="<%=path%>pharmacy/toSellDrug.action" data-title="产品管理" href="javascript:void(0)">药品发药</a></li>
+					<li><a data-href="<%=path%>pharmacy/product-list.html" data-title="产品管理" href="javascript:void(0)">药品盘点</a></li>
+					<li><a data-href="<%=path%>pharmacy/toBreakCheck.action" data-title="报损审核" href="javascript:void(0)">药品报损审核</a></li>
 					</ul>
 				</dd>
 			</dl>
+			
+			
+			<dl id="menu-member">
+			<dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="<%=path %>user/memberList.action" data-title="会员列表" href="javascript:;">会员列表</a></li>
+					<li><a data-href="member-del.html" data-title="删除的会员" href="javascript:;">删除的会员</a></li>
+					
+			</ul>
+		</dd>
+	</dl>
+		<dl id="menu-admin">
+			<dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="<%=path %>user/roleList.action" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
+					<li><a data-href="admin-permission.html" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
+					<li><a data-href="admin-list.html" data-title="管理员列表" href="javascript:void(0)">管理员列表</a></li>
+					<li><a data-href="<%=path %>user/deptList.action" data-title="部门管理" href="javascript:void(0)">部门管理</a></li>
+					<li><a data-href="<%=path %>user/menuLevel1List.action" data-title="一级菜单管理" href="javascript:void(0)">一级菜单管理</a></li>
+					<li><a data-href="<%=path %>user/menuLevel2List.action" data-title="二级菜单管理" href="javascript:void(0)">二级菜单管理</a></li>
+					<li><a data-href="<%=path %>user/pConfiguration.action" data-title="权限配置" href="javascript:void(0)">权限配置</a></li>
+			</ul>
+		</dd>
+	</dl>
 
 		</div>
 	</aside>

@@ -44,6 +44,7 @@ public class StoDrugBean {
 	private PhaDrugBean phaDrugBean;//药房药品信息对象
 	private SellBean sellBean;//销售记录对象
 	private List<StoDrugBean> drugList;//卖药的信息列表
+	private DrugTypeBean drugTypeBean;//药品类别bean
 	
 	/**
 	 * 查找药品(lp)
@@ -262,6 +263,18 @@ public class StoDrugBean {
 	public void setOutAndInBean(OutAndInBean outAndInBean) {
 		this.outAndInBean = outAndInBean;
 	}
+
+	public DrugTypeBean getDrugTypeBean() {
+		return drugTypeBean;
+	}
+
+	public void setDrugTypeBean(DrugTypeBean drugTypeBean) {
+		this.drugTypeBean = drugTypeBean;
+	}
+
+	
+
+
 
 	
 

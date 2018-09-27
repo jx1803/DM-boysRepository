@@ -1,6 +1,9 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 //日志表
+@Component
 public class LogBean {
 	private int logId;// 日志id
 	private int adminId;// 操作人员

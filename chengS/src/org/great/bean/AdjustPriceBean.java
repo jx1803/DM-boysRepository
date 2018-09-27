@@ -1,5 +1,9 @@
 package org.great.bean;
+
+import org.springframework.stereotype.Component;
+
 //调价记录
+@Component
 public class AdjustPriceBean {
 	private int adjustPriceId;//
 	private String adjustDate;//调价时间

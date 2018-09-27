@@ -1,6 +1,9 @@
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 //盘点记录表
+@Component
 public class CheckBean {
 	private int checkId;// 盘点记录id
 	private int phaDrugId;// 药房药品表id

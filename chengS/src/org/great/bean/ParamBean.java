@@ -1,5 +1,9 @@
 package org.great.bean;
+
+import org.springframework.stereotype.Component;
+
 //参数表
+@Component
 public class ParamBean {
 	private int paramId;//参数id
 	private String param;//参数名

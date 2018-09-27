@@ -10,12 +10,15 @@
 
 package org.great.bean;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @ClassName: OutAndInBean
  * @Description: 药品出入库表实体类
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午4:03:34
  */
+@Component
 public class OutAndInBean {
 	private int outAndInId;// 出入库记录ID
 	private double totalMoney;// 价格合计

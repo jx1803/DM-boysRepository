@@ -445,7 +445,7 @@
 	<!-- 蓝鹏鹏功能 -->
 	<!-- 通过拼音码/id/名称 /查询可出售药品 -->
 	<select id="selectCanSellDrug"
-		parameterType="org.great.bean.StoDrugBean" resultMap="caceDruginfo">
+		parameterType="org.great.bean.StoDrugBean" resultMap="canSellMap">
 		select s.*,p.drugNum,
 		b.manuBatch,b.batchDetailId,b.purprice,b.putBatch,b.proDate,
 		b.handleNum
@@ -485,7 +485,7 @@
 		,#{inDate,jdbcType=VARCHAR},#{totalMoney,jdbcType=NUMERIC})
 	</insert>
 	<resultMap type="org.great.bean.StoDrugBean"
-		id="caceDruginfo">
+		id="canSellMap">
 		<id property="drugId" column="drugId" />
 		<result property="drugName" column="drugName" />
 		<result property="generalName" column="generalName" />
