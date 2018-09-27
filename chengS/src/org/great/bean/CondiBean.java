@@ -17,6 +17,7 @@ public class CondiBean {
 	 * 
 	 * 用户搜索条件
 	 * 王伟国
+	 * 
 	 */
 	private String entrytime;// 入职时间
 	private String quitDate;// 离职时间
@@ -24,6 +25,8 @@ public class CondiBean {
 	private int pageup;//上一页
 	private int pagedown;//下一页
 	
+	private int permissionId;//权限id 2018.09.27 增加
+	private int roleid;//角色Id       2018.09.27 增加
 	
 	
 	/**
@@ -234,6 +237,26 @@ public class CondiBean {
 
 	public void setPagedown(int pagedown) {
 		this.pagedown = pagedown;
+	}
+
+
+	public int getPermissionId() {
+		return permissionId;
+	}
+
+
+	public void setPermissionId(int permissionId) {
+		this.permissionId = permissionId;
+	}
+
+
+	public int getRoleid() {
+		return roleid;
+	}
+
+
+	public void setRoleid(int roleid) {
+		this.roleid = roleid;
 	}
 	
 	

@@ -5,9 +5,20 @@ public class PermissionBean {
 	private String permission;//权限
 	private int pid;//父id
 	private String url;//地址
+	
+	private RoleBean role;//2018.09.27 角色bean
 	public PermissionBean() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public RoleBean getRole() {
+		return role;
+	}
+
+	public void setRole(RoleBean role) {
+		this.role = role;
+	}
+
 	public int getPermissionId() {
 		return permissionId;
 	}

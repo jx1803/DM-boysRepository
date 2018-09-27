@@ -22,9 +22,21 @@ public class AdminBean {
 	private DeptBean deptbean;//部门bean
 	private ParamBean parambean;//状态bean
 	
+	
+	private String name;//新增  角色用户名拼接字段
+	
 	public AdminBean() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public int getAdminId() {
 		return adminId;
 	}
