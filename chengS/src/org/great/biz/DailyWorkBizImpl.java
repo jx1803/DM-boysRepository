@@ -476,13 +476,12 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 				dailyWorkMapper.updatePhaBatchNum(bdLsit.get(i));
 				System.out.println(2);
 				// 根据药品id和产品批次找批次详情记录
-				BatchDetailBean bdBean = dailyWorkMapper.selBatchBean(bdLsit.get(i).getDrugId() + "",
-						bdLsit.get(i).getManuBatch());
-				if (bdBean != null) {
+				List<BatchDetailBean> bdBean = dailyWorkMapper.selBatchBean(bdLsit.get(i).getDrugId() + "",bdLsit.get(i).getManuBatch());
+				if (bdBean.size()!=0) {
 					// 去修改详情数量
-					bdBean.setHandleNum(-bdLsit.get(i).getHandleNum() * Integer.valueOf(str[0]));
-					dailyWorkMapper.updatePhaBatchNum(bdBean);// 增加相对应药房入库批次数量
-					dailyWorkMapper.insetPhaInt(bdBean.getBatchDetailId(), admin.getAdminId());// 插入药房入库库记录
+					bdLsit.get(i).setHandleNum(-bdLsit.get(i).getHandleNum() * Integer.valueOf(str[0]));
+					dailyWorkMapper.updatePhaBatchNum(bdLsit.get(i));// 增加相对应药房入库批次数量
+					dailyWorkMapper.insetPhaInt(bdLsit.get(i).getBatchDetailId(), admin.getAdminId());// 插入药房入库库记录
 				} else {
 					bdLsit.get(i).setHandleNum(bdLsit.get(i).getHandleNum() * Integer.valueOf(str[0]));
 					dailyWorkMapper.insetPhaBatch(bdLsit.get(i));// 插入药房入库详情

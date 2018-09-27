@@ -501,7 +501,7 @@
 		<result property="typeId" column="typeId" />
 		<result property="drugmanu" column="drugmanu" />
 		<result property="proPlace" column="proPlace" />
-		<association property="batchDetailBean" column="drugId"
+		<association property="batchDetailBean" 
 			javaType="org.great.bean.BatchDetailBean">
 			<result property="drugId" column="drugId"></result>
 			<result property="batchDetailId" column="BATCHDETAILID" />
@@ -511,9 +511,9 @@
 			<result property="handleNum" column="HANDLENUM" />
 			<result property="purPrice" column="PURPRICE" />
 		</association>
-		<association property="phaDrugBean" column="drugId"
+		<association property="phaDrugBean" 
 			javaType="org.great.bean.PhaDrugBean">
-			<id property="drugId" column="drugId"></id>
+			<result property="drugId" column="drugId"></result>
 			<result property="drugNum" column="drugNum" />
 		</association>
 	</resultMap>
@@ -623,8 +623,9 @@
 
 	<!-- 通过拼音码/id/名称 //生产日期查找退库药品 -->
 	<select id="chooseCaceDrug"
-		parameterType="org.great.bean.StoDrugBean" resultMap="caceDruginfo">
-		select s.*,p.drugNum,o.outAndInId, b.manuBatch,b.putBatch,b.proDate,
+		parameterType="org.great.bean.StoDrugBean" resultMap="canSellMap">
+			select s.*,p.drugNum,
+		b.manuBatch,b.batchDetailId,b.purprice,b.putBatch,b.proDate,
 		b.handleNum
 		from TBLStoDrug
 		s,tblbatchdetail
@@ -634,8 +635,8 @@
 		and o.putBatch=b.batchDetailId
 		and
 		s.drugid=p.drugid
-		and o.placeId=21 and o.outInId=18 and
-		o.drugSource='药库'
+		and o.placeId=21 and o.outInId=18
+		and b.handlenum!=0
 		<if test="pinyinCode!=null and pinyinCode!=''">
 			and s.pinyinCode like
 			concat(concat('%',#{pinyinCode}),'%')
@@ -650,7 +651,7 @@
 	</select>
 	<resultMap type="org.great.bean.StoDrugBean"
 		id="caceDruginfo">
-		<id property="drugId" column="drugId" />
+		<result property="drugId" column="drugId" />
 		<result property="drugName" column="drugName" />
 		<result property="generalName" column="generalName" />
 		<result property="specific" column="specific" />

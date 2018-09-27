@@ -92,7 +92,7 @@ public interface DailyWorkMapper {
 		public void reduceStoDrugNum(int number,int drugid);//减少药库库存
 		public void addPhaDrugNum(int number,int drugid);//增加药房库存
 		public String selSpecific(int drugId);//找到规格
-		public BatchDetailBean selBatchBean(String drugId,String manuBatch );
+		public List<BatchDetailBean> selBatchBean(String drugId,String manuBatch );
 	
 	
 	
