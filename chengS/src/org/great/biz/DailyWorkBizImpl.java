@@ -120,7 +120,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	@Override
 	public ModelAndView selectPutDrug(CondiBean condiBean) {
 		// TODO Auto-generated method stub
-		List<StoDrugBean> list = dailyWorkMapper.selectCanSellDrug(condiBean);
+		List<BatchDetailBean> list = dailyWorkMapper.selectCanSellDrug(condiBean);
 		ModelAndView mav = new ModelAndView("pharmacy/putDrugList");
 		mav.addObject("drugList", list);
 		return mav;
@@ -218,7 +218,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	@Override
 	public ModelAndView sellDrugLayer(CondiBean condiBean) {
 		// List<PhaDrugBean> list=dailyWorkMapper.selectPhaDrug(condiBean);
-		List<StoDrugBean> list = dailyWorkMapper.selectCanSellDrug(condiBean);
+		List<BatchDetailBean> list = dailyWorkMapper.selectCanSellDrug(condiBean);
 		ModelAndView mav = new ModelAndView("pharmacy/sellDrugLayer");
 		mav.addObject("drugList", list);
 		return mav;

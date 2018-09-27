@@ -48,7 +48,7 @@ public interface DailyWorkMapper {
 	public List<StoDrugBean> findDrugInfo(CondiBean condi);//查询药品信息
 	public int findDrugCount(CondiBean condi);//查询药品数量
 	/*蓝鹏鹏功能*/
-	public List<StoDrugBean> selectCanSellDrug(CondiBean condiBean);//查询可出售药品
+	public List<BatchDetailBean> selectCanSellDrug(CondiBean condiBean);//查询可出售药品
 	// 请领申请(lp)
 		public void takeDrugAppleFor(DrugApplyBean drugApplyBean);
 

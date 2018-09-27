@@ -484,7 +484,33 @@
 		#{proDate,jdbcType=VARCHAR},#{handleNum,jdbcType=NUMERIC},#{purPrice,jdbcType=NUMERIC},#{sellPrice,jdbcType=NUMERIC}
 		,#{inDate,jdbcType=VARCHAR},#{totalMoney,jdbcType=NUMERIC})
 	</insert>
-	<resultMap type="org.great.bean.StoDrugBean"
+	
+	<resultMap type="org.great.bean.BatchDetailBean" id="canSellMap">
+			<id property="batchDetailId" column="batchDetailId"/>
+			<result property="putBatch" column="putBatch" />
+			<result property="purPrice" column="purPrice" />
+			<result property="manuBatch" column="manuBatch" />
+			<result property="proDate" column="proDate" />
+			<result property="handleNum" column="HANDLENUM" />
+			<result property="drugId" column="drugId"></result>
+			
+			<association property="stoDrugBean"
+			javaType="org.great.bean.StoDrugBean">
+			<result property="drugId" column="drugid"/>
+			<result property="specific" column="specific"/>
+			<result property="unit" column="unit"/>
+			<result property="retailPrice" column="retailPrice"/>
+			<result property="drugName" column="drugname" />
+			<result property="pinyinCode" column="pinyinCode" />
+			<result property="drugmanu" column="drugmanu" />
+		</association>
+		<association property="outAndInBean"
+			javaType="org.great.bean.OutAndInBean">
+			<result property="handleDate" column="handledate" />
+		</association>
+	</resultMap>
+	
+	<!-- <resultMap type="org.great.bean.StoDrugBean"
 		id="canSellMap">
 		<id property="drugId" column="drugId" />
 		<result property="drugName" column="drugName" />
@@ -516,7 +542,7 @@
 			<result property="drugId" column="drugId"></result>
 			<result property="drugNum" column="drugNum" />
 		</association>
-	</resultMap>
+	</resultMap> -->
 
 	<insert id="takeDrugAppleFor"
 		parameterType="org.great.bean.DrugApplyBean">
@@ -649,7 +675,10 @@
 		</if>
 
 	</select>
-	<resultMap type="org.great.bean.StoDrugBean"
+	
+	
+	
+ 	<resultMap type="org.great.bean.StoDrugBean"
 		id="caceDruginfo">
 		<result property="drugId" column="drugId" />
 		<result property="drugName" column="drugName" />
@@ -684,7 +713,9 @@
 			<result property="outAndInId" column="outAndInId" />
 
 		</association>
-	</resultMap>
+	</resultMap> 
+	
+	
 	<!--审核退库操作 -->
 	<!-- 改变退库申请状态时间 -->
 	<update id="updayeCaceApply" parameterType="String">

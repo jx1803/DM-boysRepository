@@ -56,15 +56,15 @@
 		<tbody>
 		<c:forEach items="${drugList }" var="drug">
 			<tr class="text-c">
-				<td>${drug.drugId }</td>
-				<td>${drug.drugName }</td>
-				<td>${drug.specific }</td>
-				<td>${drug.unit }</td>
-				<td>${drug.drugmanu }</td>
-				<td>${drug.batchDetailBean.manuBatch }</td>
-				<td>${drug.batchDetailBean.purPrice }</td>
-				<td>${drug.batchDetailBean.handleNum }</td>
-				<td><button class="btn btn-primary" onclick="addDrug('${drug.drugId }','${drug.drugName }','${drug.drugmanu }','${drug.batchDetailBean.manuBatch }','${drug.batchDetailBean.purPrice }','${drug.batchDetailBean.batchDetailId }','${drug.batchDetailBean.handleNum }')">添加</button></td>
+				<td>${drug.stoDrugBean.drugId }</td>
+				<td>${drug.stoDrugBean.drugName }</td>
+				<td>${drug.stoDrugBean.specific }</td>
+				<td>${drug.stoDrugBean.unit }</td>
+				<td>${drug.stoDrugBean.drugmanu }</td>
+				<td>${drug.manuBatch }</td>
+				<td>${drug.purPrice }</td>
+				<td>${drug.handleNum }</td>
+				<td><button class="btn btn-primary" onclick="addDrug('${drug.stoDrugBean.drugId }','${drug.stoDrugBean.drugName }','${drug.stoDrugBean.drugmanu }','${drug.manuBatch }','${drug.purPrice }','${drug.batchDetailId }','${drug.handleNum }')">添加</button></td>
 			</tr>
 			</c:forEach>
 		</tbody>
