@@ -10,12 +10,17 @@
 
 package org.great.bean;
 
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 /**
  * @ClassName: SellBean
  * @Description: 销售记录表实体类
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午3:48:29
  */
+@Component
 public class SellBean {
 	private int sellId;// 销售记录ID
 	private int drugId;// 药品编号
@@ -23,7 +28,9 @@ public class SellBean {
 	private int sellNum;// 销售数量
 	private double sales;// 销售额
 	private String sellDate;// 销售时间
-
+	private String putBatch;//进货批次
+	private String manuBatch;//厂家批号
+	private StoDrugBean stoDrugBean;//药品信息
 	public SellBean() {
 		super();
 	}
@@ -80,6 +87,30 @@ public class SellBean {
 
 	public void setSellDate(String sellDate) {
 		this.sellDate = sellDate;
+	}
+
+	public String getPutBatch() {
+		return putBatch;
+	}
+
+	public void setPutBatch(String putBatch) {
+		this.putBatch = putBatch;
+	}
+
+	public String getManuBatch() {
+		return manuBatch;
+	}
+
+	public void setManuBatch(String manuBatch) {
+		this.manuBatch = manuBatch;
+	}
+
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
+	}
+
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
 	}
 
 	@Override

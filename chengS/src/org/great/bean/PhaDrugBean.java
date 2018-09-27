@@ -9,9 +9,9 @@ public class PhaDrugBean {
 	private int drugId;// 药品编号
 	private int drugNum;// 数量
 	private int useableId;// 停用启用状态
-
-	private double minimum;// 底限
-	private double maximum;//上限
+	private int minimum;// 底限
+	private int maximum;//上限值
+	private StoDrugBean stoDrugBean;//药品信息
 
 	public PhaDrugBean() {
 		super();
@@ -43,6 +43,21 @@ public class PhaDrugBean {
 		this.drugNum = drugNum;
 	}
 
+	public int getMinimum() {
+		return minimum;
+	}
+
+	public void setMinimum(int minimum) {
+		this.minimum = minimum;
+	}
+
+	public int getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
+	}
 
 	public int getUseableId() {
 		return useableId;
@@ -52,16 +67,16 @@ public class PhaDrugBean {
 		this.useableId = useableId;
 	}
 
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
+	}
+
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
+	}
+
 	
 
 	
-
-	public double getMaximum() {
-		return maximum;
-	}
-
-	public void setMaximum(double maximum) {
-		this.maximum = maximum;
-	}
 
 }

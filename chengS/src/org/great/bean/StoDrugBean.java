@@ -10,7 +10,9 @@
 
 package org.great.bean;
 
-import javax.annotation.Resource;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @ClassName: StoDrugBean
@@ -18,6 +20,7 @@ import javax.annotation.Resource;
  * @author: 周志展(lenovo)
  * @date: 2018年9月17日 下午3:41:42
  */
+@Component
 public class StoDrugBean {
 	private int drugId;// 药品编码
 	private String drugName;// 药品名称
@@ -35,18 +38,16 @@ public class StoDrugBean {
 	private int typeId;// 药品类别ID
 	private String drugmanu;//药品厂家
 	private String proPlace;//药品产地
-
-	
-	@Resource
-	private DfBean dfBean;//药品剂型bean
-	@Resource
-	private DrugTypeBean drugTypeBean;//药品类型bean
-	
-
+	private DfBean dfBean;//剂型实体
+	private DrugTypeBean dtBean;//药品类型bean
+	private BatchDetailBean batchDetailBean;//药品入库批次详情对象
+	private PhaDrugBean phaDrugBean;//药房药品信息对象
+	private SellBean sellBean;//销售记录对象
+	private List<StoDrugBean> drugList;//卖药的信息列表
+	private DrugTypeBean drugTypeBean;//药品类别对象
 	public StoDrugBean() {
 		super();
 	}
-
 
 	public String getDrugmanu() {
 		return drugmanu;
@@ -190,6 +191,46 @@ public class StoDrugBean {
 
 	public void setDtBean(DrugTypeBean dtBean) {
 		this.dtBean = dtBean;
+	}
+
+	public BatchDetailBean getBatchDetailBean() {
+		return batchDetailBean;
+	}
+
+	public void setBatchDetailBean(BatchDetailBean batchDetailBean) {
+		this.batchDetailBean = batchDetailBean;
+	}
+
+	public PhaDrugBean getPhaDrugBean() {
+		return phaDrugBean;
+	}
+
+	public void setPhaDrugBean(PhaDrugBean phaDrugBean) {
+		this.phaDrugBean = phaDrugBean;
+	}
+
+	public SellBean getSellBean() {
+		return sellBean;
+	}
+
+	public void setSellBean(SellBean sellBean) {
+		this.sellBean = sellBean;
+	}
+
+	public List<StoDrugBean> getDrugList() {
+		return drugList;
+	}
+
+	public void setDrugList(List<StoDrugBean> drugList) {
+		this.drugList = drugList;
+	}
+
+	public DrugTypeBean getDrugTypeBean() {
+		return drugTypeBean;
+	}
+
+	public void setDrugTypeBean(DrugTypeBean drugTypeBean) {
+		this.drugTypeBean = drugTypeBean;
 	}
 
 	@Override
