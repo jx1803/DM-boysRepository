@@ -12,6 +12,12 @@ public class BatchDetailBean {
 	private String inDate;//有效日期
 	private double totalMoney;//总价
 	
+	/**志展添加*/
+    private StoDrugBean stoDrugBean;//药品实体bean
+	private OutAndInBean outAndInBean;//出入库记录表，新增用于药库采购药品用
+	private InventoryBean inventoryBean;//库存实体bean，用于采购药品入库时更新库存
+	private DrugApplyBean drugApplyBean;//药品申请实体bean，用于更改采购药品购买入库状态
+	
 	public BatchDetailBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -95,6 +101,39 @@ public class BatchDetailBean {
 
 	public void setTotalMoney(double totalMoney) {
 		this.totalMoney = totalMoney;
+	}
+
+	
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
+	}
+
+	public OutAndInBean getOutAndInBean() {
+		return outAndInBean;
+	}
+
+	public InventoryBean getInventoryBean() {
+		return inventoryBean;
+	}
+
+	public DrugApplyBean getDrugApplyBean() {
+		return drugApplyBean;
+	}
+
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
+	}
+
+	public void setOutAndInBean(OutAndInBean outAndInBean) {
+		this.outAndInBean = outAndInBean;
+	}
+
+	public void setInventoryBean(InventoryBean inventoryBean) {
+		this.inventoryBean = inventoryBean;
+	}
+
+	public void setDrugApplyBean(DrugApplyBean drugApplyBean) {
+		this.drugApplyBean = drugApplyBean;
 	}
 
 	@Override

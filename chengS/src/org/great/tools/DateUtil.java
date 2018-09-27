@@ -12,7 +12,7 @@ public class DateUtil {
 		Calendar cal = new GregorianCalendar();
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 		String time=df.format(cal.getTime());
 		return time;
 	}
