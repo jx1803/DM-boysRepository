@@ -114,17 +114,17 @@
 				</dt>
 				<dd>
 					<ul>
-						<li><a data-href="toTakeDA.action" data-title="药品请领"
+						<li><a data-href="<%=path%>pharmacy/toTakeDA.action" data-title="药品请领"
 							href="javascript:;">药品请领</a></li>
-						<li><a data-href="toCaceApply.action" data-title="退库申请"
+						<li><a data-href="<%=path%>pharmacy/toCaceApply.action" data-title="退库申请"
 							href="javascript:void(0)">退库申请</a></li>
-						<li><a data-href="totakeApplyList.action" data-title="请领审核"
+						<li><a data-href="<%=path%>pharmacy/totakeApplyList.action" data-title="请领审核"
 							href="javascript:void(0)">请领审核</a></li>
-						<li><a data-href="toCancellingApplyList.action"
+						<li><a data-href="<%=path%>pharmacy/toCancellingApplyList.action"
 							data-title="退库审核" href="javascript:void(0)">退库审核</a></li>
-						<li><a data-href="toAllTakeApply.action" data-title="查看请领记录"
+						<li><a data-href="<%=path%>pharmacy/toAllTakeApply.action" data-title="查看请领记录"
 							href="javascript:void(0)">查看请领记录</a></li>
-						<li><a data-href="toAllCancApply.action" data-title="查看退库记录"
+						<li><a data-href="<%=path%>pharmacy/toAllCancApply.action" data-title="查看退库记录"
 							href="javascript:void(0)">查看退库记录</a></li>
 							
 							

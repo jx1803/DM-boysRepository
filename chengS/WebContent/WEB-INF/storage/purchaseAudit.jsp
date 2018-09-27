@@ -103,11 +103,8 @@
 					</table>
 					</br>
 					<div class="text-c">
-						<%-- <a
-							href="toCancellingApplyList.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&page=${condiBean.pageNum-1}"> --%>
 							<button type="button" class="btn btn-success" onclick="prePage('${condiBean.pageNum}')">上一页</button>
-						<!-- </a> --> ${condiBean.pageNum}/${pageTotal} 
-						<%-- <a href="toCancellingApplyList.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&page=${condiBean.pageNum+1}"> --%>
+						${condiBean.pageNum}/${pageTotal} 
 						<button type="button" class="btn btn-success" onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button><!-- </a> -->
 					</div>
 				</div>

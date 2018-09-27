@@ -65,7 +65,7 @@
 			class="btn btn-primary radius" onclick="addApply()"><i
 			class="Hui-iconfont">&#xe600;</i> 增加</a> <input type="hidden"
 			id="retailPrice"> <input type="hidden" id="adminId"
-			value="${admin.adminId}"><br> <br>
+			value="${User.adminId}"><br> <br>
 		<div align="right">
 			<button type="button" class="btn btn-primary" id="" onclick="empty()">清空</button>
 			&nbsp;&nbsp;
@@ -85,8 +85,8 @@
 					<th>单位</th>
 					<th>规格</th>
 					<th>零售价</th>
-					<th>申请理由</th>
 					<th>请领数量</th>
+					<th>申请理由</th>
 					<th>总价</th>
 				</tr>
 			</thead>

@@ -132,7 +132,7 @@ public class DailyWorkHandle {
 		return new ModelAndView("pharmacy/index");
 	}
 	
-	
+	/*蓝鹏功能*/
 	
 	// 到主界面(lp)
 		@RequestMapping("/toMain.action")

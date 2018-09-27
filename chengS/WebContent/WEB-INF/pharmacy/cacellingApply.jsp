@@ -57,7 +57,7 @@
 			style="width: 250px; margin-top: 5px" class="input-text" /> <a
 			class="btn btn-primary radius" onclick="addApply()"><i
 			class="Hui-iconfont">&#xe600;</i> 增加</a> <input type="hidden"
-			id="adminId" value="${admin.adminId}"><br> <br>
+			id="adminId" value="${User.adminId}"><br> <br>
 		<div align="right">
 			<button type="button" class="btn btn-primary" onclick="empty()">清空</button>
 			&nbsp;&nbsp;

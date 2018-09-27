@@ -65,7 +65,7 @@
 					style="width: 150px" class="input-text" readonly="readonly" />
 				&emsp;申请人：<input type="text" name="adminName" id="adminName"
 					style="width: 150px; margin-top: 5px" class="input-text"
-					value="${sessionScope.USER.adminName}" readonly="readonly" />
+					value="${sessionScope.User.adminName}" readonly="readonly" />
 				&emsp;数量：<input type="text" name="applyNum" id="applyNum"
 					placeholder="请输入申请数量" style="width: 150px; margin-top: 5px"
 					class="input-text"

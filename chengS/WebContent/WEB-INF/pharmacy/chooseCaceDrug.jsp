@@ -49,13 +49,16 @@
 	};
 
 	function setValue(drugId, drugName, drugmanu, drugNum, specific ,handleNum, proDate, manuBatch) {
+		
 		//给父窗口赋值
 		var specific1=specific.split("-")[0];
+		var drugNum1=parseInt(drugNum/specific1);
+		
 		parent.$("#drugId").val(drugId);
 		parent.$("#drugName").val(drugName);
 		parent.$("#drugmanu").val(drugmanu);
-		parent.$("#drugNum").val(drugNum/specific1);
-		parent.$("#handleNum").val(handleNum/specific1);
+		parent.$("#drugNum").val(drugNum1);
+		parent.$("#handleNum").val(parseInt(handleNum/specific1));
 		parent.$("#proDate").val(proDate);
 		parent.$("#manuBatch").val(manuBatch);
 

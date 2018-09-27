@@ -14,7 +14,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.great.bean.AdminBean;
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
@@ -49,8 +51,10 @@ public class StockWorkBizImpl implements IStockWorkBiz {
 	@Override
 	public String purchaseApply(HttpServletRequest request, DrugApplyBean drugApplyBean) {
 		// TODO Auto-generated method stub
+		HttpSession session=request.getSession();
+		AdminBean admin=(AdminBean) session.getAttribute("User");
 		for (int i = 0, len = drugApplyBean.getApplyList().size(); i < len; i++) {
-			drugApplyBean.getApplyList().get(i).setAdminId(1001);
+			drugApplyBean.getApplyList().get(i).setAdminId(admin.getAdminId());
 			drugApplyBean.getApplyList().get(i).setCheckId(7);
 			drugApplyBean.getApplyList().get(i).setApplyTypeId(13);
 			stockWorkMapper.purchaseApply(drugApplyBean.getApplyList().get(i));// 插入药品采购申请

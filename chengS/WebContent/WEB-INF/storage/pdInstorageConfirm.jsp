@@ -126,7 +126,7 @@
 							<td><input type="text" name="adminName" id="adminName"
 								style="width: 150px; margin-top: 5px" class="input-text"
 								value="${sessionScope.USER.adminName}" readonly="readonly" />
-								<input type="hidden" id="adminId" name="outAndInBean.adminId" value="1001"/></td>
+								<input type="hidden" id="adminId" name="outAndInBean.adminId" value="${User.adminId }"/></td>
 							<td>合计(元)：</td>
 							<td><input type="text" name="totalMoney" id="totalMoney"
 								placeholder="药品总价" style="width: 150px" class="input-text"

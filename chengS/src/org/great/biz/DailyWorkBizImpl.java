@@ -306,8 +306,8 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			System.out.println("查找出来的信息" + bdBean);
 			bdBean.setHandleNum(drugApplyBean.getApplyNum() * Integer.valueOf(str[0]));
 			dailyWorkMapper.updatePhaBatchNum(bdBean);// 修改相对应药房入库批次数量
-			dailyWorkMapper.updateStoDrugNum(
-					-drugApplyBean.getApplyList().get(i).getApplyNum() * Integer.valueOf(str[0]), bdBean.getDrugId());// 修改药房库存数量
+			dailyWorkMapper.updatePhaDrugNum(
+					drugApplyBean.getApplyList().get(i).getApplyNum() * Integer.valueOf(str[0]), bdBean.getDrugId());// 修改药房库存数量
 		}
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("pharmacy/cacellingApply");

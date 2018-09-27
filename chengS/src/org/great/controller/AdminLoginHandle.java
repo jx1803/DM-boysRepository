@@ -47,7 +47,7 @@ public class AdminLoginHandle {
 
 	@RequestMapping("/toLogin.action")
 	public ModelAndView toLogin() {
-		return new ModelAndView("user/login");
+		return new ModelAndView("login");
 	}
 
 	// 进入index页面
@@ -57,7 +57,7 @@ public class AdminLoginHandle {
 		HttpSession session = req.getSession();
 		// 这里进入biz层
 		flag = iUserBiz.userlogin(user, session);
-		return new ModelAndView("user/index");
+		return new ModelAndView("pharmacy/index");
 	}
 
 	// 获取用户管理的显示数据,需要分页和模糊查找

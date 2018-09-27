@@ -739,8 +739,8 @@
 		(OUTANDINID, TOTALMONEY,
 		PUTBATCH, PLACEID,
 		OUTINID, DESTINATION,
-		HANDLEDATE, ADMINID) VALUES
-		#{0}, (select TOTALMONEY from
+		HANDLEDATE, ADMINID) VALUES(SPMSSEQ.NEXTVAL,
+		 (select TOTALMONEY from
 		tblbatchdetail where
 		BATCHDETAILID=#{0}), #{0},
 		'21',
@@ -777,6 +777,7 @@
 		update tblInventory
 		set inventoryNum=inventoryNum+#{0} where drugid=#{1}
 	</update>
+	
 	<update id="updatePhaBatchNum"
 		parameterType="org.great.bean.BatchDetailBean">
 		update tblBatchDetail set totalMoney=#{totalMoney},
