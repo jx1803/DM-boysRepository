@@ -707,7 +707,7 @@
 	<select id="selectPhaInfo"
 		parameterType="org.great.bean.BatchDetailBean"
 		resultType="org.great.bean.BatchDetailBean">
-		select * from tblBatchDetail b ,tblOutAndIn o where
+		select distinct b.* from tblBatchDetail b ,tblOutAndIn o where
 		b.drugId=#{drugId} and o.putBatch=b.batchDetailId
 		and
 		b.manuBatch=#{manuBatch} and b.putBatch is null
