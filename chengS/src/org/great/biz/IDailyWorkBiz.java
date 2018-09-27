@@ -2,6 +2,8 @@ package org.great.biz;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
@@ -29,4 +31,42 @@ public interface IDailyWorkBiz {
 	public ModelAndView toAdjustPrice(CondiBean condiBean);//药品调价界面
 	public String sellDrug(StoDrugBean stoDrugBean);//卖药
 	public ModelAndView sellDrugLayer(CondiBean condiBean);//卖药弹窗
+	
+	/*蓝鹏*/
+	// 请领申请(lp)
+	public ModelAndView takeDrugAppleFor(DrugApplyBean drugApplyBean);
+
+	// 获取药品退库审核(lp)
+	public ModelAndView selectCancellingApply(CondiBean condiBean);
+
+	// 获取药品请领列表(lp)
+	public ModelAndView totakeApplyList(CondiBean condiBean);
+
+	// 通过拼音码/编号/名称查找药品信息(lp)
+	public ModelAndView selectDrug(StoDrugBean stoDrugBean);
+
+	// 通过拼音码/编号/名称//生产日期查找退库药品信息(lp)
+	public ModelAndView chooseCaceDrug(StoDrugBean stoDrugBean);
+
+	// 提交退库申请
+	public ModelAndView cacellingApply(DrugApplyBean drugApplyBean);
+
+	// 审核退库申请
+	public ModelAndView chickSuccess(HttpServletRequest request, String drugApplyId, BatchDetailBean batchDetailBean);
+
+	// 不同意退库申请
+	public ModelAndView chickError(HttpServletRequest request,String drugApplyId);
+
+	// 不同意请领申请
+	public ModelAndView takeError(HttpServletRequest request,String drugApplyId);
+
+	// 所有退库记录
+	public ModelAndView toAllCancApply(CondiBean condiBean);
+	
+	//所有请领记录
+	public ModelAndView toAllTakeApply(CondiBean condiBean);
+	//同意
+	public ModelAndView takeSuccess(HttpServletRequest request, String drugApplyId, BatchDetailBean batchDetailBean);
+	
+	
 }

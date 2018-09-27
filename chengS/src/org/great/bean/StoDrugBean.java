@@ -44,6 +44,13 @@ public class StoDrugBean {
 	private PhaDrugBean phaDrugBean;//药房药品信息对象
 	private SellBean sellBean;//销售记录对象
 	private List<StoDrugBean> drugList;//卖药的信息列表
+	
+	/**
+	 * 查找药品(lp)
+	 */
+	
+	private InventoryBean inventoryBean;// 库存实体
+	private OutAndInBean outAndInBean;
 
 	public StoDrugBean() {
 		super();
@@ -238,6 +245,22 @@ public class StoDrugBean {
 				+ dosageId + ", usage=" + usage + ", invoiceTitle=" + invoiceTitle + ", pinyinCode=" + pinyinCode
 				+ ", antibiotic=" + antibiotic + ", dosage=" + dosage + ", dailyNum=" + dailyNum + ", typeId=" + typeId
 				+ ", drugmanu=" + drugmanu + ", proPlace=" + proPlace + "]";
+	}
+
+	public InventoryBean getInventoryBean() {
+		return inventoryBean;
+	}
+
+	public void setInventoryBean(InventoryBean inventoryBean) {
+		this.inventoryBean = inventoryBean;
+	}
+
+	public OutAndInBean getOutAndInBean() {
+		return outAndInBean;
+	}
+
+	public void setOutAndInBean(OutAndInBean outAndInBean) {
+		this.outAndInBean = outAndInBean;
 	}
 
 	

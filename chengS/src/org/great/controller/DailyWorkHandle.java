@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.AdminBean;
@@ -131,7 +132,115 @@ public class DailyWorkHandle {
 		return new ModelAndView("pharmacy/index");
 	}
 	
-	
+	// 到主界面(lp)
+		@RequestMapping("/toMain.action")
+		public ModelAndView toPharmacyMain(HttpServletRequest requsest) {
+			
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("pharmacy/index");
+			return mav;
+		}
+
+		// 到药品请领界面(lp)
+		@RequestMapping("/toTakeDA.action")
+		public ModelAndView toTakeDA() {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("pharmacy/takeDrugApply");
+			return mav;
+		}
+
+		// 退库审核列表(lp)
+		@RequestMapping("/toCancellingApplyList.action")
+		public ModelAndView selectCancellingApply(CondiBean condiBean) {
+
+			return dailyWorkBizImpl.selectCancellingApply(condiBean);
+		}
+
+		// 通过拼音码/编号/名称查找药品信息(lp)
+		@RequestMapping("/selDrug.action")
+		public ModelAndView selectDrug(StoDrugBean stoDrugBean) {
+			return dailyWorkBizImpl.selectDrug(stoDrugBean);
+		}
+
+		// 提交药品请领申请
+		@RequestMapping("/takeDrugAppleFor.action")
+		public ModelAndView takeDrugAppleFor(DrugApplyBean drugApplyBean) {
+
+			return dailyWorkBizImpl.takeDrugAppleFor(drugApplyBean);
+		}
+
+		// 到退库申请界面(lp)
+		@RequestMapping("/toCaceApply.action")
+		public ModelAndView toCaceApply() {
+
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("pharmacy/cacellingApply");
+			return mav;
+
+		}
+
+		// 退库选择药品
+		@RequestMapping("/chooseCaceDrug.action")
+		public ModelAndView chooseCaceDrug(StoDrugBean stoDrugBean) {
+			return dailyWorkBizImpl.chooseCaceDrug(stoDrugBean);
+		}
+
+		// 提交退库申请
+		@RequestMapping("/cacellingApply.action")
+		public ModelAndView cacellingApply(DrugApplyBean drugApplyBean) {
+			return dailyWorkBizImpl.cacellingApply(drugApplyBean);
+
+		}
+
+		// 同意退库申请
+		@RequestMapping("/chickSuccess.action")
+		public ModelAndView chickSuccess(HttpServletRequest request, String drugApplyId, BatchDetailBean batchDetailBean) {
+			System.out.println(drugApplyId);
+			System.out.println();
+			return dailyWorkBizImpl.chickSuccess(request, drugApplyId, batchDetailBean);
+
+		}
+
+		// 不同意退库申请
+		@RequestMapping("/chickError.action")
+		public ModelAndView chickError(HttpServletRequest requset,String drugApplyId) {
+			return dailyWorkBizImpl.chickError(requset,drugApplyId);
+
+		}
+
+		// 到审核请领界面(lp)
+		@RequestMapping("/totakeApplyList.action")
+		public ModelAndView totakeApplyList(CondiBean condiBean) {
+			return dailyWorkBizImpl.totakeApplyList(condiBean);
+		}
+
+		// 不同意请领申请
+		@RequestMapping("/takeError.action")
+		public ModelAndView takeError(HttpServletRequest requset,String drugApplyId) {
+			
+			return dailyWorkBizImpl.takeError(requset,drugApplyId);
+
+		}
+
+		// 查看所有退库记录
+		@RequestMapping("/toAllCancApply.action")
+		public ModelAndView toAllCancApply(CondiBean condiBean) {
+
+			return dailyWorkBizImpl.toAllCancApply(condiBean);
+		}
+
+		// 到所有请领记录界面(lp)
+		@RequestMapping("/toAllTakeApply.action")
+		public ModelAndView toAllTakeApply(CondiBean condiBean) {
+			return dailyWorkBizImpl.toAllTakeApply(condiBean);
+		}
+		// 同意请领申请
+		@RequestMapping("/takeSuccess.action")
+		public ModelAndView takeSuccess(HttpServletRequest request, String drugApplyId, BatchDetailBean batchDetailBean) {
+			System.out.println("请领数量为"+batchDetailBean.getHandleNum());
+			return dailyWorkBizImpl.takeSuccess(request, drugApplyId,batchDetailBean);
+		}
+		
 	
 
 	
