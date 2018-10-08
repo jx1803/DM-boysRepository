@@ -9,6 +9,8 @@ import org.great.bean.CondiBean;
 import org.great.bean.DeptBean;
 import org.great.bean.PermissionBean;
 import org.great.bean.RoleBean;
+import org.great.bean.WarnBean;
+import org.great.mapper.DailyWorkMapper;
 import org.great.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +28,17 @@ public class UserBizImpl implements IUserBiz {
 	@Resource
 	private UserMapper userMapper;
 
+	@Resource
+	private DailyWorkMapper dailyWorkMapper;// 映射器（日常工作）
 	@Override
 	public String userlogin(AdminBean user, HttpSession session) {
 		// TODO Auto-generated method stub
 		user = userMapper.userlogin(user);
 		session.setAttribute("User", user);
+		
+		session.setAttribute("belongId", 21);// 登录通过角色判断属于药房21或药库22
+		List<WarnBean> warnList = dailyWorkMapper.selWarn(21);
+		session.setAttribute("warnCount", warnList.size());// 页面提醒数量
 		if (null != user) {
 			flag = "success";
 		}

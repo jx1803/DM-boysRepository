@@ -31,7 +31,7 @@
 <!-- 主页面 -->
 	<div class="page-container">
 		<div class="text-c">
-			<form action="toAdjustPrice.action" method="post" id="formSd" >
+			<form action="toForbidDrug.action" method="post" id="formSd" >
 			药品名称: 
 			<input type="text" class="input-text" id="drugName" name="drugName" value="${condi.drugName==null?"":condi.drugName}"
 				style="width: 150px"> 
@@ -55,7 +55,7 @@
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" onclick="subSelect()" id="sub" name=""> 搜索药品</button>
+			<button type="button" class="btn btn-primary radius" id="sub" onclick="subSelect()" name=""> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -72,35 +72,41 @@
 						<th>零售价</th>
 						<th>类别</th>
 						<th>剂型</th>
-						<th>使用方法</th>
-						<th>发票抬头</th>
-						<th>拼音码</th>
 						<th>抗生素</th>
 						<th>生产厂商</th>
 						<th>生产场地</th>
+						<th>当前状态</th>
 						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach items="${stoDrugList}" var="sdList" varStatus="vs">
+				<c:forEach items="${drugList}" var="sdList" varStatus="vs">
 					<tr class="text-c">
 
-						<td>${sdList.drugId}</td>
-						<td>${sdList.drugName}</td>
-						<td>${sdList.generalName}</td>
-						<td>${sdList.specific}</td>
-						<td>${sdList.unit}</td>
-						<td>${sdList.retailPrice}</td>
-						<td>${sdList.drugTypeBean.drugType}</td>
-						<td>${sdList.dfBean.dosageForm}</td>
-						<td>${sdList.usage}</td>
-						<td>${sdList.invoiceTitle}</td>
-						<td>${sdList.pinyinCode}</td>
-						<td>${sdList.antibiotic}</td>
-						<td>${sdList.drugmanu}</td>
-						<td>${sdList.proPlace}</td>
-						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}',400,300)">修改零售价</a>
+						<td>${sdList.stoDrugBean.drugId}</td>
+						<td>${sdList.stoDrugBean.drugName}</td>
+						<td>${sdList.stoDrugBean.generalName}</td>
+						<td>${sdList.stoDrugBean.specific}</td>
+						<td>${sdList.stoDrugBean.unit}</td>
+						<td>${sdList.stoDrugBean.retailPrice}</td>
+						<td>${sdList.stoDrugBean.drugTypeBean.drugType}</td>
+						<td>${sdList.stoDrugBean.dfBean.dosageForm}</td>
+						<td>${sdList.stoDrugBean.antibiotic}</td>
+						<td>${sdList.stoDrugBean.drugmanu}</td>
+						<td>${sdList.stoDrugBean.proPlace}</td>
+						<td>${sdList.useable}</td>
+						<c:if test="${sdList.useableId==2 }">
+							<td class="f-14">
+							<button  class="btn btn-secondary-outline radius" id=""
+						name="" onclick="location.href='forbidDrug.action?useableId=3&phaDrugId=${sdList.phaDrugId}'">停用</button>
 							</td>
+						</c:if>
+						<c:if test="${sdList.useableId==3 }">
+							<td class="f-14">
+								<button  class="btn btn-secondary-outline radius" id=""
+							name="" onclick="location.href='forbidDrug.action?useableId=2&phaDrugId=${sdList.phaDrugId}'">启用</button>
+								</td>
+						</c:if>
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -142,14 +148,13 @@ function subSelect(){
 		$("#formSd").submit();
 	}
 }
-
 /*上一页  */
 function prePage(pageNum) {
 	var str1 = "";
 	if (pageNum > 1) {
 		$("#pre").disabled=false;
 		pageNum -= 1;
-		str1 = "selectAdjustPrice.action?pageNum="
+		str1 = "toForbidDrug.action?pageNum="
 				+ pageNum;
 	} else {
 		return;
@@ -162,7 +167,7 @@ function nextPage(pageNum, total) {
 	var str2 = "";
 	if (pageNum < total) {
 		pageNum = Number(pageNum) + 1;
-		str2 = "selectAdjustPrice.action?pageNum="
+		str2 = "toForbidDrug.action?pageNum="
 				+ pageNum;
 	} else {
 		return;

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -63,8 +64,8 @@
 				<td>${drug.stoDrugBean.drugmanu }</td>
 				<td>${drug.manuBatch }</td>
 				<td>${drug.purPrice }</td>
-				<td>${drug.handleNum }</td>
-				<td><button class="btn btn-primary" onclick="addDrug('${drug.stoDrugBean.drugId }','${drug.stoDrugBean.drugName }','${drug.stoDrugBean.drugmanu }','${drug.manuBatch }','${drug.purPrice }','${drug.batchDetailId }','${drug.handleNum }')">添加</button></td>
+				<td>${drug.handleNum }&nbsp;(${ fn:split(drug.stoDrugBean.specific,'-')[1]})</td>
+				<td><button class="btn btn-primary" onclick="addDrug('${drug.stoDrugBean.drugId }','${drug.stoDrugBean.drugName }','${drug.stoDrugBean.drugmanu }','${drug.manuBatch }','${drug.purPrice }','${drug.batchDetailId }','${drug.handleNum }','${drug.stoDrugBean.unit }','${ fn:split(drug.stoDrugBean.specific,'-')[1]}','${drug.stoDrugBean.specific }')">添加</button></td>
 			</tr>
 			</c:forEach>
 		</tbody>
@@ -81,8 +82,9 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 
 <script type="text/javascript">
-	function addDrug(drugId,drugName,drugmanu,manuBatch,purPrice,batchDetailId,drugNum){
+	function addDrug(drugId,drugName,drugmanu,manuBatch,purPrice,batchDetailId,drugNum,unit,sUnit,specific){
 		/* window.opener.setValue(drugName,drugmanu,putBatch,manuBatch,purPrice); */
+		var str = specific.split('-');
 		parent.$("#batchDetailId").val(batchDetailId);
 		parent.$("#drugId").val(drugId);
 		parent.$("#drugName").val(drugName);
@@ -90,6 +92,11 @@
 		parent.$("#manuBatch").val(manuBatch);
 		parent.$("#purPrice").val(purPrice);
 		parent.$("#drugNum").val(drugNum);
+		parent.$("#unit").val(unit);
+		parent.$("#sUnit").html(sUnit);
+		parent.$("#specific").val(specific);
+		parent.$("#sspecific").text("("+str[1]+")");
+		parent.$("#sunit").text("("+unit+")");
 		var index=parent.layer.getFrameIndex(window.name);
 		parent.layer.close(index);
 	}

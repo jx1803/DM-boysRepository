@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*"
-	import="org.great.bean.StoDrugBean" pageEncoding="UTF-8"%>
+	 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE HTML>
 <html>
@@ -48,7 +48,7 @@
 		;
 	};
 
-	function setValue(drugId, drugName, drugmanu, drugNum, specific ,handleNum, proDate, manuBatch) {
+	function setValue(drugId, drugName, drugmanu, drugNum, specific ,handleNum, proDate, manuBatch,unit) {
 		
 		//给父窗口赋值
 		var specific1=specific.split("-")[0];
@@ -61,7 +61,7 @@
 		parent.$("#handleNum").val(parseInt(handleNum/specific1));
 		parent.$("#proDate").val(proDate);
 		parent.$("#manuBatch").val(manuBatch);
-
+		parent.$("#unit").val(unit);
 		parent.$("#applyNum").val('');
 		parent.$("#applyReason").val('');
 
@@ -99,7 +99,7 @@
 							<th>药品名称</th>
 							<th>药品厂家</th>
 							<th>当前库存</th>
-							<th>领取数量</th>
+							<th>当前批次剩余数量</th>
 							<th>规格</th>
 							<th>生产日期</th>
 							<th>产品批号</th>
@@ -109,16 +109,16 @@
 					<tbody>
 						<c:forEach items="${drugList }" var="drugList">
 							<tr class="text-c">
-								<td>${drugList.drugId}</td>
-								<td>${drugList.drugName}</td>
-								<td>${drugList.drugmanu}</td>
+								<td>${drugList.stoDrugBean.drugId}</td>
+								<td>${drugList.stoDrugBean.drugName}</td>
+								<td>${drugList.stoDrugBean.drugmanu}</td>
 								<td>${drugList.phaDrugBean.drugNum}</td>
-								<td>${drugList.batchDetailBean.handleNum}</td>
-								<td>${drugList.specific}</td>
-								<td>${drugList.batchDetailBean.proDate}</td>
-								<td>${drugList.batchDetailBean.manuBatch}</td>
+								<td>${drugList.handleNum}</td>
+								<td>${drugList.stoDrugBean.specific}</td>
+								<td>${drugList.proDate}</td>
+								<td>${drugList.manuBatch}</td>
 								<td><a class="btn btn-success"
-									onclick="setValue(${drugList.drugId},'${drugList.drugName}','${drugList.drugmanu}',${drugList.phaDrugBean.drugNum},'${drugList.specific}',${drugList.batchDetailBean.handleNum},'${drugList.batchDetailBean.proDate}','${drugList.batchDetailBean.manuBatch}')">确定</a></td>
+									onclick="setValue(${drugList.stoDrugBean.drugId},'${drugList.stoDrugBean.drugName}','${drugList.stoDrugBean.drugmanu}',${drugList.phaDrugBean.drugNum},'${drugList.stoDrugBean.specific}',${drugList.handleNum},'${drugList.proDate}','${drugList.manuBatch}','${drugList.stoDrugBean.unit}')">确定</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>

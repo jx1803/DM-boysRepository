@@ -15,6 +15,12 @@ public class CondiBean {
 	private String beforeDate;//之前的日期
 	private int checkId;//审核情况id
 	private int applyTypeId;// 请领/退库/报损/采购id
+	private int useableId;//药品可用状态
+	private int paramId;//参数id
+	private String checkDate;//核对时间
+	private int outInId;//出入库id
+	private int belongId;//属于药房或药库的提醒
+	private int eventId;//属于什么类型的提醒
 	
 	/**
 	 * 
@@ -260,6 +266,66 @@ public class CondiBean {
 
 	public void setRoleid(int roleid) {
 		this.roleid = roleid;
+	}
+
+
+	public int getUseableId() {
+		return useableId;
+	}
+
+
+	public void setUseableId(int useableId) {
+		this.useableId = useableId;
+	}
+
+
+	public int getParamId() {
+		return paramId;
+	}
+
+
+	public void setParamId(int paramId) {
+		this.paramId = paramId;
+	}
+
+
+	public String getCheckDate() {
+		return checkDate;
+	}
+
+
+	public void setCheckDate(String checkDate) {
+		this.checkDate = checkDate;
+	}
+
+
+	public int getOutInId() {
+		return outInId;
+	}
+
+
+	public void setOutInId(int outInId) {
+		this.outInId = outInId;
+	}
+
+
+	public int getBelongId() {
+		return belongId;
+	}
+
+
+	public void setBelongId(int belongId) {
+		this.belongId = belongId;
+	}
+
+
+	public int getEventId() {
+		return eventId;
+	}
+
+
+	public void setEventId(int eventId) {
+		this.eventId = eventId;
 	}
 	
 	

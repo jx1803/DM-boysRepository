@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,13 +32,14 @@
 <!-- 主页面 -->
 	<div class="page-container">
 		<div class="text-c">
-			<form action="toAdjustPrice.action" method="post" id="formSd" >
+			<form action="showTakeStock.action" method="post" id="formSd" >
 			药品名称: 
 			<input type="text" class="input-text" id="drugName" name="drugName" value="${condi.drugName==null?"":condi.drugName}"
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			>
+			value="${condi.drugId==null?"":condi.drugId}">
+			<input type='hidden' id="h_drugId" value="0">
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
 			 style="width: 150px" value="${condi.pinyinCode==null?"":condi.pinyinCode}">
@@ -55,7 +57,7 @@
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" onclick="subSelect()" id="sub" name=""> 搜索药品</button>
+			<button type="button" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -72,35 +74,35 @@
 						<th>零售价</th>
 						<th>类别</th>
 						<th>剂型</th>
-						<th>使用方法</th>
-						<th>发票抬头</th>
-						<th>拼音码</th>
 						<th>抗生素</th>
 						<th>生产厂商</th>
 						<th>生产场地</th>
-						<th>操作</th>
+						<th>库存</th>
+						<th>库存低限</th>
+						<th>库存上限</th>
+						<th>当前状态</th>
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach items="${stoDrugList}" var="sdList" varStatus="vs">
+				<c:forEach items="${drugList}" var="sdList" varStatus="vs">
 					<tr class="text-c">
 
-						<td>${sdList.drugId}</td>
-						<td>${sdList.drugName}</td>
-						<td>${sdList.generalName}</td>
-						<td>${sdList.specific}</td>
-						<td>${sdList.unit}</td>
-						<td>${sdList.retailPrice}</td>
-						<td>${sdList.drugTypeBean.drugType}</td>
-						<td>${sdList.dfBean.dosageForm}</td>
-						<td>${sdList.usage}</td>
-						<td>${sdList.invoiceTitle}</td>
-						<td>${sdList.pinyinCode}</td>
-						<td>${sdList.antibiotic}</td>
-						<td>${sdList.drugmanu}</td>
-						<td>${sdList.proPlace}</td>
-						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}',400,300)">修改零售价</a>
-							</td>
+						<td>${sdList.stoDrugBean.drugId}</td>
+						<td>${sdList.stoDrugBean.drugName}</td>
+						<td>${sdList.stoDrugBean.generalName}</td>
+						<td>${sdList.stoDrugBean.specific}</td>
+						<td>${sdList.stoDrugBean.unit}</td>
+						<td>${sdList.stoDrugBean.retailPrice}</td>
+						<td>${sdList.stoDrugBean.drugTypeBean.drugType}</td>
+						<td>${sdList.stoDrugBean.dfBean.dosageForm}</td>
+						<td>${sdList.stoDrugBean.antibiotic}</td>
+						<td>${sdList.stoDrugBean.drugmanu}</td>
+						<td>${sdList.stoDrugBean.proPlace}</td>
+						<td>${sdList.drugNum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
+						<td>${sdList.minimum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
+						<td>${sdList.maximum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
+						<td>${sdList.useable}</td>
+						
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -110,11 +112,11 @@
 	
 	<div style="float: right; margain-top: 20px;">
 			<button  class="btn btn-secondary-outline radius" id="pre"
-				name="" onclick="prePage('${pageNum}')">上一页</button>
+				name="" onclick="prePage('${condiBean.pageNum}')">上一页</button>
 			<button  class="btn btn-primary size-S radius" id=""
 				name="">1</button>
 			<button  class="btn btn-secondary-outline radius" id="next"
-				name="" onclick="nextPage('${pageNum}','${pageTotal }')">下一页</button>
+				name="" onclick="nextPage('${condiBean.pageNum}','${pageTotal }')">下一页</button>
 		</div>
 </div>
 
@@ -132,24 +134,13 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-
-function subSelect(){
-	var drugId=$("#drugId").val();
-	if(drugId==""){
-		$("#drugId").val(0);
-		$("#formSd").submit();
-	}else{
-		$("#formSd").submit();
-	}
-}
-
 /*上一页  */
 function prePage(pageNum) {
 	var str1 = "";
 	if (pageNum > 1) {
 		$("#pre").disabled=false;
 		pageNum -= 1;
-		str1 = "selectAdjustPrice.action?pageNum="
+		str1 = "showTakeStock.action?pageNum="
 				+ pageNum;
 	} else {
 		return;
@@ -162,7 +153,7 @@ function nextPage(pageNum, total) {
 	var str2 = "";
 	if (pageNum < total) {
 		pageNum = Number(pageNum) + 1;
-		str2 = "selectAdjustPrice.action?pageNum="
+		str2 = "showTakeStock.action?pageNum="
 				+ pageNum;
 	} else {
 		return;

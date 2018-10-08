@@ -37,9 +37,10 @@
 		<br>
 		申请人：<input type="text" class="input-text" style="width:250px" placeholder="请输入申请人" id="" name="adminName">
 		审核状态：<select name="checkId" >
-		<option value="6" >审核通过</option>
-		<option value="8" >审核未通过</option>
-		<option value="7" >未审核</option>
+		<option value="0" >请选择</option>
+		<option value="6" <c:if test="${checkId==6 }">selected="selected"</c:if>>审核通过</option>
+		<option value="8" <c:if test="${checkId==8 }">selected="selected"</c:if>>审核未通过</option>
+		<option value="7" <c:if test="${checkId==7 }">selected="selected"</c:if>>未审核</option>
 		 </select>
 		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
@@ -62,6 +63,7 @@
 				<th width="150">申请日期</th>
 				<th width="130">审核日期</th>
 				<th width="100">审核情况</th>
+				<th width="100">审核人</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -78,6 +80,7 @@
 				<td>${breakApply.applyDate}</td>
 				<td>${breakApply.checkDate}</td>
 				<td class="td-status"><span class="label label-success radius">${breakApply.checkName }</span></td>
+				<td>${breakApply.auditorName}</td>
 			</tr>
 			</c:forEach>
 		</tbody>
@@ -108,7 +111,7 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 
-	
+   
 
 	/*上一页  */
 	function prePage(pageNum) {

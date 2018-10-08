@@ -13,7 +13,9 @@ import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
 import org.great.bean.StoDrugBean;
+import org.great.bean.TakeStockBean;
 import org.great.biz.IDailyWorkBiz;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,9 +45,9 @@ public class DailyWorkHandle {
 	 */
 	//药品审核
 	@RequestMapping("/breakCheck.action")
-	public String breakCheck(DrugApplyBean drugApplyBean) {
+	public String breakCheck(HttpServletRequest req,DrugApplyBean drugApplyBean) {
 		
-		return dailyWorkBizImpl.breakCheck(drugApplyBean);
+		return dailyWorkBizImpl.breakCheck(req,drugApplyBean);
 	}
 	
 	//跳转报损审核界面
@@ -72,7 +74,7 @@ public class DailyWorkHandle {
 	@RequestMapping("/breakApply.action")
 	public String breakApply(HttpServletRequest req ,DrugApplyBean drugApplyBean) {
 		
-		return dailyWorkBizImpl.breakApply(drugApplyBean);
+		return dailyWorkBizImpl.breakApply(req,drugApplyBean);
 	}
 	
 	
@@ -123,8 +125,56 @@ public class DailyWorkHandle {
 	
 	//开始发药
 	@RequestMapping("/sellDrug.action")
-	public String sellDrug(StoDrugBean stoDrugBean) {
-		return dailyWorkBizImpl.sellDrug(stoDrugBean);
+	public String sellDrug(HttpServletRequest req,StoDrugBean stoDrugBean) {
+		return dailyWorkBizImpl.sellDrug(req,stoDrugBean);
+	}
+	
+	//进入停用药品界面
+	@RequestMapping("/toForbidDrug.action")
+	public ModelAndView toForbidDrug(CondiBean condiBean) {
+		return dailyWorkBizImpl.toForbidDrug(condiBean);
+	}
+	
+	//停用药品
+	@RequestMapping("/forbidDrug.action")
+	public String forbidDrug(StoDrugBean stoDrugBean) {
+		return dailyWorkBizImpl.forbidDrug(stoDrugBean);
+	}
+	
+	//每个月最后一天自动盘点盈亏
+//	@Scheduled(cron="0 0 0 1 * ?")
+//	@Scheduled(cron="10 * * * * ?")
+//	public void checkTask() {
+//		System.out.println("开始盘点啦");
+//		dailyWorkBizImpl.checkProfit();
+//		dailyWorkBizImpl.checkStock();
+//		
+//	}
+	
+	/*
+	 * 管理员录入药房药品实际库存
+	 */
+	@RequestMapping("/checkStockData.action")
+	public String checkStockData(TakeStockBean takeStockBean) {
+		return dailyWorkBizImpl.checkStockData(takeStockBean);
+	}
+	
+	/*进入到盘点界面*/
+	@RequestMapping("/toCheckData.action")
+	public ModelAndView toCheckData(CondiBean condiBean) {
+		return dailyWorkBizImpl.toCheckData(condiBean);
+	}
+	
+	/*查询盘点结果*/
+	@RequestMapping("/showTakeStock.action")
+	public ModelAndView showTakeStock(CondiBean condiBean) {
+		return dailyWorkBizImpl.showTakeStock(condiBean);
+	}
+	
+	/*查询药房药品库存信息*/
+	@RequestMapping("/selectPhaDrug.action")
+	public ModelAndView selectPhaDrug(CondiBean condiBean) {
+		return dailyWorkBizImpl.selectPhaDrug(condiBean);
 	}
 	
 	@RequestMapping("/toIndex.action")
@@ -137,7 +187,7 @@ public class DailyWorkHandle {
 	// 到主界面(lp)
 		@RequestMapping("/toMain.action")
 		public ModelAndView toPharmacyMain(HttpServletRequest requsest) {
-			
+
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("pharmacy/index");
 			return mav;
@@ -189,8 +239,8 @@ public class DailyWorkHandle {
 
 		// 提交退库申请
 		@RequestMapping("/cacellingApply.action")
-		public ModelAndView cacellingApply(DrugApplyBean drugApplyBean) {
-			return dailyWorkBizImpl.cacellingApply(drugApplyBean);
+		public ModelAndView cacellingApply(HttpServletRequest request, DrugApplyBean drugApplyBean) {
+			return dailyWorkBizImpl.cacellingApply(request, drugApplyBean);
 
 		}
 
@@ -205,22 +255,23 @@ public class DailyWorkHandle {
 
 		// 不同意退库申请
 		@RequestMapping("/chickError.action")
-		public ModelAndView chickError(HttpServletRequest requset,String drugApplyId) {
-			return dailyWorkBizImpl.chickError(requset,drugApplyId);
+		public ModelAndView chickError(HttpServletRequest requset, String drugApplyId) {
+			return dailyWorkBizImpl.chickError(requset, drugApplyId);
 
 		}
 
 		// 到审核请领界面(lp)
 		@RequestMapping("/totakeApplyList.action")
 		public ModelAndView totakeApplyList(CondiBean condiBean) {
+
 			return dailyWorkBizImpl.totakeApplyList(condiBean);
 		}
 
 		// 不同意请领申请
 		@RequestMapping("/takeError.action")
-		public ModelAndView takeError(HttpServletRequest requset,String drugApplyId) {
-			
-			return dailyWorkBizImpl.takeError(requset,drugApplyId);
+		public ModelAndView takeError(HttpServletRequest requset, String drugApplyId) {
+
+			return dailyWorkBizImpl.takeError(requset, drugApplyId);
 
 		}
 
@@ -236,14 +287,52 @@ public class DailyWorkHandle {
 		public ModelAndView toAllTakeApply(CondiBean condiBean) {
 			return dailyWorkBizImpl.toAllTakeApply(condiBean);
 		}
+
 		// 同意请领申请
 		@RequestMapping("/takeSuccess.action")
 		public ModelAndView takeSuccess(HttpServletRequest request, String drugApplyId, BatchDetailBean batchDetailBean) {
-			System.out.println("请领数量为"+batchDetailBean.getHandleNum());
-			return dailyWorkBizImpl.takeSuccess(request, drugApplyId,batchDetailBean);
+			System.out.println("请领数量为" + batchDetailBean.getHandleNum());
+			return dailyWorkBizImpl.takeSuccess(request, drugApplyId, batchDetailBean);
 		}
-		
-	
 
-	
-}
+		// 到消息提醒界面
+		@RequestMapping("/toWarn.action")
+		public ModelAndView toWarn(HttpServletRequest request) {
+			return dailyWorkBizImpl.toWarn(request);
+		}
+
+		// 设置定时时间
+		@Scheduled(cron = "1 0 0 * * ?")
+		public void expirationWarn() {
+			System.out.println("咨询查找过期/滞销业务");
+			dailyWorkBizImpl.expirationWarn();
+
+		}
+
+		// 到低限预警界面
+		@RequestMapping("toMinimumWarn.action")
+		public ModelAndView toMinimumWarn(HttpServletRequest request, CondiBean condiBean) {
+			return dailyWorkBizImpl.toMinimumWarn(request, condiBean);
+
+		}
+
+		// 到滞销预警界面
+		@RequestMapping("toUnsalableWarn.action")
+		public ModelAndView toUnsalableWarn(HttpServletRequest request, CondiBean condiBean) {
+			return dailyWorkBizImpl.toUnsalableWarn(request, condiBean);
+
+		}
+
+		// 到过期预警界面
+		@RequestMapping("toOverdueWarn.action")
+		public ModelAndView toOverdueWarn(HttpServletRequest request, CondiBean condiBean) {
+			return dailyWorkBizImpl.toOverdueWarn(request, condiBean);
+
+		}
+
+		// 到过期预警界面
+		@RequestMapping("affirmWarn.action")
+		public ModelAndView affirmWarn(HttpServletRequest request, int warnId) {
+			return dailyWorkBizImpl.affirmWarn(request, warnId);
+		}
+	}
