@@ -10,10 +10,15 @@
 
 package org.great.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
@@ -21,6 +26,9 @@ import org.great.bean.DrugApplyBean;
 import org.great.bean.InventoryBean;
 import org.great.bean.StoDrugBean;
 import org.great.biz.IStockWorkBiz;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,10 +59,7 @@ public class StockWorkHandle {
 		return modelAndView;
 	}
 
-	/*****************************************************
-	 * @Description 药品采购模块
-	 * 
-	 */
+	/* 药品采购模块 */
 	/**
 	 * 药品采购申请页面显示
 	 */
@@ -74,7 +79,6 @@ public class StockWorkHandle {
 		mav.setViewName("storage/drugSelectList");
 		return mav;
 	}
-
 
 	/** 药品采购申请，插入申请记录 */
 	@RequestMapping(value = "/purchaseApply.action")
@@ -114,10 +118,60 @@ public class StockWorkHandle {
 	public ModelAndView pdInstorageConfirm(DrugApplyBean drugApplyBean) {
 		return stockWorkBizImpl.pdInstorageConfirm(drugApplyBean);
 	}
-	
-	/**药品采购入库成功*/
-	@RequestMapping(value="/pdInstorageSuccess.action")
+
+	/** 药品采购入库成功 */
+	@RequestMapping(value = "/pdInstorageSuccess.action")
 	public String pdInstorageSuccess(BatchDetailBean batchDetailBean) {
 		return stockWorkBizImpl.pdInstorageSuccess(batchDetailBean);
 	}
+
+	/* 药品退还厂家模块 */
+	/** 退还厂家界面显示 */
+	@RequestMapping(value = "/toReturnManuApply.action")
+	public ModelAndView toReturnManuApply() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("storage/returnManuApply");
+		return mav;
+	}
+
+	/** 入库批次详情浏览 */
+	@RequestMapping(value = "/getInventoryBatchList.action")
+	public ModelAndView getInventoryBatchList(CondiBean condiBean) {
+		return stockWorkBizImpl.getInventoryBatchList(condiBean);
+	}
+
+	/** 提交退还申请 */
+	@RequestMapping(value = "/returnManuApply.action")
+	public ModelAndView returnManuApply(DrugApplyBean drugApplyBean) {
+		return stockWorkBizImpl.returnManuApply(drugApplyBean);
+	}
+
+	/** 所有退还审核记录列表 */
+	@RequestMapping(value = "/toAllReturnManuApply.action")
+	public ModelAndView toAllReturnManuApply(CondiBean condiBean) {
+		return stockWorkBizImpl.toAllReturnManuApply(condiBean);
+	}
+
+	/** 未审核退还记录 */
+	@RequestMapping(value = "/toReturnManuAuditList.action")
+	public ModelAndView toReturnManuAuditList(CondiBean condiBean) {
+		return stockWorkBizImpl.toReturnManuAuditList(condiBean);
+	}
+
+	/** 退还厂家审核 */
+	@RequestMapping(value = "/returnManuAudit.action")
+	public String returnManuAudit(DrugApplyBean drugApplyBean) {
+		return stockWorkBizImpl.returnManuAudit(drugApplyBean);
+	}
+
+	/**
+	 * 导出Excel文件
+	 * @throws Exception
+	 */
+	@RequestMapping("/exportExcel.action")
+	public void exportExcel(HttpServletRequest request, HttpServletResponse response,
+			CondiBean condibean) throws Exception {
+		stockWorkBizImpl.exportExcel(request, response, condibean);
+	}
+
 }

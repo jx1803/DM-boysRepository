@@ -12,9 +12,12 @@ package org.great.controller;
 
 import javax.annotation.Resource;
 
+import org.great.bean.CondiBean;
 import org.great.biz.IStorStatisticsBiz;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /** 
  * @ClassName: StorStatisticsHandle 
@@ -27,5 +30,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class StorStatisticsHandle {
 	@Resource
 	private IStorStatisticsBiz storStatisticBizImpl;//药库统计业务实现类
+	/**
+	 * 药品采购统计
+	 * */
+	@RequestMapping(value="/dpStatistics.action")
+	public ModelAndView dpStatistics(CondiBean condiBean) {
+		return storStatisticBizImpl.dpStatistics(condiBean);
+	}
 
+	/**药品出入库明细统计*/
+	@RequestMapping(value="/drugOutInStatistics.action")
+	public ModelAndView drugOutInStatistics(CondiBean condiBean) {
+		return storStatisticBizImpl.drugOutInStatistics(condiBean);
+	}
 }

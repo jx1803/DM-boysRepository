@@ -274,7 +274,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	// 查找要退库的药
 	@Override
 	public ModelAndView chooseCaceDrug(StoDrugBean stoDrugBean) {
-		List<StoDrugBean> drugList = dailyWorkMapper.chooseCaceDrug(stoDrugBean);
+		List<BatchDetailBean> drugList = dailyWorkMapper.chooseCaceDrug(stoDrugBean);
 
 		System.out.println(drugList.size());
 		ModelAndView mav = new ModelAndView();

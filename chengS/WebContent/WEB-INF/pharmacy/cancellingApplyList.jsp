@@ -84,7 +84,7 @@
 						<td>${caceApply.manuBatch }</td>
 						<td>${caceApply.adminBean.adminName }</td>
 						<td>${caceApply.applyReason}</td>
-						<td>${caceApply.checkDate}</td>
+						<td>${caceApply.applyDate}</td>
 						<td class="td-status"><span
 							class="label label-success radius">${caceApply.checkName}</span></td>
 						<td><a

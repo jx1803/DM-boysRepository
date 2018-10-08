@@ -648,21 +648,23 @@
 
 
 	<!-- 通过拼音码/id/名称 //生产日期查找退库药品 -->
-	<select id="chooseCaceDrug"
-		parameterType="org.great.bean.StoDrugBean" resultMap="canSellMap">
-			select s.*,p.drugNum,
-		b.manuBatch,b.batchDetailId,b.purprice,b.putBatch,b.proDate,
-		b.handleNum
+<select id="chooseCaceDrug"
+		parameterType="org.great.bean.StoDrugBean" resultMap="caceDruginfo">
+		select s.*,p.drugNum,b.*
 		from TBLStoDrug
 		s,tblbatchdetail
-		b,tbloutandin o,tblPhaDrug p
+		b,tbloutandin
+		o,tblPhaDrug p
 		where
-		s.drugid= b.drugid
+		s.drugid=
+		b.drugid
 		and o.putBatch=b.batchDetailId
 		and
 		s.drugid=p.drugid
-		and o.placeId=21 and o.outInId=18
-		and b.handlenum!=0
+		and
+		o.placeId=21 and o.outInId=18
+		and b.handlenum >0
+		and b.putBatch is null
 		<if test="pinyinCode!=null and pinyinCode!=''">
 			and s.pinyinCode like
 			concat(concat('%',#{pinyinCode}),'%')
@@ -675,45 +677,33 @@
 		</if>
 
 	</select>
-	
-	
-	
- 	<resultMap type="org.great.bean.StoDrugBean"
+	<resultMap type="org.great.bean.BatchDetailBean"
 		id="caceDruginfo">
-		<result property="drugId" column="drugId" />
-		<result property="drugName" column="drugName" />
-		<result property="generalName" column="generalName" />
-		<result property="specific" column="specific" />
-		<result property="unit" column="unit" />
-		<result property="retailPrice" column="retailPrice" />
-		<result property="dosageId" column="dosageId" />
-		<result property="usage" column="usage" />
-		<result property="invoiceTitle" column="invoiceTitle" />
-		<result property="pinyinCode" column="pinyinCode" />
-		<result property="antibiotic" column="antibiotic" />
-		<result property="dosage" column="dosage" />
-		<result property="typeId" column="typeId" />
-		<result property="drugmanu" column="drugmanu" />
-		<result property="proPlace" column="proPlace" />
-		<association property="batchDetailBean"
-			column="batchDetailId" javaType="org.great.bean.BatchDetailBean">
-			<id property="batchDetailId" column="batchDetailId" />
-			<result property="putBatch" column="putBatch" />
-			<result property="manuBatch" column="manuBatch" />
-			<result property="proDate" column="proDate" />
-			<result property="handleNum" column="HANDLENUM" />
+		<id property="batchDetailId" column="batchDetailId" />
+		<result property="putBatch" column="putBatch" />
+		<result property="purPrice" column="purPrice" />
+		<result property="manuBatch" column="manuBatch" />
+		<result property="proDate" column="proDate" />
+		<result property="handleNum" column="HANDLENUM" />
+		<result property="inDate" column="inDate" />
+		<result property="drugId" column="drugId"></result>
+		<association property="stoDrugBean"
+			javaType="org.great.bean.StoDrugBean">
+			<result property="drugId" column="drugid" />
+			<result property="specific" column="specific" />
+			<result property="unit" column="unit" />
+			<result property="retailPrice" column="retailPrice" />
+			<result property="drugName" column="drugname" />
+			<result property="pinyinCode" column="pinyinCode" />
+			<result property="drugmanu" column="drugmanu" />
 		</association>
 		<association property="phaDrugBean" column="phaDrugId"
 			javaType="org.great.bean.PhaDrugBean">
 			<id property="phaDrugId" column="phaDrugId" />
 			<result property="drugNum" column="drugNum" />
 		</association>
-		<association property="outAndInBean" column="outAndInId"
-			javaType="org.great.bean.OutAndInBean">
-			<result property="outAndInId" column="outAndInId" />
+	</resultMap>
 
-		</association>
-	</resultMap> 
 	
 	
 	<!--审核退库操作 -->

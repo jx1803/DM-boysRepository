@@ -62,7 +62,7 @@ public interface DailyWorkMapper {
 		public List<StoDrugBean> selectDrug(StoDrugBean stoDrugBean);
 
 		// 查找要退库的药品(lp)
-		public List<StoDrugBean> chooseCaceDrug(StoDrugBean stoDrugBean);
+		public List<BatchDetailBean> chooseCaceDrug(StoDrugBean stoDrugBean);
 
 		// 提交退库申请(lp)
 		public void cacellingApply(DrugApplyBean drugApplyBean);

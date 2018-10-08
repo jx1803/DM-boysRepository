@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 public class AdminBean {
 	private int adminId;
 	private String adminName;
+	private String auditorName;//审核人名称
 	private String sex;//性别
 	private int roleId;//角色id
 	private int deptId;//部门id
@@ -153,6 +154,14 @@ public class AdminBean {
 	}
 	public void setParamId(int paramId) {
 		this.paramId = paramId;
+	}
+
+	public String getAuditorName() {
+		return auditorName;
+	}
+
+	public void setAuditorName(String auditorName) {
+		this.auditorName = auditorName;
 	}
 	
 
