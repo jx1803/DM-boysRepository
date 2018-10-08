@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 public class AdminBean {
 	private int adminId;
 	private String adminName;
+	private String adminAccount;//用户账户
 	private String sex;//性别
 	private int roleId;//角色id
 	private int deptId;//部门id
@@ -24,14 +25,21 @@ public class AdminBean {
 	private RoleBean rolebean;//角色bean
 	private DeptBean deptbean;//部门bean
 	private ParamBean parambean;//状态bean
-	
-	
+
 	private String name;//新增  角色用户名拼接字段
 	
 	public AdminBean() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String getAdminAccount() {
+		return adminAccount;
+	}
+
+	public void setAdminAccount(String adminAccount) {
+		this.adminAccount = adminAccount;
+	}
+
 	public String getName() {
 		return name;
 	}

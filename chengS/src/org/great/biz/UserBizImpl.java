@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.great.bean.AdminBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DeptBean;
+import org.great.bean.LogBean;
+import org.great.bean.ParamBean;
 import org.great.bean.PermissionBean;
 import org.great.bean.RoleBean;
 import org.great.mapper.UserMapper;
@@ -29,14 +31,42 @@ public class UserBizImpl implements IUserBiz {
 	@Override
 	public String userlogin(AdminBean user, HttpSession session) {
 		// TODO Auto-generated method stub
+		//先判断状态，是否为已启用
+
 		user = userMapper.userlogin(user);
-		session.setAttribute("User", user);
-		if (null != user) {
-			flag = "success";
+		
+		if(null==user) {
+			flag="login";
+		
+		}else {
+		
+			if(user.getParamId()==2) {
+				session.setAttribute("User", user);
+			
+				flag="pharmacy/index";
+			}else {
+				flag="login";
+			}
 		}
+		
 		return flag;
 	}
 
+//修改密码
+	public String userChangePsword(AdminBean user,String psword) {
+		user = userMapper.userlogin(user);
+		if(null==user) {
+			//这里还要个弹框//账户密码错误
+			flag="login";
+			
+		}else {
+			//修改密码
+			user.setName(psword);
+			userMapper.changepsword(user);
+			flag="pharmacy/index";
+		}
+		return flag;
+	}
 	
 	//用户管理数据页面显示，
 	@Override
@@ -47,7 +77,18 @@ public class UserBizImpl implements IUserBiz {
 		ulist=userMapper.userList(cd);
 		return ulist;
 	}
-
+//已删除用户显示
+	@Override
+	public List<AdminBean> userDelList(CondiBean cd){
+		cd.setPageup(cd.getPage()*5);
+		cd.setPagedown((cd.getPage()*5-5)+1);
+		ulist=userMapper.userdellist(cd);
+		return ulist;
+	}
+//已删除用户总数
+	public int userDelComm(CondiBean cd) {
+		return userMapper.userdelcomm(cd);
+	}
 
 	//获取用户总页数+模糊条件
 	@Override
@@ -81,8 +122,7 @@ public class UserBizImpl implements IUserBiz {
 	@Override
 	public int DelState(int adminid) {
 		// TODO Auto-generated method stub
-		userMapper.delstate(adminid);
-		return 0;
+		return userMapper.delstate(adminid);
 	}
 
 	//用户增加用到
@@ -90,8 +130,7 @@ public class UserBizImpl implements IUserBiz {
 @Override
 public List<RoleBean> memberRole() {
 	// TODO Auto-generated method stub
-	ulist=userMapper.memberrole();
-	return ulist;
+	return userMapper.memberrole();
 }
 
 //用户增加用到
@@ -99,13 +138,101 @@ public List<RoleBean> memberRole() {
 @Override
 public List<DeptBean> memberDept(CondiBean cond) {
 	// TODO Auto-generated method stub
+	cond.setPageup(cond.getPage()*5);
+	cond.setPagedown((cond.getPage()*5-5)+1);
 	ulist=userMapper.memberdept(cond);
 	return ulist;
+}
+//部门条数
+public int deptComm(CondiBean cond) {
+	
+	return userMapper.deptcomm(cond);
+}
+//部门增加用到
+public int inserDept(DeptBean dept) {
+	userMapper.inserdept(dept);
+	return 1;
+}
+//部门删除
+public int delDept(int deptid) {
+	userMapper.deldept(deptid);
+	return 1;
+}
+
+//所有部门不分页
+public List<DeptBean> deptAll(){
+	ulist=userMapper.deptall();
+	return ulist;
+}
+//修改部门后保存
+public int deptSave(DeptBean dept) {
+	userMapper.deptsave(dept);
+	return 1;
+}
+//添加新用户后，根据用户名，找到用户id，插入到用户与角色关系表中
+@Override
+public AdminBean selectnewUser(CondiBean cond) {
+	// TODO Auto-generated method stub
+	//执行两个方法
+	AdminBean adminbean= userMapper.selectuserone(cond.getAdminName());
+	cond.setPermissionId(adminbean.getAdminId());
+	cond.setRoleid(cond.getRoleid());
+	System.out.println("角色id"+cond.getRoleid());
+	System.out.println("用户id"+adminbean.getAdminId());
+	//插入到角色与用户关系表中
+	userMapper.insertroleanduser(cond);
+	return null;
+}
+//用户名找到用户信息
+@Override
+public AdminBean selectOtherUser(AdminBean adbean) {
+	// TODO Auto-generated method stub
+	AdminBean adminbean= userMapper.selectuserone(adbean.getAdminName());
+	return adminbean;
+}
+
+//通过用户id找到角色id
+@Override
+public int selectRoleAndAdmin(int adminid) {
+	// TODO Auto-generated method stub
+	
+	CondiBean cond = userMapper.roleandadmin(adminid);
+	return cond.getRoleid();
+}
+
+//重置密码
+@Override
+public int updateResetPsw(AdminBean admin) {
+	// TODO Auto-generated method stub
+	return userMapper.updateresetpsw(admin);
+}
+
+//修改用户信息
+@Override
+public AdminBean memberUpdateSave(AdminBean ad, CondiBean cond) {
+	// TODO Auto-generated method stub
+	//先修改用户本身的信息
+	userMapper.updateuser(ad);
+	//修改用户关系表
+	userMapper.updateroleanduser(cond);
+	return null;
+}
+
+//重复账户
+@Override
+public AdminBean reappearUser(String account) {
+	// TODO Auto-generated method stub
+	AdminBean admin = userMapper.reappearuser(account);
+	if(null==admin) {
+		
+	}
+	return admin;
 }
 
 
 
-	
+
+
 /**************以下为角色的功能业务************************/
 	
 	//角色列表
@@ -117,6 +244,31 @@ public List<DeptBean> memberDept(CondiBean cond) {
 		ulist=userMapper.rolelist(cond);
 		return ulist;
 	}
+	
+//通过角色id找到角色以及角色简介
+	@Override
+	public RoleBean selectRole(int roleId) {
+		// TODO Auto-generated method stub
+		return userMapper.selectrole(roleId);
+	}
+//删除角色与用户关系表
+@Override
+public int delRoleAndUser(int roleId) {
+	
+	return userMapper.delroleanduser(roleId);
+}
+
+//删除权限与角色关系表
+public int delRoleAndPer(int roleId) {
+	return userMapper.delroleandper(roleId);
+}
+	
+//删除角色
+@Override
+public int delRole(int roleId) {
+	// TODO Auto-generated method stub
+	return userMapper.delrole(roleId);
+}
 
 
 	//角色总页数
@@ -148,9 +300,19 @@ public List<RoleBean> roleAllList() {
 	// TODO Auto-generated method stub
 	return userMapper.rolealllist();
 }
+//更改角色信息
+@Override
+public int updateRole(RoleBean role) {
+	// TODO Auto-generated method stub
+	return userMapper.updaterole(role);
+}
 
 
 /**************菜单***************/
+//找出所有的菜单
+public List<PermissionBean> selectAllMenu(AdminBean bean){
+	return userMapper.selectallmenu(bean);
+}
 //一级菜单
 @Override
 public List<PermissionBean> leveloneMenu(CondiBean cond) {
@@ -180,14 +342,17 @@ public List<PermissionBean> leveltwoMenu(CondiBean cond) {
 	// TODO Auto-generated method stub
 	cond.setPageup(cond.getPage()*5);
 	cond.setPagedown((cond.getPage()*5-5)+1);
-	return userMapper.leveltwomenu(cond);
+	
+	 ulist = userMapper.leveltwomenu(cond);
+	 System.out.println("搜索后的ulist"+ulist);
+	return ulist;
 }
 
 //二级菜单个数
 @Override
 public int ResulttwoMenu(CondiBean cond) {
 	// TODO Auto-generated method stub
-	return 0;
+	return userMapper.resulttwomenu(cond);
 }
 
 
@@ -207,10 +372,30 @@ public int insertSMenu(PermissionBean pbean) {
 }
 
 //二级菜单删除
+
+//一级菜单删除
 @Override
-public int MenuTwoDel(int permissionId) {
+public int MenuOneDel(int pid) {
+	userMapper.menutwodel(pid);
+	int i = userMapper.menuonedel(pid);
+	return i;
+}
+
+//删除二级菜单
+@Override
+public int MenuTwoDel(int fid) {
 	// TODO Auto-generated method stub
-	return userMapper.menutwodel(permissionId);
+	return userMapper.menuonedel(fid);
+}
+
+
+
+//修改一二级菜单保存至数据库
+@Override
+public int menuSave(PermissionBean pbean) {
+	int j= userMapper.updatemenu1(pbean);
+	int i = userMapper.updatetwomenu(pbean);
+	return i;
 }
 
 
@@ -298,10 +483,77 @@ public int AddConfig(String test, int roleid) {
 }
 
 
+/*******************参数配置***************/
+@Override
+public List<ParamBean> paramList(CondiBean cond) {
+	// TODO Auto-generated method stub
+	cond.setPageup(cond.getPage()*5);
+	cond.setPagedown((cond.getPage()*5-5)+1);
+	return userMapper.paramlist(cond);
+}
 
+//参数配置的总条数
+@Override
+public int ParamComm(CondiBean cond) {
+	// TODO Auto-generated method stub
+	return userMapper.paramcomm(cond);
+}
 
+//插入一级参数
+@Override
+public int inserLevel1Parame(CondiBean cond) {
+	// TODO Auto-generated method stub
+	return userMapper.inserlevel1parame(cond);
+}
 
+//取得一级参数配置
+@Override
+public List<ParamBean> Level1Param() {
+	// TODO Auto-generated method stub
+	return userMapper.level1param();
+}
 
+//插入二级参数配置
+@Override
+public int inserLevel2Parame(CondiBean cond) {
+	// TODO Auto-generated method stub
+	return userMapper.inserlevel2parame(cond);
+}
 
+//删除一级参数配置
+@Override
+public int delOneParam(int paid) {
+	// TODO Auto-generated method stub
+	//删除一级参数配置，以及一级参数配置下的二级
+	userMapper.delonparam(paid);//
+	int i = userMapper.deltwoparam(paid);
+	return i;
+}
+//删除二级参数配置
+@Override
+public int delTwoParam(int paramid) {
+	// TODO Auto-generated method stub
+	return userMapper.deltwoparam(paramid);
+}
 
+//修改参数
+@Override
+public int updatParam(ParamBean bean) {
+	//改两句
+	userMapper.updatepid(bean);
+	int i = userMapper.updateparam(bean);
+	return i;
+}
+
+//日志查看
+public List<LogBean> selectLog(CondiBean cond){
+	cond.setPageup(cond.getPage()*5);
+	cond.setPagedown((cond.getPage()*5-5)+1);
+	ulist=userMapper.selectlog(cond);
+	return ulist;
+}
+//日志总条数
+public int logComm(CondiBean cond) {
+	return userMapper.logcomm(cond);
+}
 }

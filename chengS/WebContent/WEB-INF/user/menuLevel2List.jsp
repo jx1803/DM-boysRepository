@@ -22,22 +22,23 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 二级菜单管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-<form id="form1" name="form1" action="<%=path %>user/member_list.action" method="post" >
+<form id="form1" name="form1" action="<%=path %>user/menuLevel2List.action" method="post" >
 	<div class="text-c"> 菜单搜索：
-		<input type="text" class="input-text" style="width:250px" placeholder="输入菜单名" id="" name="adminName" value="${uname }">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入一级菜单名" id="" name="entrytime" value="${blurred.entrytime }">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入二级菜单名" id="" name="adminName" value="${blurred.adminName }">
 		<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
 	</form>
 	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"> 
-	<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
-	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','<%=path%>user/Menu_Level2_add.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加二级菜单</a> </span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+	
+	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_menu_add('添加角色','<%=path%>user/menuLevel1Add.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加一级菜单</a> 
+	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','<%=path%>user/menuLevel2Add.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加二级菜单</a> </span> <span class="r">共有数据：<strong>${pageNum }</strong> 条</span> </div>
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
 			<tr>
 				<th scope="col" colspan="6">二级菜单</th>
 			</tr>
 			<tr class="text-c">
-				<th width="25"><input type="checkbox" value="" name=""></th>
 				<th width="300">一级菜单</th>
 				<th>二级菜单</th>
 				<th width="70">操作</th>
@@ -45,27 +46,27 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${ulist }" var="plist">
-						<c:forEach items="${ulist }" var = "slist" >
-							<c:if test = "${plist.permissionId == slist.pid }">
+						
+							
 								<tr>
-								<td><input type="checkbox" value="" name="">${plist.permissionId}_____${slist.pid  }</td>
 								<td>${plist.permission }</td>
-								<td>${slist.permission }</td>
+								<td>${plist.sname }</td>
 								<td class="f-14">
-								<a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
-								<a title="删除" href="javascript:;" onclick="admin_role_del(this,'${slist.permissionId}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+								<a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','<%=path%>user/menuLevel2Update.action?permissionId=${plist.permissionId }&permission=${plist.permission}&pid=${plist.pid }&sname=${plist.sname }&fid=${plist.fid }')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+								<a title="删除一级菜单" href="javascript:;" onclick="admin_role_del(this,'${plist.permissionId}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+								<a title="删除二级菜单" href="javascript:;" onclick="admin_twoMenu_del(this,'${plist.fid }')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+								
 								</tr>
-							</c:if>
-						</c:forEach>
+						
 			</c:forEach>
 		</tbody>
 	</table>
-		<div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">当前页 ${page}，共 ${pageTotol}页</div>
+		<div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">当前页 ${blurred.page}，共 ${pageTotal}页</div>
 	<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
 	
-	<button  type="button" onclick="upPage('${page}')" class="paginate_button previous disabled">上一页</button>
+	<button  type="button" onclick="upPage('${blurred.page}')" class="btn btn-secondary-outline radius">上一页</button>
 
-	<button id="DataTables_Table_0_next" class="paginate_button next disabled" onclick="nextPage('${page}','${pageTotol}')">下一页</button>
+	<button id="DataTables_Table_0_next" class="btn btn-secondary-outline radius" onclick="nextPage('${blurred.page}','${pageTotal}')">下一页</button>
 	</div>
 </div>
 <!--_footer 作为公共模版分离出去-->
@@ -84,7 +85,7 @@ function upPage(p){
 	var str1 = "";
 	if(p>1){
 		p-=1;
-		str1 = "member_list.action?page="+p;
+		str1 = "menuLevel2List.action?page="+p;
 		$("#form1").attr("action",str1);
 		$("#form1").submit();
 	}
@@ -96,32 +97,36 @@ function nextPage(p,total){
 	var str2 = "";
 	if(p<total){
 		p = Number(p) + 1;
-		str2 = "member_list.action?page="+p;
+		str2 = "menuLevel2List.action?page="+p;
 		$("#form1").attr("action",str2);
 		$("#form1").submit();
 	}
 }
 
-
+function admin_menu_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
 /*管理员-角色-添加*/
 function admin_role_add(title,url,w,h){
 	layer_show(title,url,w,h);
 }
 /*管理员-角色-编辑*/
 function admin_role_edit(title,url,id,w,h){
+
 	layer_show(title,url,w,h);
 }
-/*管理员-角色-删除*/
+/*一级菜单-删除*/
 function admin_role_del(obj,id){
-	layer.confirm('菜单删除须谨慎，确认要删除吗？',function(index){
+	layer.confirm('删除一级菜单须谨慎，确认要删除吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: 'Menu_Level2_del.action',
-			dataType: 'json',
-			data:{"permissionId":id},
+			url: 'menuLevel1Del.action',
+			dataType: 'text',
+			data:'permissionId='+id,
 			success: function(data){
 				$(obj).parents("tr").remove();
 				layer.msg('已删除!',{icon:1,time:1000});
+				layer.colse();
 			},
 			error:function(data) {
 				console.log(data.msg);
@@ -129,6 +134,27 @@ function admin_role_del(obj,id){
 		});		
 	});
 }
+
+/*二级菜单删除*/
+function admin_twoMenu_del(obj,id){
+	layer.confirm('二级菜单删除须谨慎，确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: 'menuLevelTwoDel.action',
+			dataType: 'text',
+			data:'fid='+id,
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+				layer.colse();
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
 </script>
 </body>
 </html>

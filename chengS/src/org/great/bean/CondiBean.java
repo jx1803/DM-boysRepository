@@ -30,7 +30,7 @@ public class CondiBean {
 	
 	private int permissionId;//权限id 2018.09.27 增加
 	private int roleid;//角色Id       2018.09.27 增加
-	
+	private int userid;//用户Id
 	
 	/**
 	 * 
@@ -56,6 +56,19 @@ public class CondiBean {
 	private DfBean dfBean;//药品剂型bean
 	private DrugTypeBean dtBean;//药品类型bean
 	
+
+
+
+
+	public int getUserid() {
+		return userid;
+	}
+
+
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+
 
 	public CondiBean() {
 		// TODO Auto-generated constructor stub

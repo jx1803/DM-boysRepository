@@ -14,43 +14,54 @@ String path = request.getScheme() +"://"+request.getServerName()
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="<%=path%>lib/Transfer.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=path%>lib/style.css">
 <link rel="stylesheet" type="text/css" href="<%=path%>static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>static/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="<%=path%>static/h-ui.admin/css/style.css" />
 
-<title>添加用户</title>
+<title>角色权限配置</title>
 </head>
+
 <body>
-<div class="pd-20">
+
+
+ <div class="pd-20">
   <div class="Huiform">
     
       
-      <div>
+      <div class="fl ty-transfer-list">
+        <div class="ty-transfer-list-head">
+          		角色
+        </div>
       	<table>
-      		<tr><td>角色</td> </tr>
+      		
       		<c:forEach items="${ulist}" var="list">
             <tr>
-            <td><a href="<%=path%>user/pConfiguration.action?roleid=${list.roleId }">${list.roleName }</a></td>
+            <td class="row cl"><a href="<%=path%>user/pConfiguration.action?roleid=${list.roleId }">${list.roleName }</a></td>
          	</tr>
          	</c:forEach>
       	</table>
       </div>
-     
-        <div style="position: absolute; top: 0; left: 230px; width: 400px;">
+        <div class="ty-transfer mt20 ml20">
+        <div class="fl ty-transfer-list transfer-list-left">
+        <div class="ty-transfer-list-head">
+          	已有权限
+        </div>
+          <div class="ty-transfer-list-body form-group" style="width:100%">
 		<form id="form1" action="<%=path%>user/ConfigurationDel.action" method="post" >
 			<c:forEach items="${rlist }" var="fathId">
 			
-				<dl>
+				<dl class="ty-tree-div">
 					<c:if test="${fathId.pid eq 0 }">
 						<dt>${fathId.permission}</dt>
 						<c:forEach items="${rlist }" var="sonId">
 							<c:if test="${fathId.permissionId == sonId.pid }">
-								<dd>
-									<input name="time" id="1" class="time" type="checkbox"
-										value="${sonId.permissionId}" />${sonId.permission}</dd>
+								<dd class=" ty-tree-div checkbox"">
+									<input name="time" id="1" class="tyue-checkbox-input"  type="checkbox" value="${sonId.permissionId}" />${sonId.permission}</dd>
 									<input type="hidden" name="roleId" value="${roleid }"/>
 							</c:if>
 						</c:forEach>
@@ -58,18 +69,30 @@ String path = request.getScheme() +"://"+request.getServerName()
 					</c:if>
 				</dl>
 			</c:forEach>
-</form>
+	</form>
+	</div>
+	  
+    </div>
 
+
+<div class="fl ty-transfer-operation">
+        <span class="ty-transfer-btn-toright to-switch " onclick="configDel()"></span>
+        <span class="ty-transfer-btn-toleft to-switch" onclick="configAdd()"></span>
+    </div>
 			<!--  </select> -->
-			<div style="position: absolute; top: 0; left: 270px; width: 400px;">
-	<form id="form2" action="<%=path%>user/ConfigurationAdd.action" method="post">
+			<div  class="fl ty-transfer-list transfer-list-right">
+			<div class="ty-transfer-list-head">
+            未分配权限
+        </div>
+        <div class="ty-transfer-list-body">
+		<form id="form2" action="<%=path%>user/ConfigurationAdd.action" method="post">
 				<c:forEach items="${roleother}" var="other">
 					<c:if test="${other.pid eq 0 }">
-						<dt>${other.permission}</dt>
+						<dt class="ty-tree-select">${other.permission}</dt>
 						<c:forEach items="${roleother }" var="sonother">
 							<c:if test="${other.permissionId == sonother.pid }">
-								<dd>
-									<input name="time" id="1" class="time" type="checkbox"
+								<dd class="ty-tree-div">
+									<input name="time1" id="1" class="transfer-all-check"  type="checkbox"
 										value="${sonother.permissionId}" />${sonother.permission}</dd>
 										<input type="hidden" name="roleId" value="${roleid }"/>
 							</c:if>
@@ -79,40 +102,59 @@ String path = request.getScheme() +"://"+request.getServerName()
 				</c:forEach>
 				</form>	
 			</div>
-		
-			<div style="position: absolute; top: 0; left: 220px; width: 40px; height: 400px; border: 1px solid;">
-				<button type="button" id="right_one" onclick="configDel()" style="display: block;">
-					<input type="button" id="left_all" value="-&gt;"/>
-				</button> 
-				<button id="left_one" onclick="configAdd()" style="display: block">
-					<input type="button" id="left_all" value="&lt-">
-				</button>
-			</div>
-		
 	</div>
-    
+	</div>
+   </div> 
  
-  </div>
 </div>
-<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript" src="<%=path%>js/Validform_v5.3.2_min.js"></script> 
+
+
+
 <script type="text/javascript" src="<%=path%>static/h-ui/js/H-ui.js"></script> 
 <script type="text/javascript" src="<%=path%>static/h-ui.admin/js/H-ui.admin.js"></script> 
 <script type="text/javascript">
-$(".Huiform").Validform(); 
+	$("#ued-transfer-1").transferItem();
 </script>
 <script>
 
 //提交已有权限，相当于删除掉
 function configDel(){
-	alert("进来了");
-	//把form1提交给后台
-	$("#form1").submit();
+	var objs=document.getElementsByName('time');
+	var isSel=false;//判断是否有选中项，默认为无
+	for(var i=0;i<objs.length;i++){	
+		if(objs[i].checked==true){
+			isSel=true;
+			break;
+	}
+	}
+	if(isSel==false){
+	alert("请选择权限！");
+	return false;
+	}else
+	{
+		$("#form1").submit();
+	}
+	
 }
 
 function configAdd(){
-	alert("进来要增加");
-	$("#form2").submit();
+
+	var objs=document.getElementsByName('time1');
+	var isSel=false;//判断是否有选中项，默认为无
+	for(var i=0;i<objs.length;i++){	
+		if(objs[i].checked==true){
+			isSel=true;
+			break;
+	}
+	}
+	if(isSel==false){
+	alert("请选择权限！");
+	return false;
+	}else
+	{
+		$("#form2").submit();
+	}
+	
 }
 var _hmt = _hmt || [];
 (function() {

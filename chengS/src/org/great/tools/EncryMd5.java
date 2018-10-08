@@ -6,11 +6,11 @@ import java.security.NoSuchAlgorithmException;
 
 import sun.misc.BASE64Encoder;
 
-public class EncryMd5 {
+public  class EncryMd5 {
 	private MessageDigest md5;
-	private String newStr;
+	private  String newStr;
 
-	public String encoderByMd5(String str) {
+	public  String encoderByMd5(String str) {
 		try {
 			//加密方法
 			md5 = MessageDigest.getInstance("MD5");
