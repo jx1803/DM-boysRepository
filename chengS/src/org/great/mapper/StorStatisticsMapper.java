@@ -10,6 +10,12 @@
 
 package org.great.mapper;
 
+import java.util.List;
+
+import org.great.bean.BatchDetailBean;
+import org.great.bean.CondiBean;
+import org.great.bean.DrugApplyBean;
+import org.great.bean.OutAndInBean;
 import org.springframework.stereotype.Repository;
 
 /** 
@@ -20,5 +26,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface StorStatisticsMapper {
-
+	public List<BatchDetailBean> getPurchaseList(CondiBean condiBean);//获取采购记录列表
+	public int getPurchaseListCount(CondiBean condiBean);//获取采购记录总数
+	public List<DrugApplyBean> getDrugOutInList(CondiBean condiBean);//获取药品出入库记录列表
+	public int getDrugOutInListCount(CondiBean condiBean);//获取药品出入库记录总数
 }

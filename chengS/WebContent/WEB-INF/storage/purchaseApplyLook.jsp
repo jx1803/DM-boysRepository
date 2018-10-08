@@ -28,10 +28,7 @@
 	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
+
 <title>药品采购申请</title>
 <link rel="stylesheet"
 	href="<%=path%>lib/zTree/v3/css/zTreeStyle/zTreeStyle.css"
@@ -60,11 +57,11 @@
 						value="${condiBean.beforeDate==null?'':condiBean.beforeDate}" style="width: 120px;"> 申请人：<input type="text"
 						name="adminName" id="adminName" placeholder="申请人"
 						value="${condiBean.adminName==null?'':condiBean.adminName}"style="width: 250px" class="input-text">
-						审核状态：<select name="checkId" >
-						            <option value="0" >请选择</option>
-									<option value="23" >待购买</option>
-									<option value="8" >审核未通过</option>
-									<option value="7" >未审核</option>
+						审核状态：<select name="checkId" id="checkId" >
+						            <option value="0">请选择</option>
+									<option value="23"<c:if test="${checkId==23}">selected="selected"</c:if>>待购买</option>
+									<option value="8" <c:if test="${checkId==8}">selected="selected"</c:if>>审核未通过</option>
+									<option value="7" <c:if test="${checkId==7}">selected="selected"</c:if>>未审核</option>
 							    </select>
 					<button name="serachRecord" id="serachRecord"
 						class="btn btn-success" type="submit">
@@ -72,6 +69,10 @@
 					</button>
 				</div>
 				<div class="cl pd-5 bg-1 bk-gray mt-20">
+				<a
+						class="btn btn-success" onclick="exportExcel()">
+						导出Excel
+					</a>
 					<span class="r">共有数据：<strong>${count}</strong> 条
 					</span>
 				</div>
@@ -105,12 +106,10 @@
 					</table>
 					</br>
 					<div class="text-c">
-						<%-- <a
-							href="toCancellingApplyList.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&checkId=${auditApply.checkId}&page=${condiBean.pageNum-1}"> --%>
-							<button type="button" class="btn btn-success" onclick="prePage('${condiBean.pageNum}')">上一页</button>
-						<!-- </a>  -->${condiBean.pageNum}/${pageTotal} 
-						<%-- <a href="toCancellingApplyList.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&checkId=${auditApply.checkId}&page=${condiBean.pageNum+1}"> --%><button
-								type="button" class="btn btn-success" onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button><!-- </a> -->
+						
+						<button type="button" class="btn btn-success" onclick="prePage('${condiBean.pageNum}')">上一页</button>
+						${condiBean.pageNum}/${pageTotal} 
+						<button type="button" class="btn btn-success" onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button><!-- </a> -->
 					</div>
 				</div>
 			</div>
@@ -159,7 +158,6 @@
 		var str2 = "";
 		if (pageNum < total) {
 			pageNum = Number(pageNum) + 1;
-			alert(pageNum);
 			str2 = "purchaseApplyLook.action?pageNum="+pageNum;
 	
 		} else {
@@ -170,6 +168,18 @@
 		$("#audit").submit();
 	} 
 
+	/* 导出Excel */
+	function exportExcel(afterDate,beforeDate,adminName){
+		var afterDate = $("#logmin").val();
+		var beforeDate = $("#logmax").val();
+		var adminName = $("#adminName").val();
+		var r= confirm("确认导出Excel文件？");
+		if(r){
+			location.href = "exportExcel.action?afterDate=" + afterDate
+			+ "&beforeDate=" + beforeDate + "&adminName=" + adminName;
+		}
+	}
+	
 </script>
 </body>
 </html>
