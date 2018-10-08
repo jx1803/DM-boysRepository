@@ -25,78 +25,23 @@ String path = request.getScheme() +"://"+request.getServerName()
 <body>
 <div class="pd-20">
   <div class="Huiform">
-    <form action="/" method="post">
+    <form action="<%=path %>user/updatemenuLevel.action" method="post" target="_parent">
       <table class="table table-bg">
         <tbody>
           <tr>
-            <th width="100" class="text-r"><span class="c-red">*</span> 药品名称：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-name" name="user-name" datatype="*2-16" nullmsg="用户名不能为空"></td>
-            <th width="100" class="text-r">通用名称：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-name" name="user-name" datatype="*2-16" nullmsg="用户名不能为空"></td>
-          </tr>
-          <tr>
-            <th class="text-r">抗生素：</th>
-            <td><label>
-                <input name="sex" type="radio" id="six_1" value="1" checked>
-              	 是</label>
-              <label>
-                <input type="radio" name="sex" value="0" id="six_0">
-              	 否</label></td>
-             <th width="100" class="text-r"> 拼音码：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-name" name="user-name" datatype="*2-16" nullmsg="用户名不能为空"></td>
-          </tr>
+            <th width="100" class="text-r"><span class="c-red">*</span>一级菜单名：</th>
+            <td><input type="text" style="width:300px" class="input-text" value="${pbean.permission }"  id="permission" name="permission" >
+           		 <input type="hidden" value="${pbean.permissionId }" name="permissionId" >
+            </td>
+            </tr>
+         	<tr>
+         		<th width="100" class="text-r">二级菜单名：</th>
+            <td><input type="text" style="width:300px" class="input-text" value="${pbean.sname }"  id="sname" name="sname" >
+            	<input type="hidden" value="${pbean.pid }" name="pid" >
+            	<input type="hidden" value="${pbean.fid }" name="fid" >
+            </td>
           
-          <tr>
-            <th class="text-r"> 单位：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-tel" name="user-tel"></td>
-             <th class="text-r">规格：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-tel" name="user-tel"></td>
-          </tr>
-          <tr>
-            <th class="text-r">零售价：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-email" name="user-email"></td>
-          	 <th class="text-r">加成率：</th>
-            <td><input type="text" style="width:200px" class="input-text" value="" placeholder="" id="user-tel" name="user-tel"></td>
-          </tr>
-          <tr>
-            <th class="text-r">日次数：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-email" name="user-email"></td>
-          	 <th class="text-r">次剂量：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-tel" name="user-tel"></td>
-          </tr>
-          <tr>
-            <th class="text-r">剂型：</th>
-            <td><span class="select-box">
-			  <select class="select" size="1" name="demo1" >
-			    <option value="" selected>上级菜单</option>
-			    <option value="1">菜单一</option>
-			    <option value="2">菜单二</option>
-			    <option value="3">菜单三</option>
-			  </select>
-			 </span></td>
-          	 <th class="text-r">发票抬头：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-tel" name="user-tel"></td>
-          </tr>
-          <tr>
-            <th class="text-r">一级类型：</th>
-            <td><span class="select-box">
-			  <select class="select" size="1" name="demo1" >
-			    <option value="" selected>请选择</option>
-			    <option value="1">菜单一</option>
-			    <option value="2">菜单二</option>
-			    <option value="3">菜单三</option>
-			  </select>
-			 </span></td>
-			  <th class="text-r">二级类型：</th>
-			 <td><span class="select-box">
-			  <select class="select" size="1" name="demo1" >
-			    <option value="" selected>请选择</option>
-			    <option value="1">菜单一</option>
-			    <option value="2">菜单二</option>
-			    <option value="3">菜单三</option>
-			  </select>
-			 </span></td>
-          </tr>
+         	</tr>
           <tr>
             <th></th>
             <td><button type="submit" class="btn btn-primary size-M radius"  id="" name="" >确定</button></td>

@@ -29,6 +29,8 @@ String path = request.getScheme() +"://"+request.getServerName()
 	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="<%=path%>lib/bootstrapValidator.css"/>
 <!--[if IE 6]>
 <script type="text/javascript" src="<%=path%>lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -48,8 +50,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<!-- 模态框（添加药品类型） -->
 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true" >
-		<form action="addDrugTypeInfo.action" method="post"
-			onsubmit="window.opener=null;window.close();">
+		<form action="addDrugTypeInfo.action" method="post" id="addForm">
 			<div class="modal-dialog" style="width: 450px">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -66,9 +67,13 @@ String path = request.getScheme() +"://"+request.getServerName()
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												药品类型：</th>
-											<td><input type="text" style="width: 250px"
+											<td>
+												<div class="form-group">
+												<input type="text" style="width: 250px"
 												class="input-text" value="" placeholder="" id="user-name"
-												name="drugType" datatype="*2-16" nullmsg="用户名不能为空"></td>
+												name="drugType" datatype="*2-16" nullmsg="用户名不能为空">
+												</div>	
+											</td>
 										</tr>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
@@ -102,7 +107,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 <!-- 模态框（修改药品类型） -->
 	<div class="modal fade" id="updModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<form action="updDrugTypeInfo.action" method="post" >
+		<form action="updDrugTypeInfo.action" method="post" id="updForm">
 			<div class="modal-dialog" style="width: 450px">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -119,10 +124,13 @@ String path = request.getScheme() +"://"+request.getServerName()
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												药品类型：</th>
-											<td><input type="text" style="width: 250px"
-												class="input-text" value="" placeholder="" id="drugType"
-												name="drugType" datatype="*2-16" nullmsg="用户名不能为空">
-												<input type="hidden" name="typeId" id="typeId" value=""/>	
+											<td>
+												<div class="form-group">
+													<input type="text" style="width: 250px"
+													class="input-text" value="" placeholder="" id="drugType"
+													name="drugType" datatype="*2-16" nullmsg="用户名不能为空">
+													<input type="hidden" name="typeId" id="typeId" value=""/>
+												</div>	
 											</td>
 										</tr>
 										<tr>
@@ -226,16 +234,78 @@ String path = request.getScheme() +"://"+request.getServerName()
 		src="<%=path%>lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="<%=path%>lib/bootstrap.js"></script>	
+	<script type="text/javascript" src="<%=path%>lib/bootstrapValidator.js"></script>
 	<script type="text/javascript">
+
+    //Modal验证销毁重构
+    $(function(){
+    	 $('#updModal').on('hidden.bs.modal', function() {
+    		 $("#updForm").data('bootstrapValidator').resetForm(); 
+		    });
+    	 $('#addModal').on('hidden.bs.modal', function() {
+    		 $("#addForm").data('bootstrapValidator').resetForm(); 
+		    });
+    	 
+    }) 
+    //form验证规则(添加剂型)
+    function addFormValidator(){
+        $('#addForm').bootstrapValidator({
+        	live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+                    },
+            fields: {
+            	drugType: {
+                    message: '验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '输入不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    //form验证规则(修改剂型)
+    function updFormValidator(){
+        $('#updForm').bootstrapValidator({
+        	live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+                    },
+            fields: {
+                
+                drugType: {
+                    validators: {
+                        notEmpty: {
+                            message: '输入不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    }
+	
+	
+	
 		//弹出添加模态框
 		function addModal(){
+			addFormValidator();
 			$('#addModal').modal('show');
 		}
 	
 	
 		//弹出修改模态框
 		function updModel(id,name,pid){
-			
+			updFormValidator();
 			$("#drugType").val(name)
 			$("#typeId").val(id)
 			$("#selectVal").val(pid)

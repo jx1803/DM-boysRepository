@@ -23,18 +23,21 @@ public class InventoryBean {
 	private int inventoryId;// 库存ID
 	private int drugId;// 药品编码
 	private int inventoryNum;// 库存量
-	private int minimum;// 低限值
-	private int maximum;//上限值
+	private long minimum;// 低限值
+	private long maximum;//上限值
+	private StoDrugBean stoDrugBean;//药品信息
 	public InventoryBean() {
 		super();
 	}
 
-	public int getMaximum() {
-		return maximum;
+	
+
+	public StoDrugBean getStoDrugBean() {
+		return stoDrugBean;
 	}
 
-	public void setMaximum(int maximum) {
-		this.maximum = maximum;
+	public void setStoDrugBean(StoDrugBean stoDrugBean) {
+		this.stoDrugBean = stoDrugBean;
 	}
 
 	public int getInventoryId() {
@@ -49,10 +52,7 @@ public class InventoryBean {
 		return inventoryNum;
 	}
 
-	public int getMinimum() {
-		return minimum;
-	}
-
+	
 	public void setInventoryId(int inventoryId) {
 		this.inventoryId = inventoryId;
 	}
@@ -65,9 +65,31 @@ public class InventoryBean {
 		this.inventoryNum = inventoryNum;
 	}
 
-	public void setMinimum(int minimum) {
+	
+
+	public long getMinimum() {
+		return minimum;
+	}
+
+
+
+	public void setMinimum(long minimum) {
 		this.minimum = minimum;
 	}
+
+
+
+	public long getMaximum() {
+		return maximum;
+	}
+
+
+
+	public void setMaximum(long maximum) {
+		this.maximum = maximum;
+	}
+
+
 
 	@Override
 	public String toString() {

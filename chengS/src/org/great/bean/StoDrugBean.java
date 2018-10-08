@@ -58,6 +58,14 @@ public class StoDrugBean {
 		super();
 	}
 
+	public double getPurPrice() {
+		return purPrice;
+	}
+
+	public void setPurPrice(double purPrice) {
+		this.purPrice = purPrice;
+	}
+
 	public String getDrugmanu() {
 		return drugmanu;
 	}

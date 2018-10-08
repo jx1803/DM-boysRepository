@@ -9,9 +9,18 @@ public class LogBean {
 	private int adminId;// 操作人员
 	private String operateDate;// 操作时间
 	private String operateItem;// 操作事项
-
+	
+	private AdminBean adminbean;
 	public LogBean() {
 		super();
+	}
+
+	public AdminBean getAdminbean() {
+		return adminbean;
+	}
+
+	public void setAdminbean(AdminBean adminbean) {
+		this.adminbean = adminbean;
 	}
 
 	public int getLogId() {
@@ -44,6 +53,12 @@ public class LogBean {
 
 	public void setOperateItem(String operateItem) {
 		this.operateItem = operateItem;
+	}
+
+	@Override
+	public String toString() {
+		return "LogBean [logId=" + logId + ", adminId=" + adminId + ", operateDate=" + operateDate + ", operateItem="
+				+ operateItem + "]";
 	}
 
 }

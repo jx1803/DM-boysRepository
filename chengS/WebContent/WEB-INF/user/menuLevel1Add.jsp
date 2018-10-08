@@ -26,11 +26,11 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="<%=path %>user/Menu_Level1_save.action" method="post" class="form form-horizontal" id="form-admin-role-add" target="_parent">
+	<form action="<%=path %>user/menuLevel1Save.action" method="post" class="form form-horizontal" id="form-admin-role-add" target="_parent">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="roleName" name="permission">
+				<input type="text" class="input-text" value="" placeholder="" id="permission" name="permission">
 			</div>
 		</div>
 		<div class="row cl">

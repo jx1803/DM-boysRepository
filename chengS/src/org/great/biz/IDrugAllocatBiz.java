@@ -2,8 +2,16 @@ package org.great.biz;
 
 import java.util.List;
 
+import org.great.bean.AdjustPriceBean;
+import org.great.bean.CondiBean;
 import org.great.bean.DfBean;
 import org.great.bean.DrugTypeBean;
+import org.great.bean.InventoryBean;
+import org.great.bean.PhaDrugBean;
+import org.great.bean.StoDrugBean;
+import org.great.bean.TabuBean;
+import org.great.bean.adjPriceStatisBean;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 
@@ -17,11 +25,46 @@ import org.great.bean.DrugTypeBean;
  */
 public interface IDrugAllocatBiz {
 
+	/***************************药品剂型增删改查*****************************/
 	public String addDf(DfBean df);
-	public List<DfBean> findDf();
+	public ModelAndView findDf(CondiBean condi);
 	public String delDf(DfBean df);
+	public String updDf(DfBean df);
+	public List<DfBean> findAllDf();
 	
+	/***************************药品类型增删改查*****************************/
 	public String addDrugType(DrugTypeBean dt);
-	public List<DrugTypeBean> findDfDrugType();
+	public ModelAndView findDrugTypeInfo(CondiBean condi);
 	public String delDrugType(DrugTypeBean dt);
+	public String updDrugType(DrugTypeBean dt);
+	public List<DrugTypeBean> findSecondType(DrugTypeBean dt);
+	
+	
+	/***************************药品信息增删改查*****************************/
+	public String addDrugInfo(StoDrugBean sd);
+	public ModelAndView findDrugInfo(CondiBean condi);
+	public String updDrugInfo(StoDrugBean sd);
+	
+	/***************************配伍禁忌增删改查*****************************/
+	
+	public String addCompTaboo(TabuBean tb);
+	public String updCompTaboo(TabuBean tb);
+	public String delCompTaboo(TabuBean tb);
+	public ModelAndView findCompTaboo(CondiBean condi);
+	//匹配药品名是否存在
+	public String findfirstName(TabuBean tb);
+	public String findSecondName(TabuBean tb);
+	public int checkInfo(StoDrugBean sd);//查重
+	/***************************药品库存修改*****************************/
+	public ModelAndView findDrugInventory(CondiBean condi);
+	public String updDrugInventory(InventoryBean inventory);
+	
+	/***************************药房库存修改*****************************/
+	public ModelAndView findPharmacyStock(CondiBean condi);
+	public String updPharmacyStock(PhaDrugBean phaDrug);
+	
+	/***************************药品调价统计*****************************/
+	public ModelAndView findAdjustPrice(CondiBean condi) ;
+	public adjPriceStatisBean priceData(AdjustPriceBean adjustPrice);
+	public int priceDataSum(AdjustPriceBean adjustPrice);
 }

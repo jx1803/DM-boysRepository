@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 			+ request.getContextPath() + "/";
-%>
+%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -33,15 +33,16 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <!-- 主页面 -->
-	<div class="page-container">
+<div class="page-container">
 		<div class="text-c">
-			<form action="toAdjustPrice.action" method="post" id="formSd" >
+			<form action="findAdjustPrice.action" method="post" id="formSd" >
 			药品名称: 
 			<input type="text" class="input-text" id="drugName" name="drugName" value="${condi.drugName==null?"":condi.drugName}"
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			>
+			value="${condi.drugId==null?"":condi.drugId}">
+			<input type='hidden' id="h_drugId" value="0">
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
 			 style="width: 150px" value="${condi.pinyinCode==null?"":condi.pinyinCode}">
@@ -59,7 +60,10 @@
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" onclick="subSelect()" id="sub" name=""> 搜索药品</button>
+			<button type="button" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
+			<button type="button" class="btn btn-primary radius" id="" name="" onclick="addModal()">
+			<i class="Hui-iconfont">&#xe600;</i> 添加药品
+			</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -71,62 +75,36 @@
 						<th>药品编码</th>
 						<th>药品名称</th>
 						<th>通用名称</th>
-						<th>规格</th>
-						<th>单位</th>
-						<th>零售价</th>
-						<th>类别</th>
-						<th>剂型</th>
-						<th>使用方法</th>
-						<th>发票抬头</th>
-						<th>拼音码</th>
-						<th>抗生素</th>
-						<th>生产厂商</th>
-						<th>生产场地</th>
-						<th>操作</th>
+						<th>当前售价</th>
+						<th>查看调价统计</th>
 					</tr>
 				</thead>
 				<tbody>
 				<c:forEach items="${stoDrugList}" var="sdList" varStatus="vs">
 					<tr class="text-c">
-
 						<td>${sdList.drugId}</td>
 						<td>${sdList.drugName}</td>
 						<td>${sdList.generalName}</td>
-						<td>${sdList.specific}</td>
-						<td>${sdList.unit}</td>
 						<td>${sdList.retailPrice}</td>
-						<td>${sdList.drugTypeBean.drugType}</td>
-						<td>${sdList.dfBean.dosageForm}</td>
-						<td>${sdList.usage}</td>
-						<td>${sdList.invoiceTitle}</td>
-						<td>${sdList.pinyinCode}</td>
-						<td>${sdList.antibiotic}</td>
-						<td>${sdList.drugmanu}</td>
-						<td>${sdList.proPlace}</td>
-
-						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}',400,300)">修改零售价</a>
+						<td class="f-14">
+							<a href="<%=path%>storage/toPriceStatistics.action?drugId=${sdList.drugId}"  style="text-decoration: none" title="调价统计" >
+							<i class="Hui-iconfont">&#xe725;</i></a>
 							</td>
-
 					</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 		<br />
-	
-	<div style="float: right; margain-top: 20px;">
-			<button  class="btn btn-secondary-outline radius" id="pre"
-				name="" onclick="prePage('${pageNum}')">上一页</button>
-			<button  class="btn btn-primary size-S radius" id=""
-				name="">1</button>
-			<button  class="btn btn-secondary-outline radius" id="next"
-				name="" onclick="nextPage('${pageNum}','${pageTotal }')">下一页</button>
+		<div style="float: right; margain-top: 20px;">
+			<span ></span><font size="2">共${pageTotal}页  &nbsp;当前页${condi.page}/${pageTotal}</font></span>  &nbsp; &nbsp; &nbsp;
+			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condi.page}')">上一页</button>
+			<c:forEach var="page" begin="1" end="${pageTotal}">
+			 <button type="button" class="btn btn-primary size-S radius" onclick="skipPage('${page}')">${page}</button>
+			</c:forEach>
+			<button type="button" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal }')">下一页</button>
 		</div>
-</div>
-
-
-
-
+	</div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
@@ -139,44 +117,67 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 
-function subSelect(){
-	var drugId=$("#drugId").val();
-	if(drugId==""){
-		$("#drugId").val(0);
+//提交搜索
+$(function(){
+	$("#sub").click(function(){
+		var num = $("#drugId").val()
+		if(num==""){ 
+			$("#drugId").val($("#h_drugId").val())
+		}
 		$("#formSd").submit();
-	}else{
-		$("#formSd").submit();
-	}
-}
+	})
+})
 
-/*上一页  */
-function prePage(pageNum) {
-	var str1 = "";
-	if (pageNum > 1) {
-		$("#pre").disabled=false;
-		pageNum -= 1;
-		str1 = "selectAdjustPrice.action?pageNum="
-				+ pageNum;
+//上一页
+function upPage(page) {
+	var str = "";
+	if (page > 1) {
+		page -= 1;
+		str = "findAdjustPrice.action?page="+page;
+		//attr更改form表单的action属性，改为str1
+		$("#formSd").attr("action",str);
+		//把form表单提交。
+		var num = $("#drugId").val()
+		if(num==""){
+			$("#drugId").val($("#h_drugId").val())
+		}
+		$("#formSd").submit();
 	} else {
 		return;
 	}
-	$("#select").attr("action", str1);
-	$("#select").submit();
+	//location.href = str1;
 }
-/*下一页  */
-function nextPage(pageNum, total) {
-	var str2 = "";
-	if (pageNum < total) {
-		pageNum = Number(pageNum) + 1;
-		str2 = "selectAdjustPrice.action?pageNum="
-				+ pageNum;
+
+//下一页,pageNum,当前页数，total 总页数
+function nextPage(page, total) {
+	var str = "";
+	if (page < total) {
+		page = Number(page) + 1;
+		str = "findAdjustPrice.action?page="+page;
+		//attr更改form表单的action属性，改为str1
+		$("#formSd").attr("action",str);
+		//把form表单提交。
+		var num = $("#drugId").val()
+		if(num==""){
+			$("#drugId").val($("#h_drugId").val())
+		}
+		$("#formSd").submit();
 	} else {
 		return;
 	}
-	$("#select").attr("action", str2);
-	$("#select").submit();
-} 
-
+}
+//点击按钮跳转页面
+function skipPage(page){
+	var str = "";
+	str = "findAdjustPrice.action?page="+page;
+	$("#formSd").attr("action",str);
+	//把form表单提交。
+	var num = $("#drugId").val()
+	if(num==""){
+		$("#drugId").val($("#h_drugId").val())
+	}
+	$("#formSd").submit();
+}
 	
 
 

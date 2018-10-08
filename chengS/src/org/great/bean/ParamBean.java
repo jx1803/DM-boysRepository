@@ -9,8 +9,17 @@ public class ParamBean {
 	private String param;//参数名
 	private int pid;//父id
 
+	private String fname;//父类参数名
 	public ParamBean() {
 		super();
+	}
+
+	public String getFname() {
+		return fname;
+	}
+
+	public void setFname(String fname) {
+		this.fname = fname;
 	}
 
 	public int getParamId() {
