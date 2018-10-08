@@ -8,10 +8,11 @@ public class PhaDrugBean {
 	private int phaDrugId;// 药房药品id
 	private int drugId;// 药品编号
 	private int drugNum;// 数量
-	private int useableId;// 停用启用状态
+	private int useableId;// 停用启用状态 2:启用，3:禁用
 	private double minimum;// 底限
 	private double maximum;//上限值
 	private StoDrugBean stoDrugBean;//药品信息
+	private String useable;//可用状态
 
 	public PhaDrugBean() {
 		super();
@@ -75,6 +76,14 @@ public class PhaDrugBean {
 
 	public void setStoDrugBean(StoDrugBean stoDrugBean) {
 		this.stoDrugBean = stoDrugBean;
+	}
+
+	public String getUseable() {
+		return useable;
+	}
+
+	public void setUseable(String useable) {
+		this.useable = useable;
 	}
 
 	

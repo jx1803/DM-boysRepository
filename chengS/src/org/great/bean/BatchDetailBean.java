@@ -14,7 +14,9 @@ public class BatchDetailBean {
 	private double sellPrice;//销售价
 	private String inDate;//有效日期
 	private double totalMoney;//总价
+
 	private PhaDrugBean phaDrugBean;//药房实体bean
+
 	
 	/**志展添加*/
     private StoDrugBean stoDrugBean;//药品实体bean
@@ -141,7 +143,7 @@ public class BatchDetailBean {
 		this.drugApplyBean = drugApplyBean;
 	}
 
-	
+
 	public PhaDrugBean getPhaDrugBean() {
 		return phaDrugBean;
 	}
@@ -149,6 +151,7 @@ public class BatchDetailBean {
 	public void setPhaDrugBean(PhaDrugBean phaDrugBean) {
 		this.phaDrugBean = phaDrugBean;
 	}
+
 	
 
 	public AdminBean getAdminBean() {
@@ -158,6 +161,7 @@ public class BatchDetailBean {
 	public void setAdminBean(AdminBean adminBean) {
 		this.adminBean = adminBean;
 	}
+
 
 	@Override
 	public String toString() {

@@ -40,20 +40,25 @@
 	</nav>
 
 	<br>
-	<form action="toCancellingApplyList.action">
+	<form action="toAllCancApply.action">
 		<div class="text-c">
-			日期范围： <input type="text"
-				onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
-				name="beforeDate" class="input-text Wdate" id="datemin"
-				value="${condiBean.beforeDate==null?"
-				":condiBean.beforeDate}" style="width: 120px;">- - <input
+			日期范围： <input
 				type="text"
 				onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })"
-				name="afterDate" class="input-text Wdate" id="datemax"
-				value="${condiBean.afterDate==null?"
-				":condiBean.afterDate}" style="width: 120px;"> 申请人:<input
+				name="afterDate" class="input-text Wdate" id="datemax"":condiBean.afterDate}" style="width: 120px;">
+				 - - <input type="text"
+				onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
+				name="beforeDate" class="input-text Wdate" id="datemin"
+				value="${condiBean.beforeDate==null?"":condiBean.beforeDate}" style="width: 120px;"> 申请人:<input
 				type="text" class="input-text" style="width: 250px" placeholder=""
 				id="" name="adminName" value="${condiBean.adminName==null?"":condiBean.adminName}">
+		审核状态:<select name="checkId" >
+		<option value="0" >请选择</option>
+		<option value="6" <c:if test="${condiBean.checkId==6 }">selected="selected"</c:if>>审核通过</option>
+		<option value="8" <c:if test="${condiBean.checkId==8 }">selected="selected"</c:if>>审核未通过</option>
+		<option value="7" <c:if test="${condiBean.checkId==7 }">selected="selected"</c:if>>未审核</option>
+		 </select>
+				
 			<button type="submit" class="btn btn-success">
 				<i class="Hui-iconfont">&#xe665;</i> 搜索
 			</button>
@@ -70,7 +75,6 @@
 					<th>退库药品名称</th>
 					<th>退库数量</th>
 					<th>退库产品批号</th>
-					<th>退库药品金额(元)</th>
 					<th>退库申请人</th>
 					<th>退库原因</th>
 					<th>申请日期</th>
@@ -86,11 +90,10 @@
 						<td>${caceApply.stoDrugBean.drugName }</td>
 						<td>${caceApply.applyNum }</td>
 						<td>${caceApply.manuBatch }</td>
-						<td>${caceApply.applyNum*caceApply.bdBean.purPrice }</td>
 						<td>${caceApply.adminBean.adminName }</td>
 						<td>${caceApply.applyReason}</td>
-						<td>${caceApply.auditorId}</td>
 						<td>${caceApply.applyDate}</td>
+						<td>${caceApply.auditorName}</td>
 						<td>${caceApply.checkDate}</td>
 						<td class="td-status"><span
 							class="label label-success radius">${caceApply.checkName}</span></td>
@@ -101,10 +104,10 @@
 		<br>
 		<div class="text-c">
 			<a
-				href="toAllCancApply.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&pageNum=${condiBean.pageNum-1}">
+				href="toAllCancApply.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&pageNum=${condiBean.pageNum-1}&checkId=${condiBean.checkId}">
 				<button type="button" class="btn btn-success">上一页</button>
 			</a> ${condiBean.pageNum}/${count} <a
-				href="toAllCancApply.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&pageNum=${condiBean.pageNum+1}"><button
+				href="toAllCancApply.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&pageNum=${condiBean.pageNum+1}&checkId=${condiBean.checkId}"><button
 					type="button" class="btn btn-success">下一页</button></a>
 		</div>
 	</div>

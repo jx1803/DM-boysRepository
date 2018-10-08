@@ -48,7 +48,7 @@
 		;
 	};
 
-	function setValue(drugId, drugName, drugmanu, drugNum, specific ,handleNum, proDate, manuBatch) {
+	function setValue(drugId, drugName, drugmanu, drugNum, specific ,handleNum, proDate, manuBatch,unit) {
 		
 		//给父窗口赋值
 		var specific1=specific.split("-")[0];
@@ -61,7 +61,7 @@
 		parent.$("#handleNum").val(parseInt(handleNum/specific1));
 		parent.$("#proDate").val(proDate);
 		parent.$("#manuBatch").val(manuBatch);
-
+		parent.$("#unit").val(unit);
 		parent.$("#applyNum").val('');
 		parent.$("#applyReason").val('');
 
@@ -118,7 +118,9 @@
 								<td>${drugList.proDate}</td>
 								<td>${drugList.manuBatch}</td>
 								<td><a class="btn btn-success"
-									onclick="setValue(${drugList.stoDrugBean.drugId},'${drugList.stoDrugBean.drugName}','${drugList.stoDrugBean.drugmanu}',${drugList.phaDrugBean.drugNum},'${drugList.stoDrugBean.specific}',${drugList.handleNum},'${drugList.proDate}','${drugList.manuBatch}')">确定</a></td>
+
+									onclick="setValue(${drugList.stoDrugBean.drugId},'${drugList.stoDrugBean.drugName}','${drugList.stoDrugBean.drugmanu}',${drugList.phaDrugBean.drugNum},'${drugList.stoDrugBean.specific}',${drugList.handleNum},'${drugList.proDate}','${drugList.manuBatch}','${drugList.stoDrugBean.unit}')">确定</a></td>
+
 							</tr>
 						</c:forEach>
 					</tbody>

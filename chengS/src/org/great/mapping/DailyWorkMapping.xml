@@ -27,12 +27,13 @@
 	<!-- 查看申请记录 -->
 	<select id="selectDrugApply"
 		parameterType="org.great.bean.CondiBean" resultMap="drugApply">
-		select * from(select d.*,a.adminname,s.drugname, p1.param
+		select * from(select d.*,a.adminname,a1.adminname auditorName,s.drugname, p1.param
 		checkname,s.drugmanu,b.batchdetailid,b.purPrice,p2.param
 		applytype,rownum r from tbldrugapply d
 		left join tblparam p1 on d.checkid=p1.paramid
 		left join tblparam p2 on d.applytypeid=p2.paramid
 		left join tbladmin a on d.adminid=a.adminid
+		left join tbladmin a1 on d.auditorId=a1.adminid
 		left join tblstodrug s on d.drugid=s.drugid
 		left join tblBatchDetail b on b.batchdetailid=d.putbatch
 		<where>
@@ -198,10 +199,10 @@
 	<!-- 插入销售记录表 -->
 	<insert id="insertSell" parameterType="org.great.bean.SellBean">
 		insert into tblsell
-		(SELLID,DRUGID,ADMINID,SELLNUM,SALES,SELLDATE,MANUBATCH)
+		(SELLID,DRUGID,ADMINID,SELLNUM,SALES,SELLDATE,MANUBATCH,putbatch)
 		values(SPMSSEQ.NEXTVAL,#{drugId,jdbcType=NUMERIC},#{adminId,jdbcType=NUMERIC},#{sellNum,jdbcType=NUMERIC},
 		#{sales,jdbcType=NUMERIC},to_char(sysdate,'YYYY-MM-DD
-		HH24:MI:SS'),#{manuBatch,jdbcType=VARCHAR})
+		HH24:MI:SS'),#{manuBatch,jdbcType=VARCHAR},#{putBatch,jdbcType=VARCHAR})
 	</insert>
 
 	<!-- 插入药房出库记录 -->
@@ -244,10 +245,20 @@
 	<select id="selectPhaDrug"
 		parameterType="org.great.bean.CondiBean" resultMap="phaDrugMap">
 		select * from (select
-		s.*,p.PHADRUGID,p.DRUGNUM,p.USEABLEID,p.MINIMUM,p.MAXIMUM,ROWNUM r
-		from tblphadrug p
-		left join tblstodrug s on p.drugid=s.drugid
-		<where>
+		s.*,p.PHADRUGID,p.DRUGNUM,p.USEABLEID,m.param useable,d.drugtype,f.dosageForm,p.MINIMUM,p.MAXIMUM,ROWNUM r
+		from tblphadrug p,tbldrugtype d,tblstodrug s,tbldf f,tblparam m where 
+		p.drugid=s.drugid(+) and s.typeid=d.typeid(+) and s.dosageId=f.dosageId(+) and p.useableid=m.paramid(+)
+		
+		
+		<if test=" ''!=drugId and 0 !=drugId">
+			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and s.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		<if test=" ''!=useableId and 0 !=useableId">
+			and p.useableid =#{useableId,jdbcType=NUMERIC}
+		</if>
 			<if test="pinyinCode!=null and pinyinCode!=''">
 				and s.pinyincode like
 				concat(concat('%',#{pinyinCode}),'%')
@@ -258,13 +269,46 @@
 			<if test="useableId!=0">
 				and p.useableid=#{useableId}
 			</if>
-			<if test="miniId!=0">
-				and p.drugnum&lt;=p.minimum
+			<if test="pageNum!=0">
+				)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
+				r&lt;=#{pageNum}*#{pageLimit}
 			</if>
-		</where>
-		)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
-		r&lt;=#{pageNum}*#{pageLimit}
+			<if test="pageNum==0">
+				)
+			</if>
+		
 	</select>
+	
+	<!-- 查询药房药品记录数 -->
+	<select id="getPhaDrugCount" parameterType="org.great.bean.CondiBean" resultType="Integer">
+		select count(*)
+		from tblphadrug p
+		left join tblstodrug s on p.drugid=s.drugid
+		<where>
+			<if test=" ''!=drugId and 0 !=drugId">
+				and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+			</if>
+			<if test=" ''!=typeId and 0 !=typeId">
+				and s.typeId =#{typeId,jdbcType=NUMERIC}
+			</if>
+			<if test="pinyinCode!=null and pinyinCode!=''">
+				and s.pinyincode like
+				concat(concat('%',#{pinyinCode}),'%')
+			</if>
+			<if test="drugName!=null and drugName!=''">
+				and s.drugname like concat(concat('%',#{drugName}),'%')
+			</if>
+			<if test="useableId!=0">
+				and p.useableid=#{useableId}
+			</if>
+			
+		</where>
+	</select>
+
+	<!-- 停用与启用药房药品 -->
+	<update id="forbidDrug" parameterType="org.great.bean.PhaDrugBean">
+		update tblphadrug set useableid=#{useableId} where phadrugid=#{phaDrugId}
+	</update>
 
 	<!-- 查询药房药品信息 -->
 	<select id="selectOnePhaDrug" parameterType="Integer"
@@ -349,14 +393,32 @@
 		<result property="useableId" column="USEABLEID" />
 		<result property="minimum" column="MINIMUM" />
 		<result property="maximum" column="MAXIMUM" />
+		<result property="useable" column="useable"/>
 		<association property="stoDrugBean"
 			javaType="org.great.bean.StoDrugBean">
-			<id property="drugId" column="DRUGID" />
-			<result property="drugName" column="drugname" />
-			<result property="specific" column="specific" />
-			<result property="drugmanu" column="drugmanu" />
-			<result property="retailPrice" column="retailprice" />
-			<result property="unit" column="unit" />
+			<id property="drugId" column="DRUGID"/>
+			<result property="drugName" column="drugName" />
+		<result property="generalName" column="generalName" />
+		<result property="specific" column="specific" />
+		<result property="unit" column="unit" />
+		<result property="retailPrice" column="retailPrice" />
+		<result property="dosageId" column="dosageId" />
+		<result property="usage" column="usage" />
+		<result property="invoiceTitle" column="invoiceTitle" />
+		<result property="pinyinCode" column="pinyinCode" />
+		<result property="antibiotic" column="antibiotic" />
+		<result property="dosage" column="dosage" />
+		<result property="typeId" column="typeId" />
+		<result property="drugmanu" column="drugmanu" />
+		<result property="proPlace" column="proPlace" />
+			<association property="drugTypeBean" javaType="org.great.bean.DrugTypeBean">
+				<id property="typeId" column="typeid"/>
+				<result property="drugType" column="drugtype"/>
+			</association>
+			<association property="dfBean" javaType="org.great.bean.DfBean">
+				<id property="dosageId" column="dosageId"/>
+				<result property="dosageForm" column="dosageForm"/>
+			</association>
 		</association>
 	</resultMap>
 
@@ -420,6 +482,8 @@
 		<result property="manuBatch" column="manubatch" />
 		<result property="putBatch" column="putbatch" />
 		<result property="checkId" column="checkid" />
+		<result property="auditorId" column="auditorId" />
+		<result property="auditorName" column="auditorName" />
 		<result property="applyTypeId" column="applytypeid" />
 		<association property="adminBean" column="ADMINID"
 			javaType="org.great.bean.AdminBean">
@@ -440,9 +504,208 @@
 		</association>
 	</resultMap>
 
+	<!-- 查询可出售的药品 -->
+	<select id="selectSellDrug" parameterType="org.great.bean.CondiBean" resultMap="sellMap">
+		select s.*,a.adminname,b.purprice,t.drugName from tblsell s
+		 left join tblstodrug t on s.drugid=t.drugid 
+		 left join tbladmin a on s.adminid=a.adminid 
+		 left join tblphadrug p on s.drugid=p.drugid
+		 left join tblbatchdetail b on s.drugid=b.drugid and s.putbatch=b.putbatch and s.manubatch=b.manubatch 
+		 <where>
+		 	<if test="afterDate!=null and afterDate!=''">
+		 		and s.selldate&gt;=#{afterDate}
+		 	</if>
+		 	<if test="beforeDate!=null and beforeDate!=''">
+		 		and s.selldate&lt;#{beforeDate}
+		 	</if>
+		 	<if test="drugId!=null and drugId!=''">
+		 		and s.drugid=#{drugId}
+		 	</if>
+		 	<if test="drugName!=null and drugName!=''">
+		 		and t.drugName like concat(concat('%',#{drugName}),'%')
+		 	</if>
+		 	
+		 </where>
+	</select>
 
+	<!-- 插入盘点记录表 -->
+	<insert id="insertCheckProfit" parameterType="org.great.bean.CheckBean">
+		insert into tblcheck (checkid,drugid,profitid,checkmoney,checkdate) 
+		values(SPMSSEQ.NEXTVAL,#{drugId,jdbcType=NUMERIC},#{profitId,jdbcType=NUMERIC},#{checkMoney,jdbcType=NUMERIC},
+		to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'))
+	</insert>
+	
+	<!-- 查询破损药品数量 -->
+	<select id="getBreakDrugNum" parameterType="org.great.bean.CondiBean" resultType="Integer">
+		select COALESCE(SUM(APPLYNUM),0)  from tbldrugapply d where 
+		d.drugid=#{drugId} and d.checkdate&gt;=#{afterDate} and d.checkdate&lt;#{beforeDate} and 
+		d.checkid=6 and d.applytypeid=12 
+	</select>
+	
+	<!-- 插入药品盘点盈亏记录 -->
+	<insert id="insertCheckStock" parameterType="org.great.bean.TakeStockBean">
+		insert into tbltakestock (stockId,drugId,outStorage,putStorage,drugNum) 
+		values(SPMSSEQ.NEXTVAL,#{drugId,jdbcType=NUMERIC},
+		#{outStorage,jdbcType=NUMERIC},#{putStorage,jdbcType=NUMERIC},#{drugNum,jdbcType=NUMERIC})
+	</insert>
+	
+	<!-- 核对药房药品库存 -->
+	<update id="checkStockData" parameterType="org.great.bean.TakeStockBean">
+		update tbltakestock set realnum=#{realNum},checkdate=to_char(sysdate,'YYYY-MM-DD'),
+		adminid=#{adminId},paramid=#{paramId} where stockid=#{stockId}
+	</update>
+	
+	<!-- 查询药房药品盘点盈亏记录 -->
+	<select id="selectTakeStockList" parameterType="org.great.bean.CondiBean" resultMap="stockMap">
+		select * from(select rownum r,s.*,d.drugtype,t.stockid,t.paramid,t.outstorage,t.putstorage,t.drugnum,
+		t.realnum,t.checkdate,t.adminid,a.adminname,p.param
+ 		from tbltakestock t,tblstodrug s, tbldrugtype d,tbldf f,tbladmin a,tblparam p
+		where t.drugid =s.drugid(+) and s.typeid = d.typeid(+) and s.dosageid=f.dosageid(+) 
+		and t.adminid=a.adminid(+) and t.paramid=p.paramid(+)
+			<if test=" ''!=drugName and null !=drugName">
+			and s.drugName like concat(concat('%',#{drugName,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=drugId and 0 !=drugId">
+			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=pinyinCode and null !=pinyinCode">
+			and s.pinyinCode like
+			concat(concat('%',#{pinyinCode,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and s.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		<if test="checkDate!=null and checkDate!=''">
+			and t.checkdate=#{checkDate}
+		</if>
+		<if test="paramId!=0">
+			and t.paramid=#{paramId}
+		</if>
+		<if test="pageNum!=0">
+		)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
+		r&lt;=#{pageNum}*#{pageLimit}
+		</if>
+		<if test="pageNum==0">
+			)
+		</if>
+	</select>
+	
+	<!-- 获取药房盘点记录条数 -->
+	<select id="getTakeStockCount" parameterType="org.great.bean.CondiBean" resultType="Integer">
+		select count(*)
+ 		from tbltakestock t,tblstodrug s, tbldrugtype d,tbldf f,tbladmin a,tblparam p
+		where t.drugid =s.drugid(+) and s.typeid = d.typeid(+) and s.dosageid=f.dosageid(+) 
+		and t.adminid=a.adminid(+) and t.paramid=p.paramid(+)
+			<if test=" ''!=drugName and null !=drugName">
+			and s.drugName like concat(concat('%',#{drugName,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=drugId and 0 !=drugId">
+			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=pinyinCode and null !=pinyinCode">
+			and s.pinyinCode like
+			concat(concat('%',#{pinyinCode,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and s.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		<if test="checkDate!=null and checkDate!=''">
+			and t.checkdate=#{checkDate}
+		</if>
+		<if test="paramId!=0">
+			and t.paramid=#{paramId}
+		</if>
+	</select>
+	
+	<!-- 查询药房药品流动数量 -->
+	<select id="getDrugCurrentNum" parameterType="org.great.bean.CondiBean" resultType="Integer">
+		select sum(b.handlenum) drugnum from tbloutandin o ,tblbatchdetail b 
+		where o.putbatch=b.batchdetailid and o.placeid=21 and o.outinid=#{outInId} 
+		and o.handledate&gt;=#{afterDate} and o.handledate&lt;#{beforeDate}
+		and b.drugid=#{drugId} group by b.drugid
+	</select>
+	
+	
+	<resultMap type="org.great.bean.TakeStockBean" id="stockMap">
+		<id property="stockId" column="stockId"/>
+		<result property="drugId" column="drugId"/>
+		<result property="paramId" column="paramId"/>
+		<result property="outStorage" column="outStorage"/>
+		<result property="putStorage" column="putStorage"/>
+		<result property="drugNum" column="drugNum"/>
+		<result property="adminId" column="adminId"/>
+		<result property="realNum" column="realNum"/>
+		<result property="checkDate" column="checkDate"/>
+		
+		<association property="stoDrugBean" javaType="org.great.bean.StoDrugBean" >
+		<id property="drugId" column="drugId" />
+		<result property="drugName" column="drugName" />
+		<result property="generalName" column="generalName" />
+		<result property="specific" column="specific" />
+		<result property="unit" column="unit" />
+		<result property="retailPrice" column="retailPrice" />
+		<result property="dosageId" column="dosageId" />
+		<result property="usage" column="usage" />
+		<result property="invoiceTitle" column="invoiceTitle" />
+		<result property="pinyinCode" column="pinyinCode" />
+		<result property="antibiotic" column="antibiotic" />
+		<result property="dosage" column="dosage" />
+		<result property="dailyNum" column="dailyNum" />
+		<result property="typeId" column="typeId" />
+		<result property="drugmanu" column="drugmanu" />
+		<result property="proPlace" column="proPlace" />
+			<association property="dfBean"
+				javaType="org.great.bean.DfBean">
+				<id property="dosageId" column="dosageId" />
+				<result property="dosageForm" column="dosageForm" />
+			</association>
+			<association property="drugTypeBean"
+				javaType="org.great.bean.DrugTypeBean">
+				<id property="typeId" column="typeId" />
+				<result property="pid" column="pid" />
+				<result property="drugType" column="drugType" />
+			</association>
+		</association>
+		<association property="adminBean" javaType="org.great.bean.AdminBean">
+			<id property="adminId" column="adminid"/>
+			<result property="adminName" column="adminname"/> 
+		</association>
+		<association property="paramBean" javaType="org.great.bean.ParamBean">
+			<id property="paramId" column="paramid"/>
+			<result property="param" column="param"/>
+		</association>
+	</resultMap>
+	
+	
+	<resultMap type="org.great.bean.SellBean" id="sellMap">
+		<id property="sellId" column="SELLID"/>
+		<result property="drugId" column="DRUGID"/>
+		<result property="adminId" column="ADMINID"/>
+		<result property="sellNum" column="SELLNUM"/>
+		<result property="sales" column="SALES"/>
+		<result property="sellDate" column="SELLDATE"/>
+		<result property="manuBatch" column="MANUBATCH"/>
+		<result property="putBatch" column="PUTBATCH"/>
+		<association property="batchDetailBean" javaType="org.great.bean.BatchDetailBean">
+			<id property="batchDetailId" column="batchDetailId"/>
+			<result property="purPrice" column="PURPRICE"/>
+		</association>
+		<association property="stoDrugBean" javaType="org.great.bean.StoDrugBean">
+			<id property="drugId" column="DRUGID"/>
+			<result property="drugName" column="DRUGNAME"/>
+		</association>
+		<association property="adminBean" javaType="org.great.bean.AdminBean">
+			<id property="adminId" column="ADMINID"/>
+			<result property="adminName" column="ADMINNAME"/>
+		</association>
+	</resultMap>
+	
+	
 
-	<!-- 蓝鹏鹏功能 -->
+	
+	
+
+		<!-- 蓝鹏鹏功能 -->
 	<!-- 通过拼音码/id/名称 /查询可出售药品 -->
 	<select id="selectCanSellDrug"
 		parameterType="org.great.bean.StoDrugBean" resultMap="canSellMap">
@@ -484,22 +747,22 @@
 		#{proDate,jdbcType=VARCHAR},#{handleNum,jdbcType=NUMERIC},#{purPrice,jdbcType=NUMERIC},#{sellPrice,jdbcType=NUMERIC}
 		,#{inDate,jdbcType=VARCHAR},#{totalMoney,jdbcType=NUMERIC})
 	</insert>
-	
-	<resultMap type="org.great.bean.BatchDetailBean" id="canSellMap">
-			<id property="batchDetailId" column="batchDetailId"/>
-			<result property="putBatch" column="putBatch" />
-			<result property="purPrice" column="purPrice" />
-			<result property="manuBatch" column="manuBatch" />
-			<result property="proDate" column="proDate" />
-			<result property="handleNum" column="HANDLENUM" />
-			<result property="drugId" column="drugId"></result>
-			
-			<association property="stoDrugBean"
+	<resultMap type="org.great.bean.BatchDetailBean"
+		id="canSellMap">
+		<id property="batchDetailId" column="batchDetailId" />
+		<result property="putBatch" column="putBatch" />
+		<result property="purPrice" column="purPrice" />
+		<result property="manuBatch" column="manuBatch" />
+		<result property="proDate" column="proDate" />
+		<result property="handleNum" column="HANDLENUM" />
+		<result property="drugId" column="drugId"></result>
+
+		<association property="stoDrugBean"
 			javaType="org.great.bean.StoDrugBean">
-			<result property="drugId" column="drugid"/>
-			<result property="specific" column="specific"/>
-			<result property="unit" column="unit"/>
-			<result property="retailPrice" column="retailPrice"/>
+			<result property="drugId" column="drugid" />
+			<result property="specific" column="specific" />
+			<result property="unit" column="unit" />
+			<result property="retailPrice" column="retailPrice" />
 			<result property="drugName" column="drugname" />
 			<result property="pinyinCode" column="pinyinCode" />
 			<result property="drugmanu" column="drugmanu" />
@@ -509,40 +772,7 @@
 			<result property="handleDate" column="handledate" />
 		</association>
 	</resultMap>
-	
-	<!-- <resultMap type="org.great.bean.StoDrugBean"
-		id="canSellMap">
-		<id property="drugId" column="drugId" />
-		<result property="drugName" column="drugName" />
-		<result property="generalName" column="generalName" />
-		<result property="specific" column="specific" />
-		<result property="unit" column="unit" />
-		<result property="retailPrice" column="retailPrice" />
-		<result property="dosageId" column="dosageId" />
-		<result property="usage" column="usage" />
-		<result property="invoiceTitle" column="invoiceTitle" />
-		<result property="pinyinCode" column="pinyinCode" />
-		<result property="antibiotic" column="antibiotic" />
-		<result property="dosage" column="dosage" />
-		<result property="typeId" column="typeId" />
-		<result property="drugmanu" column="drugmanu" />
-		<result property="proPlace" column="proPlace" />
-		<association property="batchDetailBean" 
-			javaType="org.great.bean.BatchDetailBean">
-			<result property="drugId" column="drugId"></result>
-			<result property="batchDetailId" column="BATCHDETAILID" />
-			<result property="putBatch" column="putBatch" />
-			<result property="manuBatch" column="manuBatch" />
-			<result property="proDate" column="proDate" />
-			<result property="handleNum" column="HANDLENUM" />
-			<result property="purPrice" column="PURPRICE" />
-		</association>
-		<association property="phaDrugBean" 
-			javaType="org.great.bean.PhaDrugBean">
-			<result property="drugId" column="drugId"></result>
-			<result property="drugNum" column="drugNum" />
-		</association>
-	</resultMap> -->
+
 
 	<insert id="takeDrugAppleFor"
 		parameterType="org.great.bean.DrugApplyBean">
@@ -648,7 +878,9 @@
 
 
 	<!-- 通过拼音码/id/名称 //生产日期查找退库药品 -->
-<select id="chooseCaceDrug"
+
+	<select id="chooseCaceDrug"
+
 		parameterType="org.great.bean.StoDrugBean" resultMap="caceDruginfo">
 		select s.*,p.drugNum,b.*
 		from TBLStoDrug
@@ -704,8 +936,6 @@
 		</association>
 	</resultMap>
 
-	
-	
 	<!--审核退库操作 -->
 	<!-- 改变退库申请状态时间 -->
 	<update id="updayeCaceApply" parameterType="String">
@@ -729,7 +959,8 @@
 	<select id="selectPhaInfo"
 		parameterType="org.great.bean.BatchDetailBean"
 		resultType="org.great.bean.BatchDetailBean">
-		select distinct b.* from tblBatchDetail b ,tblOutAndIn o where
+		select distinct b.* from tblBatchDetail b ,tblOutAndIn o
+		where
 		b.drugId=#{drugId} and o.putBatch=b.batchDetailId
 		and
 		b.manuBatch=#{manuBatch} and b.putBatch is null
@@ -762,7 +993,7 @@
 		PUTBATCH, PLACEID,
 		OUTINID, DESTINATION,
 		HANDLEDATE, ADMINID) VALUES(SPMSSEQ.NEXTVAL,
-		 (select TOTALMONEY from
+		(select TOTALMONEY from
 		tblbatchdetail where
 		BATCHDETAILID=#{0}), #{0},
 		'21',
@@ -799,7 +1030,7 @@
 		update tblInventory
 		set inventoryNum=inventoryNum+#{0} where drugid=#{1}
 	</update>
-	
+
 	<update id="updatePhaBatchNum"
 		parameterType="org.great.bean.BatchDetailBean">
 		update tblBatchDetail set totalMoney=#{totalMoney},
@@ -829,11 +1060,14 @@
 	<select id="selectStoIn" parameterType="java.lang.Integer"
 		resultType="org.great.bean.BatchDetailBean">
 		select * from
-		tblbatchdetail where drugid=#{0} and putbatch
+		tblbatchdetail where drugid=#{0} and
+		handleNum>0 and putbatch
 		in(select
 		putbatch from
-		tbloutandin where placeid=22 and outinid=18 and
-		drugsource !='药房' and drugsource is not null ) order by prodate
+		tbloutandin where
+		placeid=22 and outinid=18 and
+		drugsource !='药房' and drugsource is not
+		null ) order by prodate
 	</select>
 	<insert id="insetStoOut" parameterType="java.lang.String">
 		INSERT INTO TBLOUTANDIN
@@ -847,8 +1081,7 @@
 		tblbatchdetail where
 		BATCHDETAILID=#{0}), #{0},
 		'22','17',
-		(to_char(sysdate,'yyyy-mm-dd
-		hh24:mi:ss')),
+		(to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')),
 		#{1},'药房')
 	</insert>
 	<insert id="insetPhaInt" parameterType="java.lang.Integer">
@@ -856,7 +1089,8 @@
 		(OUTANDINID, TOTALMONEY,PUTBATCH, PLACEID,OUTINID,
 		drugSource,HANDLEDATE, ADMINID)
 		VALUES
-		(spmsseq.nextval, (select TOTALMONEY from
+		(spmsseq.nextval, (select
+		TOTALMONEY from
 		tblbatchdetail where
 		BATCHDETAILID=#{0}), #{0} ,
 		'21',
@@ -900,4 +1134,147 @@
 		o.outInId=18 and o.drugsource
 		='药库'
 	</select>
+	<!-- 药房低限预警 -->
+	<select id="selPhaMinimum" parameterType="java.lang.Integer"
+		resultMap="phaDrugMap">
+		select p.*,s.drugName from tblPhaDrug p,tblstoDrug s where
+		p.drugId=#{0}
+		where p.drugId=s.drugId
+	</select>
+	<insert id="insertPhaMinWarn" parameterType="java.lang.String">
+		INSERT INTO TBLWARN
+		(WARNID, WARNDATE, WARNEVENT, EVENTID, DISPOSEID,BELONGID)
+		VALUES
+		(SPMSSEQ.NEXTVAL, (to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')), #{0},
+		'26', '31','21')
+	</insert>
+	<!-- 结束 -->
+	<!-- 药库底限预警 -->
+	<select id="selStoMinimum" parameterType="java.lang.Integer"
+		resultMap="stoDrug">
+		select s.*, i.inventoryNum,i.minimum from tblStoDrug s
+		,tblInventory i where
+		s.drugId=i.drugId and s.drugid=#{0}
+	</select>
+
+	<resultMap type="org.great.bean.StoDrugBean" id="stoDrug">
+		<id property="drugId" column="drugId" />
+		<result property="drugName" column="drugName" />
+		<result property="generalName" column="generalName" />
+		<result property="specific" column="specific" />
+		<result property="unit" column="unit" />
+		<result property="retailPrice" column="retailPrice" />
+		<result property="dosageId" column="dosageId" />
+		<result property="usage" column="usage" />
+		<result property="invoiceTitle" column="invoiceTitle" />
+		<result property="pinyinCode" column="pinyinCode" />
+		<result property="antibiotic" column="antibiotic" />
+		<result property="dosage" column="dosage" />
+		<result property="dailyNum" column="dailyNum" />
+		<result property="typeId" column="typeId" />
+		<result property="drugmanu" column="drugmanu" />
+		<result property="proPlace" column="proPlace" />
+		<association property="inventoryBean"
+			javaType="org.great.bean.InventoryBean">
+			<id property="inventoryId" column="inventoryId" />
+			<result property="inventoryNum" column="inventoryNum" />
+			<result property="minimum" column="minimum" />
+
+		</association>
+
+	</resultMap>
+	<insert id="insertStoMinWarn" parameterType="java.lang.String">
+		INSERT INTO TBLWARN
+		(WARNID, WARNDATE, WARNEVENT, EVENTID, DISPOSEID,BELONGID)
+		VALUES
+		(SPMSSEQ.NEXTVAL, (to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')), #{0},
+		#{1}, '31',#{2})
+	</insert>
+
+	<select id="selWarn" resultType="org.great.bean.WarnBean"
+		parameterType="java.lang.Integer">
+		select w.*,p1.param eventName,p2.param disposeName from
+		tblWarn
+		w,tblparam p1,tblparam p2 where
+		p1.paramid =w.eventid and
+		p2.paramid
+		=w.disposeid and w.disposeid!=30
+		<if test="belongId !=0">
+			and w.belongid=#{belongId}
+		</if>
+		order by w.warndate
+	</select>
+
+	<select id="selAllStoDrug"
+		resultType="org.great.bean.StoDrugBean">
+		select * from tblstodrug
+	</select>
+
+	<select id="unsalableDrug" parameterType="java.lang.String"
+		resultType="org.great.bean.StoDrugBean">
+		select s.* from tblStoDrug s,tblphadrug p where p.drugid
+		not
+		in(select drugid from tblSell where selldate>#{0}) and
+		 p.drugnum!=0
+		and s.drugid = p.drugid
+	</select>
+
+	<select id="selAllWarn" resultType="org.great.bean.WarnBean"
+		parameterType="org.great.bean.CondiBean">
+		select * from(select w.*, rownum r ,p1.param eventName,p2.param
+		disposeName from
+		tblWarn
+		w,tblparam p1,tblparam p2 where
+		p1.paramid
+		=w.eventid and
+		p2.paramid
+		=w.disposeid
+		<if test="belongId !=0">
+			and w.belongid=#{belongId}
+		</if>
+		<if test="eventId !=0">
+			and w.eventId=#{eventId}
+		</if>
+		<if test="checkId!=0">
+			and w.disposeId=#{checkId}
+		</if>
+		<if test="afterDate!=null and afterDate!='' ">
+			and w.warnDate &gt;=#{afterDate}
+		</if>
+		<if test="beforeDate!=null and beforeDate!='' ">
+			and w.warnDate &lt;=#{beforeDate}
+		</if>
+		order by w.warndate)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1
+		and
+		r&lt;=#{pageNum}*#{pageLimit}
+	</select>
+
+	<select id="selAllWarnCount" resultType="java.lang.Integer"
+		parameterType="org.great.bean.CondiBean">
+		select count(*) from tblWarn w
+		where 1=1
+		<if test="belongId !=0">
+			and w.belongid=#{belongId}
+		</if>
+		<if test="eventId !=0">
+			and w.eventId=#{eventId}
+		</if>
+		<if test="checkId!=0">
+			and w.disposeId=#{checkId}
+		</if>
+		<if test="afterDate!=null and afterDate!='' ">
+			and w.warnDate &gt;=#{afterDate}
+		</if>
+		<if test="beforeDate!=null and beforeDate!='' ">
+			and w.warnDate &lt;=#{beforeDate}
+		</if>
+	</select>
+<update id="affirmWarn" parameterType="java.lang.Integer">
+	update tblwarn set disposeid=30 where warnid =#{0}
+</update>
+
+<select id="selRole" parameterType="java.lang.String" resultType="org.great.bean.RoleBean">
+	select c.*from TBLADMIN a,TBLADMINANDROLE b,tblrole c where a.adminid=b.userid and b.roleid=c.roleid and a.adminaccount=#{0}
+	</select>
+
 </mapper>

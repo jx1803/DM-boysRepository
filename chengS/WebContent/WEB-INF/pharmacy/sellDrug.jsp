@@ -46,7 +46,7 @@
 				<td width="50">单位:</td>
 				<td width="100"><input class="form-control" id="unit" readonly="readonly"></td>
 				<td width="100">剩余数量:</td>
-				<td width="100"><input class="form-control" id="drugNum" readonly="readonly"></td>
+				<td width="100"><input class="form-control" id="drugNum" readonly="readonly" style="width:80px;"><span id="sUnit"></span></td>
 				
 			</tr>
 			<tr>
@@ -57,11 +57,11 @@
 				<td width="100">零售价（元）:</td>
 				<td width="100"><input class="form-control" id="retailPrice" readonly="readonly"></td>
 				<td width="50">数量:</td>
-				<td width="100"><input style="width:100px" class="form-control" id="sellNum" placeholder="请输入发药数量"  onkeyup="this.value=this.value.replace(/\D/g,''),setSales()" onafterpaste="this.value=this.value.replace(/\D/g,''),setSales()" ><span id="sunit"></span>
-				<input style="width:100px" class="form-control" id="sellNum1" placeholder="请输入发药数量"  onkeyup="this.value=this.value.replace(/\D/g,''),setSales()" onafterpaste="this.value=this.value.replace(/\D/g,''),setSales()" ><span id="sspecific"></span>
+				<td width="100"><input style="width:100px" class="form-control" id="sellNum" placeholder="请输入发药数量" oninput="setSales()" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ><span id="sunit"></span>
+				<input style="width:100px" class="form-control" id="sellNum1" placeholder="请输入发药数量" oninput="setSales()" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ><span id="sspecific"></span>
 				</td>
 				<td width="100">合计金额(元):</td>
-				<td width="100"><input class="form-control" id="sales" readonly="readonly" ></td>
+				<td width="100"><input class="form-control" id="sales" readonly="readonly" style="width:100px;"></td>
 				
 			</tr>
 	</table>
@@ -109,10 +109,10 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-	var count=0;
-	
 
-	
+
+
+	var count=0;
 	
 	function getDrug(){
 		$("#drugName").val($("#drugName1").val());
@@ -208,7 +208,7 @@
   		var m=$("#retailPrice").val();
   		var specific=$("#specific").val();
 		var str=specific.split('-');
-  		var num=$("#drugNum").val()*str[0];
+  		var num=$("#drugNum").val();
 		var snum=$("#sellNum").val()*str[0]+$("#sellNum1").val()*1;
 		var smoney=m/str[0];
   		if(snum>num){

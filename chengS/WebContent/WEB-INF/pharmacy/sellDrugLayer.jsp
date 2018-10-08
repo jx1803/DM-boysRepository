@@ -18,6 +18,8 @@
 <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/bootstrapValidator.css" />
+
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
 <body>
@@ -25,8 +27,8 @@
 <div class="page-container">
 <form action="sellDrugLayer.action" method="post" id="select">
 	<div class="text-c"> 
-		药品拼音码：<input type="text" class="input-text" style="width:80px" placeholder="输入拼音码" id="" name="pinyinCode" >
-		&nbsp;&nbsp;药品名：<input type="text" class="input-text" style="width:120px" placeholder="输入药品名" id="" name="drugName"><br>
+		药品拼音码：<input type="text" class="input-text" style="width:80px" placeholder="输入拼音码" id="" name="pinyinCode" value="${condiBean.pinyinCode }" >
+		&nbsp;&nbsp;药品名：<input type="text" class="input-text" style="width:120px" placeholder="输入药品名" id="" name="drugName" value="${condiBean.drugName }"><br>
 	
 		
 		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
@@ -76,12 +78,40 @@
 <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script> 
 <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
-
+<script type="text/javascript" src="../lib/bootstrapValidator.js"></script>
 <script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 
 <script type="text/javascript">
+
+$('form').bootstrapValidator({
+　　　　message: 'This value is not valid',
+        　feedbackIcons: {
+            　　　　　　　　valid: 'glyphicon glyphicon-ok',
+            　　　　　　　　invalid: 'glyphicon glyphicon-remove',
+            　　　　　　　　validating: 'glyphicon glyphicon-refresh'
+        　　　　　　　　   },
+        fields: {
+            username: {
+                message: '用户名验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '用户名不能为空'
+                    }
+                }
+            },
+            email: {
+                validators: {
+                    notEmpty: {
+                        message: '邮箱地址不能为空'
+                    }
+                }
+            }
+        }
+    });
+});
+
 	function addDrug(drugId,drugName,drugmanu,retailPrice,specific,unit,drugNum,manuBatch,putBatch){
 		var str = specific.split('-');
 		/* window.opener.setValue(drugName,drugmanu,putBatch,manuBatch,purPrice); */
@@ -95,6 +125,7 @@
 		parent.$("#drugNum").val(drugNum);
 		parent.$("#putBatch").val(putBatch);
 		parent.$("#sunit").text("("+unit+")");
+		parent.$("#sUnit").text("("+str[1]+")");
 		parent.$("#sspecific").text("("+str[1]+")");
 		var index=parent.layer.getFrameIndex(window.name);
 		parent.layer.close(index);
