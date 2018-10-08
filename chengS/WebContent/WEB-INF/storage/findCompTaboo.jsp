@@ -29,7 +29,10 @@ String path = request.getScheme() +"://"+request.getServerName()
 	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="<%=path%>lib/bootstrapValidator.css"/>
 <!--[if IE 6]>
+
 <script type="text/javascript" src="<%=path%>lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
@@ -48,8 +51,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<!-- 模态框（添加药品类型） -->
 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true" >
-		<form action="addCompTaboo.action" method="post"
-			onsubmit="window.opener=null;window.close();">
+		<form action="addCompTaboo.action" method="post" id="addForm">
 			<div class="modal-dialog" style="width: 450px">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -66,27 +68,34 @@ String path = request.getScheme() +"://"+request.getServerName()
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												药品名称1：</th>
-											<td><input type="text" style="width: 250px"
-												class="input-text" value="" placeholder="" id="drugId1"
-												name="drugId1" datatype="*2-16" nullmsg="用户名不能为空">
+											<td>
+												<div class="form-group">
+												<input type="text" style="width: 250px"
+												class="input-text" id="drugId1" name="drugId1" >
 												<span id="name1" style="color:red"></span>
+												</div>
 												</td>
 										</tr>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												药品名称2：</th>
-											<td><input type="text" style="width: 250px"
-												class="input-text" value="" placeholder="" id="drugId2"
-												name="drugId2" datatype="*2-16" nullmsg="用户名不能为空">
-													<span id="name2" style="color:red"></span>
+											<td>
+												<div class="form-group">
+												<input type="text" style="width: 250px"
+												class="input-text" id="drugId2" name="drugId2" >
+												<span id="name2" style="color:red"></span>
+												</div>
 												</td>
 										</tr>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												产生作用：</th>
-											<td><input type="textarea" style="width: 250px"
-												class="textarea" value="" placeholder="" id="sideeffect"
-												name="sideeffect" datatype="*2-16" nullmsg="用户名不能为空"></td>
+											<td>
+												<div class="form-group">
+												<input type="textarea" style="width: 250px"
+												class="textarea" id="sideeffect" name="sideeffect" >
+												</div>	
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -108,7 +117,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 <!-- 模态框（修改药品类型） -->
 	<div class="modal fade" id="updModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<form action="updCompTaboo.action" method="post" >
+		<form action="updCompTaboo.action" method="post" id="updForm">
 			<div class="modal-dialog" style="width: 450px">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -135,16 +144,24 @@ String path = request.getScheme() +"://"+request.getServerName()
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												药品名称2：</th>
-											<td><input type="text" style="width: 250px"
-												class="input-text" value="" placeholder="" id="updDrugId2"
-												name="drugId2" datatype="*2-16" nullmsg="用户名不能为空"></td>
+											<td>
+												<div class="form-group">
+												<input type="text" style="width: 250px"
+												class="input-text" id="updDrugId2" name="drugId2">
+												</div>	
+											</td>
+												
 										</tr>
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												产生作用：</th>
-											<td><input type="textarea" style="width: 250px"
-												class="textarea" value="" placeholder="" id="updSideeffect"
-												name="sideeffect" datatype="*2-16" nullmsg="用户名不能为空"></td>
+											<td>
+												<div class="form-group">
+												<input type="textarea" style="width: 250px"
+												class="textarea"  id="updSideeffect"
+												name="sideeffect" >
+												</div>
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -237,56 +254,148 @@ String path = request.getScheme() +"://"+request.getServerName()
 		src="<%=path%>lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="<%=path%>lib/bootstrap.js"></script>	
+	<script type="text/javascript" src="<%=path%>lib/bootstrapValidator.js"></script>
 	<script type="text/javascript">
+	
+
+    //Modal验证销毁重构
+    $(function(){
+    	 $('#updModal').on('hidden.bs.modal', function() {
+    		 $("#updForm").data('bootstrapValidator').resetForm(); 
+		    });
+    	 $('#addModal').on('hidden.bs.modal', function() {
+    		 $("#addForm").data('bootstrapValidator').resetForm(); 
+		    });
+    	 
+    }) 
+    //form验证规则(添加剂型)
+    function addFormValidator(){
+        $('#addForm').bootstrapValidator({
+        	live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+                    },
+            fields: {
+                drugId1: {
+                    message: '验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '输入不能为空'
+                        }
+                    }
+                },
+                drugId2: {
+                    validators: {
+                        notEmpty: {
+                            message: '输入不能为空'
+                        }
+                    }
+                },
+                sideeffect: {
+                    validators: {
+                        notEmpty: {
+                            message: '输入不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    //form验证规则(修改剂型)
+    function updFormValidator(){
+        $('#updForm').bootstrapValidator({
+        	live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+                    },
+            fields: {
+                //管理员名
+                drugId2: {
+                    validators: {
+                        notEmpty: {
+                            message: '输入不能为空'
+                        }
+                    }
+                },
+                sideeffect: {
+                    validators: {
+                        notEmpty: {
+                            message: '输入不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 		var k=1;
 		//验证第一个药品名(添加配伍禁忌)
 		$(function(){
-			$("#drugId1").blur(function(){
-				$.ajax({
-					url:"findfirstName.action?drugId1="+$("#drugId1").val(),
-					type:"post",
-					dataType:"text",
-					success: function(data) {
-						$("#name1").html(data);
-						if(data=="此药品不存在"){
-							k=-1;
+			var drugId1 = $("#drugId1").val();
+			if(drugId1!=""){
+				$("#drugId1").blur(function(){
+					$.ajax({
+						url:"findfirstName.action?drugId1="+$("#drugId1").val(),
+						type:"post",
+						dataType:"text",
+						success: function(data) {
+							$("#name1").html(data);
+							if(data=="此药品不存在"){
+								k=-1;
+							}
 						}
-					}
-				})
-			})
-		})
+					});
+				});
+			};
+		});
 		//验证第二个药品名(添加配伍禁忌)
 		$(function(){
-			$("#drugId2").blur(function(){
-				$.ajax({
-					url:"findSecondName.action?drugId2="+$("#drugId2").val(),
-					type:"post",
-					dataType:"text",
-					success: function(data) {
-						$("#name2").html(data);
-						if(data=="此药品不存在"){
-							k=-1;
+			var drugId2 = $("#drugId1").val();
+			if(drugId2!=""){
+				$("#drugId2").blur(function(){
+					$.ajax({
+						url:"findSecondName.action?drugId2="+$("#drugId2").val(),
+						type:"post",
+						dataType:"text",
+						success: function(data) {
+							$("#name2").html(data);
+							if(data=="此药品不存在"){
+								k=-1;
+							}
 						}
-					}
-				})
-			})
-		})
+					});
+				});
+			};
+			
+		});
 		//验证第二个药品名(修改配伍禁忌)
 		$(function(){
-			$("#updDrugId2").blur(function(){
-				$.ajax({
-					url:"findSecondName.action?drugId2="+$("#updDrugId2").val(),
-					type:"post",
-					dataType:"text",
-					success: function(data) {
-						$("#name2").html(data);
-						if(data=="此药品不存在"){
-							k=-1;
+			var drugId2 = $("#drugId1").val();
+			if(drugId2!=""){
+				$("#updDrugId2").blur(function(){
+					$.ajax({
+						url:"findSecondName.action?drugId2="+$("#updDrugId2").val(),
+						type:"post",
+						dataType:"text",
+						success: function(data) {
+							$("#name2").html(data);
+							if(data=="此药品不存在"){
+								k=-1;
+							}
 						}
-					}
-				})
-			})
-		})
+					});
+				});
+			};
+			
+		});
 		function comfSub(){
 			if(k==-1){
 				return false;
@@ -295,13 +404,21 @@ String path = request.getScheme() +"://"+request.getServerName()
 		
 		//弹出添加模态框
 		function addModal(){
+			addFormValidator();
 			$('#addModal').modal('show');
 		}
-	
-	
+		//当模态框未提交时，将全局变量改回
+		 $(function () { 
+			 $('#addModal').on('hide.bs.modal', function () {
+				 k=1;
+			 })
+			 $('#updModal').on('hide.bs.modal', function () {
+				 k=1;
+			 })
+		});
 		//弹出修改模态框
 		function updModel(tabuId ,drugId1 ,drugId2,sideeffect){
-			
+			updFormValidator();
 			$("#tabuId").val(tabuId);
 			$("#updDrugId1").val(drugId1);
 			$("#updDrugId2").val(drugId2);

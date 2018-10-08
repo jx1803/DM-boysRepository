@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd 
 		http://www.springframework.org/schema/aop 
-		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
 		
@@ -23,6 +23,9 @@
 		<property name="prefix" value="/WEB-INF/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
-		
+
+   <!-- PECTJ注解 -->
+   <aop:aspectj-autoproxy proxy-target-class="true" />  
+   <bean id="systemLogAspect" class="org.great.tools.LogAop" />
 		
 </beans>

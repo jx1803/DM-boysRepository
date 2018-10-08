@@ -46,4 +46,10 @@ public class LogBean {
 		this.operateItem = operateItem;
 	}
 
+	@Override
+	public String toString() {
+		return "LogBean [logId=" + logId + ", adminId=" + adminId + ", operateDate=" + operateDate + ", operateItem="
+				+ operateItem + "]";
+	}
+
 }
