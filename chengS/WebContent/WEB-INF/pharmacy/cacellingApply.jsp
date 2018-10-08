@@ -46,13 +46,15 @@
 			type="text" name="adminName" id="adminName"
 			placeholder="${User.adminName}" disabled
 			style="width: 130px; margin-top: 5px" class="input-text" />
-		&emsp;当时领取数量：<input type="text" id="handleNum" disabled
-			placeholder="当时领取数量" style="width: 130px; margin-top: 5px"
-			class="input-text" /> <br> &emsp;药房库存数量：<input type="text"
+			&emsp;单位：<input type="text" name="unit" id="unit" placeholder="药品单位"
+			style="width: 80px" class="input-text" disabled />
+		&emsp;<br>当前批次剩余数量：<input type="text" id="handleNum" disabled
+			placeholder="当前批次剩余数量" style="width: 130px; margin-top: 5px"
+			class="input-text" />  &emsp;药房库存数量：<input type="text"
 			placeholder="药房库存数量" id="drugNum"
-			style="width: 100px; margin-top: 5px" class="input-text" disabled />
+			style="width: 80px; margin-top: 5px" class="input-text" disabled />
 		&emsp;退库数量：<input type="text" id="applyNum" placeholder="请输入申请数量"
-			style="width: 100px; margin-top: 5px" class="input-text" />
+			style="width: 100px; margin-top: 5px" class="input-text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
 		&emsp;退库理由：<input type="text" id="applyReason" placeholder="请输入申请理由"
 			style="width: 250px; margin-top: 5px" class="input-text" /> <a
 			class="btn btn-primary radius" onclick="addApply()"><i
@@ -84,8 +86,7 @@
 					<th>退库理由</th>
 				</tr>
 			</thead>
-			<tbody id="tblDrugList">
-			</tbody>
+			<tbody id="tblDrugList"></tbody>
 		</table>
 	</div>
 
@@ -137,6 +138,11 @@
 			var manuBatch = $("#manuBatch").val();
 			var applyNum = $("#applyNum").val();
 			var applyReason = $("#applyReason").val();
+			var mid = $("#" + drugId).val();
+			if (typeof (mid) != "undefined") {
+				alert("该药品已添加,请重新选择");
+				return;
+			}
 			if (drugName == "" || applyNum == "" || applyReason == "") {
 				alert("请完善退库药品信息");
 				return;
@@ -150,7 +156,8 @@
 				return;
 			}
 
-			var input = "<input type='hidden' name='applyList["+count+"].drugId' value='"+drugId+
+			var input = "<input id='"+drugId+"' type='hidden' name='drugList["+count+"].drugName' value='"+drugName+
+			"'><input type='hidden' name='applyList["+count+"].drugId' value='"+drugId+
 		"'><input type='hidden' name='applyList["+count+"].adminId' value='"+adminId+
 		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+
 		"'><input type='hidden' name='applyList["+count+"].applyReason' value='"+applyReason+
@@ -170,15 +177,27 @@
 
 		/* 清空申请记录 */
 		function empty() {
+			var r=confirm("确认清空列表吗？");
+			if(r){
+				
 			$("#tblDrugList").html("");
 			$("#fapply").html("");
 			count = 0;
+			}
 		}
 
+	
+		
 		/* 提交申请 */
-		function subApply() {
-			var r = confirm("确定提交吗?");
-			if (r) {
+		function subApply(){
+			var d=$("#tblDrugList").html();
+			if(d.length==0){
+				
+			alert("请选择药品");
+			return;
+			}
+			var r=confirm("确定提交吗?");
+			if(r){
 				$("#fapply").submit();
 			}
 		}

@@ -10,6 +10,9 @@
 
 package org.great.biz;
 
+import org.great.bean.CondiBean;
+import org.springframework.web.servlet.ModelAndView;
+
 /** 
  * @ClassName: IStorStatisticsBiz 
  * @Description: 药库统计业务层接口
@@ -17,5 +20,6 @@ package org.great.biz;
  * @date: 2018年9月26日 下午5:12:26  
  */
 public interface IStorStatisticsBiz {
-
+	public ModelAndView dpStatistics(CondiBean condiBean);//药品采购统计
+	public ModelAndView drugOutInStatistics(CondiBean condiBean);//药品出入库明细统计
 }

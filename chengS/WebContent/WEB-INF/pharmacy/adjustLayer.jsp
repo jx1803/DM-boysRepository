@@ -18,6 +18,10 @@
 <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../lib/bootstrap.min.css" /> -->
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="../lib/fontawesome-all.css" />
+<link rel="stylesheet" type="text/css" href="../lib/bootstrapValidator.css" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
 <!--[if IE 6]>
@@ -31,24 +35,38 @@
 <form action="adjustPrice.action" method="post" target="_parent" id="mform">
 
 <table border="0" style="heigth:300px">
+<div class="form-group">
 <input type="hidden" value="${maximum }" id="maximum">
+</div>
+<div class="form-group">
 <input type="hidden" name="drugId" value="${drugId }">
+</div>
+<div class="form-group">
 <input type="hidden" name="adminId" value="1001">
+</div>
+
 	<tr>
 		<td width="170px" align="center">原零售价（元）：</td>
-		<td><input type="text" class="form-control" name="beforeAdjust" value="${beforeAdjust }" id="beforePrice" readonly="readonly" ></td>
+		<td><div class="form-group">
+		<input type="text" class="form-control" name="beforeAdjust" value="${beforeAdjust }" id="beforePrice" readonly="readonly" >
+		</div></td>
+	
 	</tr>
 	<tr><td width="170" align="center">修改为  </td>
 	</tr>	
 	<tr>
 		<td width="170px" align="center">修改后零售价（元）：</td>
-		<td><input type="text" class="form-control" name="afterAdjust"  id="afterPrice" placeholder="输入修改价格" ></td>
+		<td><div class="form-group">
+		<input type="text" class="form-control" name="afterAdjust"  id="afterPrice" placeholder="输入修改价格" >
+	</div>
+		</td>
+	</div>
 	</tr>
 					
 				
  </table><br><br>
  <div class="text-c">
- 	<button class="btn btn-default" type="button" onclick="checkSub()" >确定</button>&nbsp;&nbsp;&nbsp;&nbsp;
+ 	<button class="btn btn-default" id="btnsub" type="submit"  >确定</button>&nbsp;&nbsp;&nbsp;&nbsp;
  	<button class="btn btn-default" type="button" onclick="cancle()" >取消</button>
   </div>
 </form>
@@ -65,8 +83,73 @@
 <script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="../lib/bootstrap.js"></script>
+<script type="text/javascript" src="../lib/bootstrapValidator.js"></script>
 <script type="text/javascript">
-	function checkSub(){
+
+/*  $("#btnsub").on('click',function(){
+	var bootstrapValidator = $("#mform").data('bootstrapValidator');
+	//手动触发验证
+	bootstrapValidator.validate();
+	if(bootstrapValidator.isValid()){
+		 var r=confirm("确定要提交吗?");
+		if(r){
+			$("#mform").submit();
+		} 
+		
+	}
+
+}); */
+ 
+$(function(){
+	
+	$("#mform").bootstrapValidator({
+	　　　　message: 'This value is not valid',
+	        　feedbackIcons: {
+	            　　　　　　　　valid: 'glyphicon glyphicon-ok',
+	            　　　　　　　　invalid: 'glyphicon glyphicon-remove',
+	            　　　　　　　　validating: 'glyphicon glyphicon-refresh'
+	        　　　　　　　　   },
+	           excluded: [':disabled', ':hidden', ':not(:visible)'],
+	        live:'disabled',
+	        fields: {
+	        	afterAdjust: {
+	                message: '用户名验证失败',
+	                validators: {
+	                    notEmpty: {
+	                        message: '调整价格不能为空'
+	                    },
+	                    callback:{
+	                    	message:'调整价格超出国家标准',
+	                    	callback:function (validator, $field, options){
+	                    		var afterPrice=$("#afterPrice").val();
+	                    		var maximum=$("#maximum").val();
+	                    		if(Number(afterPrice)>Number(maximum)){
+	                    			return false;
+	                    		}else{
+	                    			return true;
+	                    		}
+	                    		
+	                    	}
+	                    }
+	                }
+	            }
+	           
+	        }
+	    });
+	
+	
+	
+	 }); 
+	
+	function resetForm(){
+		$("#mform").data('bootstrapValidator').destroy();
+
+		$('#mform').data('bootstrapValidator',null);
+	}
+
+
+	/* function checkSub(){
 		var afterPrice=$("#afterPrice").val();
 		var maximum=$("#maximum").val();
 		
@@ -83,7 +166,7 @@
 		}
 		
 	}
-
+ */
 	function cancle(){
 		var index=parent.layer.getFrameIndex(window.name);
 		parent.layer.close(index);

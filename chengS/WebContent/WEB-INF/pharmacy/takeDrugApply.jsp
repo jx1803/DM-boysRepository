@@ -55,11 +55,11 @@
 			type="text" name="adminName" id="adminName"
 			placeholder="${User.adminName}" disabled
 			style="width: 130px; margin-top: 5px" class="input-text" />
-		&emsp;库存数量：<input type="text" id="inventoryNum"  placeholder="库存数量"
+		&emsp;库存数量：<input type="text" id="inventoryNum" placeholder="库存数量"
 			style="width: 100px; margin-top: 5px" class="input-text" disabled />
 		&emsp;申请数量：<input type="text" name="applyNum" id="applyNum"
 			placeholder="请输入申请数量" style="width: 100px; margin-top: 5px"
-			class="input-text" /> &emsp;申请理由：<input type="text"
+			class="input-text"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/> &emsp;申请理由：<input type="text"
 			name="applyReason" id="applyReason" placeholder="请输入申请理由"
 			style="width: 250px; margin-top: 5px" class="input-text" /> <a
 			class="btn btn-primary radius" onclick="addApply()"><i
@@ -90,8 +90,7 @@
 					<th>总价</th>
 				</tr>
 			</thead>
-			<tbody id="tblDrugList">
-			</tbody>
+			<tbody id="tblDrugList"></tbody>
 		</table>
 	</div>
 
@@ -143,16 +142,22 @@
 			var applyNum = $("#applyNum").val();
 			var applyReason = $("#applyReason").val();
 			var applyMoney = retailPrice * applyNum;
+			var mid = $("#" + drugId).val();
+			if (typeof (mid) != "undefined") {
+				alert("该药品已添加,请重新选择");
+				return;
+			}
 			if (drugName == "" || applyNum == "" || applyReason == "") {
 				alert("请完善申请信息");
 				return;
 			}
-			if (inventoryNum*1 < applyNum*1) {
+			if (inventoryNum * 1 < applyNum * 1) {
 				alert("申请数量不能大于库存");
 				return;
 			}
 
-			var input = "<input type='hidden' name='applyList["+count+"].drugId' value='"+drugId+
+			var input = "<input id='"+drugId+"' type='hidden' name='drugList["+count+"].drugName' value='"+drugName+
+			"'><input type='hidden' name='applyList["+count+"].drugId' value='"+drugId+
 		"'><input type='hidden' name='applyList["+count+"].adminId' value='"+adminId+
 		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+
 		"'><input type='hidden' name='applyList["+count+"].applyReason' value='"+applyReason+
@@ -171,15 +176,26 @@
 
 		/* 清空申请记录 */
 		function empty() {
-			$("#tblDrugList").html("");
-			$("#takeapply").html("");
-			count = 0;
+			var r=confirm("确认清空列表吗？");
+			if(r){
+				
+				$("#tblDrugList").html("");
+				$("#takeapply").html("");
+				count = 0;
+			}
+			
+			
 		}
-
 		/* 提交申请 */
-		function subApply() {
-			var r = confirm("确定提交申请吗?");
-			if (r) {
+		function subApply(){
+			var d=$("#tblDrugList").html();
+			if(d.length==0){
+				
+			alert("请选择请领药品");
+			return;
+			}
+			var r=confirm("确定提交吗?");
+			if(r){
 				$("#takeapply").submit();
 			}
 		}

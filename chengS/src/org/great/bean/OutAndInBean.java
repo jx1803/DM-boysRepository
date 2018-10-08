@@ -23,12 +23,13 @@ public class OutAndInBean {
 	private int outAndInId;// 出入库记录ID
 	private double totalMoney;// 价格合计
 	private String putBatch;// 入库批次
-	private int placeId;// 药房/药库
-	private int outInId;// 出库/入库
+	private int placeId;// 21药房/22药库 
+	private int outInId;// 17出库/18入库
 	private String destination;// 目的地
 	private String handleDate;// 操作时间
 	private int adminId;// 操作人员ID
 	private String drugSource;//入库来源
+	private int drugId;//药品编号
 	public OutAndInBean() {
 		super();
 	}
@@ -99,6 +100,14 @@ public class OutAndInBean {
 
 	public String getDrugSource() {
 		return drugSource;
+	}
+
+	public int getDrugId() {
+		return drugId;
+	}
+
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
 	}
 
 	public void setDrugSource(String drugSource) {

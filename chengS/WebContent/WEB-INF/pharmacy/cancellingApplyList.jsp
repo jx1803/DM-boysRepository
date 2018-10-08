@@ -42,14 +42,14 @@
 	<br>
 	<form action="toCancellingApplyList.action">
 		<div class="text-c">
-			日期范围： <input type="text"
-				onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
-				name="beforeDate" class="input-text Wdate" id="datemin"
-				value="${condiBean.beforeDate==null?"":condiBean.beforeDate}" style="width: 120px;">- - <input
+			日期范围： <input
 				type="text"
 				onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })"
-				name="afterDate" class="input-text Wdate" id="datemax"
-				value="${condiBean.afterDate==null?"":condiBean.afterDate}" style="width: 120px;"> 申请人:<input
+				name="afterDate" class="input-text Wdate" id="datemax"":condiBean.afterDate}" style="width: 120px;">
+				 - - <input type="text"
+				onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
+				name="beforeDate" class="input-text Wdate" id="datemin"
+				value="${condiBean.beforeDate==null?"":condiBean.beforeDate}" style="width: 120px;"> 申请人:<input
 				type="text" class="input-text" style="width: 250px" placeholder=""
 				id="" name="adminName" value="${condiBean.adminName==null?"":condiBean.adminName}">
 			<button type="submit" class="btn btn-success">
@@ -84,7 +84,7 @@
 						<td>${caceApply.manuBatch }</td>
 						<td>${caceApply.adminBean.adminName }</td>
 						<td>${caceApply.applyReason}</td>
-						<td>${caceApply.checkDate}</td>
+						<td>${caceApply.applyDate}</td>
 						<td class="td-status"><span
 							class="label label-success radius">${caceApply.checkName}</span></td>
 						<td><a
