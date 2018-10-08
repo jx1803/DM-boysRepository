@@ -37,8 +37,8 @@
 	</div>
 	</form>
 	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"> 
-	<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
-	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','<%=path%>user/roleListAdd.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a> </span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+
+	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','<%=path%>user/roleListAdd.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a> </span> <span class="r">共有数据：<strong>${pageNum }</strong> 条</span> </div>
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
 			<tr>
@@ -62,17 +62,18 @@
 					<td>${rlist.rolebean.roleName }</td>
 					<td>${rlist.name }</td>
 					<td>${rlist.rolebean.rolebewrite }</td>
-					<td class="f-14"><a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','<%=path %>user/roleListUpdate.action','1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_role_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+					<td class="f-14">
+					<a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','<%=path %>user/roleListUpdate.action?roleId='+${rlist.roleId },'1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+					<a title="删除" href="javascript:;" onclick="admin_role_del(this,'${rlist.roleId }')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-		<div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">当前页 ${page}，共 ${pageTotal}页</div>
+		<div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">当前页 ${blurred.page}，共 ${pageTotal}页</div>
 	<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-	
-	<button  type="button" onclick="upPage('${page}')" class="paginate_button previous disabled">上一页</button>
-	
-	<button id="DataTables_Table_0_next" class="paginate_button next disabled" onclick="nextPage('${page}','${pageTotal}')">下一页</button>
+<button  type="button" onclick="upPage('${blurred.page}')" class="btn btn-secondary-outline radius" >上一页</button>
+
+	<button id="DataTables_Table_0_next" class="btn btn-secondary-outline radius" onclick="nextPage('${blurred.page}','${pageTotal}')">下一页</button>
 	</div>
 </div>
 <!--_footer 作为公共模版分离出去-->
@@ -123,11 +124,12 @@ function admin_role_del(obj,id){
 	layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: '',
-			dataType: 'json',
+			url: 'roleDel.action?roleid='+id,
+			dataType: 'text',
 			success: function(data){
 				$(obj).parents("tr").remove();
 				layer.msg('已删除!',{icon:1,time:1000});
+				layer.close(index);
 			},
 			error:function(data) {
 				console.log(data.msg);

@@ -36,7 +36,7 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="<%=path %>user/Menu_Level2_save.action" method="post" class="form form-horizontal" id="form-admin-role-add" target="_parent">
+	<form action="<%=path %>user/menuLevel2Save.action" method="post" class="form form-horizontal" id="form-admin-role-add" target="_parent">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>一级菜单：</label>
 				<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">

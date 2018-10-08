@@ -4,11 +4,18 @@
 <mapper namespace="org.great.mapper.UserMapper">
 
 	<!-- 账户，密码登录验证 -->
-	<select id="userlogin" parameterType="org.great.bean.AdminBean"
-		resultType="org.great.bean.AdminBean">
-		select * from TBLADMIN a where a.adminname=#{adminName} and
-		a.password=#{password}
+	<select id="userlogin" parameterType="org.great.bean.AdminBean" resultType="org.great.bean.AdminBean">
+		select * from TBLADMIN a where a.adminAccount=#{adminAccount,jdbcType=VARCHAR} and a.password=#{password,jdbcType=VARCHAR}
 	</select>
+	<!-- 注册时候是否重复账号 -->
+	<select id="reappearuser" parameterType="String" resultType="org.great.bean.AdminBean">
+		select * from TBLADMIN where adminAccount=#{account}
+	</select>
+	
+	<!-- //密码修改 -->
+	 <update id="changepsword"  parameterType="org.great.bean.AdminBean">
+		update TBLADMIN a set a.password=#{name} where a.adminaccount=#{adminAccount} and a.password=#{password} 
+	</update> 
 
 	<!-- 用户列表显示 -->
 	<select id="userList" parameterType="org.great.bean.CondiBean"
@@ -27,13 +34,13 @@
 	</select>
 	<resultMap type="org.great.bean.AdminBean" id="userMap">
 		<id property="adminId" column="ADMINID" />
+		<result property="adminAccount" column="ADMINACCOUNT" />
 		<result property="adminName" column="ADMINNAME" />
 		<result property="sex" column="SEX" />
 		<result property="roleId" column="ROLEID" />
 		<result property="deptId" column="DEPTID" />
 		<result property="officePhone" column="OFFICEPHONE" />
 		<result property="mobilePhone" column="MOBILEPHONE" />
-
 		<result property="email" column="EMAIL" />
 		<result property="education" column="EDUCATION" />
 		<result property="idcard" column="IDCARD" />
@@ -42,7 +49,7 @@
 		<result property="entryDate" column="ENTRYDATE" />
 		<result property="quitDate" column="QUITDATE" />
 		<result property="paramId" column="PARAMID" />
-
+		<result property="birthDate" column="BIRTHDATE" />
 		<association property="rolebean" column="ROLEID"
 			javaType="org.great.bean.RoleBean">
 			<id property="roleId" column="ROLEID" />
@@ -59,11 +66,8 @@
 			<result property="param" column="PARAM" />
 		</association>
 	</resultMap>
-
-
-	<!-- 用户总页数显示，包括模糊查找时 -->
-	<select id="resultPage" parameterType="org.great.bean.CondiBean"
-		resultType="Integer">
+<!-- 用户总页数显示，包括模糊查找时 -->
+	<select id="resultPage" parameterType="org.great.bean.CondiBean" resultType="Integer">
 		select count(*) as result from TBLADMIN u where 1=1 and u.paramid!=4
 		<if test="null!=entrytime and ''!=entrytime">
 			and u.entryDate&gt;=#{entrytime}
@@ -76,16 +80,47 @@
 		</if>
 	</select>
 
+<!-- 删除用户显示 -->
+<select id="userdellist" parameterType="org.great.bean.CondiBean" resultMap="userMap">
+	select * from (select ROWNUM rn,u.*,r.rolename,a.roleid,d.dept,p.param from TBLADMIN u,TBLROLE r,TBLDEPT d,TBLPARAM p, TBLADMINANDROLE a where a.roleid=r.roleid and a.userid=u.adminid and u.deptid=d.deptid and u.paramId=p.paramId and u.paramid=4
+		<if test="null!=entrytime and ''!=entrytime">
+			and u.entryDate&gt;=#{entrytime}
+		</if>
+		<if test="null!=quitDate and ''!=quitDate">
+			and u.quitDate&gt;=#{quitDate}
+		</if>
+		<if test="null!=adminName and ''!=adminName">
+			and u.adminName like concat(concat('%',#{adminName}),'%')
+		</if>
+		and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
+</select>
+
+<!-- 删除用户总数 -->
+	<select id="userdelcomm" parameterType="org.great.bean.CondiBean" resultType="Integer">
+		select count(*) as result from TBLADMIN u where 1=1 and u.paramid=4
+		<if test="null!=entrytime and ''!=entrytime">
+			and u.entryDate&gt;=#{entrytime}
+		</if>
+		<if test="null!=quitDate and ''!=quitDate">
+			and u.quitDate&gt;=#{quitDate}
+		</if>
+		<if test="null!=adminName and ''!=adminName">
+			and u.adminName like concat(concat('%',#{adminName}),'%')
+		</if>
+	</select>
+
+<!-- 一键重置密码 -->
+<update id="updateresetpsw" parameterType="org.great.bean.AdminBean">
+	update TBLADMIN a set a.password=#{password} where a.adminid=#{adminId}
+</update>
 
 	<!-- 用户删除 -->
 	<update id="delstate" parameterType="Integer">
 		update TBLADMIN u set u.paramid=4 where u.adminid=#{adminId}
 	</update>
 	<!-- 更改用户启用禁用状态 -->
-	<update id="changestate"
-		parameterType="org.great.bean.AdminBean">
-		update TBLADMIN u set
-		u.paramid=#{paramId} where u.adminid=#{adminId}
+	<update id="changestate" parameterType="org.great.bean.AdminBean">
+		update TBLADMIN u set u.paramid=#{paramId} where u.adminid=#{adminId}
 	</update>
 	<!-- 用户，增加新用户 -->
 <!-- 查找所有的角色资料 -->
@@ -95,22 +130,94 @@
 
 
 <!-- 查找所有的部分部门信息 -->
-<select id="memberdept"  resultType="org.great.bean.DeptBean">
-	select * from TBLDEPT 
+<select id="memberdept" parameterType="org.great.bean.CondiBean"  resultType="org.great.bean.DeptBean">
+	select * from (select ROWNUM rn,a.* from TBLDEPT a where 1=1
+	<if test="null!=adminName and ''!=adminName">
+			and a.dept like concat(concat('%',#{adminName}),'%')
+		</if>
+		and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
 </select>
+
+<insert id="inserdept" parameterType="org.great.bean.DeptBean">
+	insert into TBLDEPT (deptid,dept) values (spmsseq.nextval,#{dept,jdbcType=VARCHAR})
+</insert>
+
+<delete id="deldept" parameterType="Integer">
+	delete  from TBLDEPT where deptid=#{deptid}
+</delete>
+<select id="deptall" resultType="org.great.bean.DeptBean">
+	select * from TBLDEPT
+</select>
+<update id="deptsave" parameterType="org.great.bean.DeptBean">
+	update TBLDEPT set dept=#{dept} where deptid=#{deptId}
+</update>
+
+<!-- 部门总数 -->
+<select id="deptcomm" resultType="Integer">
+	select count(*) from tbldept where 1=1
+	<if test="null!=adminName and ''!=adminName">
+			and dept like concat(concat('%',#{adminName}),'%')
+		</if>
+</select>
+
 
 <!-- 用户注册 -->
 <insert id="memberadd" parameterType="org.great.bean.AdminBean" >
-	insert into TBLADMIN  (adminid,adminname,sex,roleid,deptid,officephone,mobilePhone,email,education,idcard,entryDate,birthDate,address) values (spmsseq.nextval,#{adminName},#{password},#{sex},#{roleId},#{deptId},#{officePhone},#{mobilePhone},#{email},#{education},#{idcard},#{entryDate},#{birthDate},#{address})
+	insert into TBLADMIN  (adminid,adminaccount,adminname,password,sex,deptid,officephone,mobilePhone,email,education,idcard,entryDate,birthDate,address,paramId) values (DRUGSEQ.nextval,#{adminAccount,jdbcType=VARCHAR},#{adminName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{sex,jdbcType=VARCHAR},#{deptId,jdbcType=NUMERIC},#{officePhone,jdbcType=VARCHAR},#{mobilePhone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{education,jdbcType=VARCHAR},#{idcard,jdbcType=VARCHAR},to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),#{birthDate,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},2)
 </insert>
 
+<!-- 找到新添加的用户id -->
+<select id="selectuserone" parameterType="String" resultMap="adminMap">
+	select * from TBLADMIN a,TBLDEPT b where a.deptid=b.deptid and a.adminname=#{adminname} 
+</select>
+<resultMap type="org.great.bean.AdminBean" id="adminMap">
+		<id property="adminId" column="ADMINID" />
+		<result property="adminAccount" column="ADMINACCOUNT" />
+		<result property="adminName" column="ADMINNAME" />
+		<result property="sex" column="SEX" />
+		<result property="roleId" column="ROLEID" />
+		<result property="deptId" column="DEPTID" />
+		<result property="officePhone" column="OFFICEPHONE" />
+		<result property="mobilePhone" column="MOBILEPHONE" />
+		<result property="email" column="EMAIL" />
+		<result property="education" column="EDUCATION" />
+		<result property="idcard" column="IDCARD" />
+		<result property="address" column="ADDRESS" />
+		<result property="entryDate" column="ENTRYDATE" />
+		<result property="quitDate" column="QUITDATE" />
+		<result property="birthDate" column="BIRTHDATE" />
+		<result property="paramId" column="PARAMID" />
+		<association property="deptbean" javaType="org.great.bean.DeptBean">
+			<id property="deptId" column="DEPTID" />
+			<result property="dept" column="DEPT" />
+		</association>
+		</resultMap>
 
+<!-- 将用户id和角色id插入到用户与角色关系表中 -->
+<insert id="insertroleanduser" parameterType="org.great.bean.CondiBean">
+	insert into TBLADMINANDROLE (roleid,userid) values (#{roleid,jdbcType=NUMERIC},#{permissionId,jdbcType=NUMERIC})
+</insert>
 
+<!-- 通过用户id找到角色id(角色与用户关系表中) -->
+<select id="roleandadmin" parameterType="Integer" resultType="org.great.bean.CondiBean">
+	select * from TBLADMINANDROLE  where userid=#{adminId,jdbcType=NUMERIC}
+</select>
+
+<!-- //修改用户表信息 -->
+<update id="updateuser" parameterType="org.great.bean.AdminBean" >
+	update TBLADMIN a set a.adminname=#{adminName},a.sex=#{sex},a.deptid=#{deptId},a.officephone=#{officePhone},a.mobilephone=#{mobilePhone},a.email=#{email},a.education=#{education},a.idcard=#{idcard},a.entrydate=#{entryDate},a.birthdate=#{birthDate},a.quitDate=#{quitDate},a.address=#{address} where a.adminId=#{adminId
+	}
+</update>
+
+<!-- 修改用户与角色关系表 -->
+<update id="updateroleanduser" parameterType="org.great.bean.CondiBean">
+	update TBLADMINANDROLE a set a.roleid=#{roleid} where a.userid=#{userid}
+</update>
 	<!-- ****************角色功能的sql语句 ******************-->
 
 	<!-- 查找到角色的所有信息，list -->
 	<select id="rolelist" resultMap="roleMap" parameterType="org.great.bean.CondiBean">
-	select * from (select ROWNUM rn,b.roleid ,b.rolename,b.rolebewrite,n.name from(select listAgg(a.adminname,',') WITHIN  group(order by a.adminname) as name,b.roleid from tbladmin a,TBLADMINANDROLE b,tblrole c where a.adminid=b.userid and b.roleid=c.roleid group by b.roleid)n ,tblRole b where n.roleid=b.roleid 
+	select * from (select ROWNUM rn,b.roleid ,b.rolename,b.rolebewrite,n.name from(select listAgg(a.adminname,',') WITHIN  group(order by a.adminname) as name,b.roleid from tbladmin a,TBLADMINANDROLE b,tblrole c where a.adminid=b.userid and b.roleid=c.roleid group by b.roleid)n ,tblRole b where n.roleid(+)=b.roleid 
 		<if test="null!=adminName and ''!=adminName">
 			and b.rolename like concat(concat('%',#{adminName}),'%')
 		</if>
@@ -145,8 +252,35 @@
 		insert into TBLROLE r (r.roleid,r.rolename,r.rolebewrite) values(spmsseq.nextval,#{roleName,jdbcType=VARCHAR},#{rolebewrite,jdbcType=VARCHAR})
 	</insert>
 	
+	<!-- //通过角色id,找到角色名称 以及简介 -->
+	<select id="selectrole" parameterType="org.great.bean.RoleBean" resultType="org.great.bean.RoleBean">
+		select * from TBLROLE where roleId=#{roleId}
+	</select>
+	<update id="updaterole" parameterType="org.great.bean.RoleBean">
+		update TBLROLE set roleName=#{roleName,jdbcType=VARCHAR},rolebewrite=#{rolebewrite,jdbcType=VARCHAR} where roleId=#{roleId}
+	</update>
+	
+	<!-- 删除角色 -->
+	<delete id="delrole" parameterType="Integer" >
+		delete from TBLROLE where roleId=#{roleid}
+	</delete>
+	
+<!-- 	删除角色与用户的关系表 -->
+	<delete id="delroleanduser" parameterType="Integer">
+		delete from  (select * from TBLADMINANDROLE w) n where n.roleid=#{roleid}
+	</delete>
+	
+	<delete id="delroleandper" parameterType="Integer">
+		delete from (select * from TBLROLEANDPER) n where n.roleid=#{roleid}
+	</delete>
+	
 	
 	<!-- /******************菜单管理****************/ -->
+	
+	<!-- 所有的菜单列表 -->
+	<select id="selectallmenu" parameterType="org.great.bean.AdminBean" resultType="org.great.bean.PermissionBean">
+		select d.* from  TBLADMIN a,TBLADMINANDROLE b,tblpermission d,tblroleandper e,tblrole f where a.adminid=b.userid and b.roleid=e.roleid and e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0 and a.adminAccount=#{adminAccount} union select h.* from tblpermission h where h.permissionid in(select d.pid from TBLADMIN a,TBLADMINANDROLE b,tblpermission d,tblroleandper e,tblrole f where a.adminid=b.userid and b.roleid=e.roleid and  e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0  and a.adminAccount=#{adminAccount}) 	
+	</select>
 	<!-- 一级菜单 -->
 	<select id="levelonemenu" parameterType="org.great.bean.CondiBean" resultType="org.great.bean.PermissionBean"> 
 		select * from (select ROWNUM rn,p.* from TBLPERMISSION p where p.pid=0
@@ -175,11 +309,14 @@
 	
 	<!-- 二级菜单列表 -->
 	<select id = "leveltwomenu" parameterType="org.great.bean.CondiBean" resultType="org.great.bean.PermissionBean">
-		select p.* from TBLPERMISSION p where 1=1
-		<if test="null!=adminName and ''!=adminName">
-			and p.permission like concat(concat('%',#{adminName}),'%')
+	select * from (select ROWNUM rn, b.permission sname,b.permissionid fid,p.* from TBLPERMISSION p,TBLPERMISSION b where p.permissionid=b.pid
+		<if test="null!=entrytime and ''!=entrytime">
+			and p.permission like concat(concat('%',#{entrytime}),'%')
 		</if>
-		<!-- 	and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown} -->
+		<if test="null!=adminName and ''!=adminName">
+			and b.permission like concat(concat('%',#{adminName}),'%')
+		</if>
+		 	and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown} 
 	</select>
 	
 	<!-- 二级菜单添加 -->
@@ -187,20 +324,43 @@
 		insert into TBLPERMISSION (permissionId,permission,pid,url) values (SPMSSEQ.NEXTVAL,#{permission,jdbcType=VARCHAR},#{pid,jdbcType=NUMERIC},#{url,jdbcType=VARCHAR})		
 	</insert>
 	
-	<!-- 二级菜单删除 -->
-	<delete id="menutwodel" parameterType="Integer">
+	<!-- 一级菜单删除 ，一级菜单下的二级也全部删除-->
+	<delete id="menuonedel" parameterType="Integer">
 		delete from TBLPERMISSION p where p.permissionid=#{permissionid}
+	</delete> 
+	<!-- 删除二级菜单， -->
+	<delete id="menutwodel" parameterType="Integer">
+		delete from TBLPERMISSION p where p.pid=#{permissionid}
 	</delete>
+	<!-- 二级菜单总数 -->
+	<select id="resulttwomenu" parameterType="org.great.bean.CondiBean" resultType="Integer">
+		select count(*) from TBLPERMISSION a,TBLPERMISSION b  where a.permissionid=b.pid
+		<if test="null!=entrytime and ''!=entrytime">
+			and a.permission like concat(concat('%',#{entrytime}),'%')
+		</if>
+		<if test="null!=adminName and ''!=adminName">
+			and b.permission like concat(concat('%',#{adminName}),'%')
+		</if>
+	</select>
 	
+	<!-- 一二级菜单修改   一级-->
+	<update id="updatemenu1" parameterType="org.great.bean.PermissionBean">
+	update  TBLPERMISSION a set a.permission=#{permission} where a.permissionid=#{permissionId}	 
+	</update> 
+	
+	<!-- 一二级菜单修改   二级-->
+ 	<update id="updatetwomenu" parameterType="org.great.bean.PermissionBean">
+		update  TBLPERMISSION a set a.permission=#{sname} where a.permissionid=#{fid}	  
+	</update> 
 	
 	<!-- /***************角色权限配置*************/ -->
 	<select id="roleconfig" parameterType="Integer" resultType="org.great.bean.PermissionBean">
-		select b.* from TBLROLE r,TBLROLEANDPER a,TBLPERMISSION b where  r.roleid=a.roleid and a.permissionid=b.permissionid and r.roleid=#{roleid}
+		(select d.* from  tblpermission d,tblroleandper e,tblrole f where e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0 and f.roleid=#{roleId}) union select * from tblpermission h where h.permissionid in(select d.pid from  tblpermission d,tblroleandper e,tblrole f where e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0 and f.roleid=#{roleId}) 
 	</select>
 	
 	<!-- 角色没有的权限 -->
 	<select id="roleconfigother" parameterType="Integer" resultType="org.great.bean.PermissionBean">
-		select * from TBLPERMISSION minus select b.* from TBLROLE r,TBLROLEANDPER a,TBLPERMISSION b where  r.roleid=a.roleid and a.permissionid=b.permissionid and r.roleid=#{roleid} and b.pid!=0
+	select g.* from tblpermission g where g.pid!=0 and  g.permissionid not in (select d.permissionid from  tblpermission d,tblroleandper e,tblrole f where e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0 and f.roleid=#{roleId}) union select h.* from tblpermission h where h.permissionid  in (select g.pid from tblpermission g where g.pid!=0 and  g.permissionid not in (select d.permissionid from  tblpermission d,tblroleandper e,tblrole f where e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0 and f.roleid=#{roleId}))
 	</select>
 	
 <!-- 	//删除关系表里的角色权限 -->
@@ -209,7 +369,7 @@
 	</delete>
 
 <!-- 根据子权限id去查父级权限id，然后查关系表中是否已存在 -->
-<select id="pidMenu" parameterType="Integer" resultType="org.great.bean.PermissionBean">
+<select id="pidmenu" parameterType="Integer" resultType="org.great.bean.PermissionBean">
 	select * from TBLPERMISSION a where a.permissionid=#{perid}
 </select>
 
@@ -223,4 +383,101 @@
 <insert id="insertsconfig" parameterType="org.great.bean.CondiBean" >
 	insert into TBLROLEANDPER (permissionid,roleid) values (#{permissionId,jdbcType=NUMERIC},#{roleid,jdbcType=NUMERIC})
 </insert>
+
+
+
+<!--***************** 参数配置*******************-->
+<select id="paramlist" parameterType="org.great.bean.CondiBean" resultType="org.great.bean.ParamBean">
+	select * from(select ROWNUM rn,a.param fname,b.* from TBLPARAM a,TBLPARAM b where a.paramid=b.pid
+	<if test="null!=entrytime and ''!=entrytime">
+		and a.param like concat(concat('%',#{entrytime}),'%')
+	</if>
+	<if test="null!=adminName and ''!=adminName">
+		and b.param like concat(concat('%',#{adminName}),'%')
+	</if>
+	and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
+</select>
+
+<select id="paramcomm" parameterType="org.great.bean.CondiBean" resultType="Integer">
+	select count(*) from TBLPARAM a,TBLPARAM b where a.paramid=b.pid 
+	<if test="null!=entrytime and ''!=entrytime">
+		and a.param like concat(concat('%',#{entrytime}),'%')
+	</if>
+	<if test="null!=adminName and ''!=adminName">
+			and b.param like concat(concat('%',#{adminName}),'%')
+		</if>
+</select>
+
+
+<insert id="inserlevel1parame" parameterType="org.great.bean.CondiBean">
+	insert into TBLPARAM (paramid,param,pid) values(SPMSSEQ.NEXTVAL,#{adminName,jdbcType=VARCHAR},0)
+</insert>
+
+<select id="level1param" resultType="org.great.bean.ParamBean">
+	select * from TBLPARAM a where a.pid=0
+</select>
+
+<insert id="inserlevel2parame" parameterType="org.great.bean.CondiBean">
+	insert into TBLPARAM (paramid,param,pid) values(SPMSSEQ.NEXTVAL,#{entrytime,jdbcType=VARCHAR},#{roleid,jdbcType=NUMERIC})
+</insert>
+
+<!-- 删除二级参数配置 -->
+<delete id="deltwoparam" parameterType="Integer">
+	delete  from TBLPARAM a where a.paramid=#{paramid}
+</delete>
+
+<!-- 删除一级菜单下的二级子参数 -->
+<delete id="delonparam" parameterType="Integer">
+	delete  from TBLPARAM a where a.pid=#{paid}
+</delete>
+
+<!-- 修改一级参数名 -->
+<update id="updatepid" parameterType="org.great.bean.ParamBean">
+	update TBLPARAM a set a.param=#{fname} where a.paramId=#{pid}
+</update>
+
+<!-- 修改二级参数名 -->
+<update id="updateparam" parameterType="org.great.bean.ParamBean" >
+	update TBLPARAM a set a.param=#{param} where a.paramId=#{paramId}
+</update>
+
+
+<!-- 日志查看 -->
+<select id="selectlog" parameterType="org.great.bean.CondiBean" resultMap="logMap">
+	select * from(select ROWNUM rn,b.adminname,a.* from TBLLOG a,tbladmin b where a.adminid=b.adminid 
+	<if test="null!=adminName and ''!=adminName">
+			and b.adminname like concat(concat('%',#{adminName}),'%')
+		</if>
+		<if test="null!=entrytime and ''!=entrytime">
+			and a.operateDate=#{entrytime}
+		</if>
+		<if test="null!=quitDate and ''!=quitDate">
+			and a.operateitem like concat(concat('%',#{quitDate}),'%')
+		</if>
+		and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
+</select>
+<resultMap type="org.great.bean.LogBean" id="logMap">
+	<id property="logId" column="LOGID" />
+		<result property="adminId" column="ADMINACCOUNT" />
+		<result property="operateDate" column="OPERATEDATE" />
+		<result property="operateItem" column="OPERATEITEM" />
+		<association property="adminbean" javaType="org.great.bean.AdminBean">
+			<result property="adminName" column="ADMINNAME" />
+		</association>
+</resultMap>
+
+<!-- //日志总条数 -->
+<select id="logcomm" parameterType="org.great.bean.CondiBean" resultType="Integer">
+	select count(*) from TBLLOG a,tbladmin b where  a.adminid=b.adminid 
+	<if test="null!=adminName and ''!=adminName">
+			and b.adminname like concat(concat('%',#{adminName}),'%')
+		</if>
+		<if test="null!=entrytime and ''!=entrytime">
+			and a.operateDate=#{entrytime}
+		</if>
+		<if test="null!=quitDate and ''!=quitDate">
+			and a.operateitem like concat(concat('%',#{quitDate}),'%')
+		</if>
+</select>
+
 </mapper>

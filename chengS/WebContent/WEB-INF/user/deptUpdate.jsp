@@ -26,18 +26,12 @@ String path = request.getScheme() +"://"+request.getServerName()
 <div class="pd-20">
   <div class="Huiform">
   <article class="page-container">
-    <form action="<%=path %>user/roleListSave.action" method="post" target="_parent">
+    <form action="<%=path %>user/deptSave.action" method="post" target="_parent">
       <div class="row cl" style="width:470px;margin:0 auto;">
-			<label class="form-label col-xs-2 col-sm-3" style="width:110px"><span class="c-red">*</span>角色名称：</label>
+			<label class="form-label col-xs-2 col-sm-3" style="width:110px"><span class="c-red">*</span>部门名称：</label>
 			<div class="formControls col-xs-4 col-sm-6">
-				<input type="text"  class="input-text" style="width:350px" value="${bean.roleName }" placeholder="" id="roleName" name="roleName">
-			</div>
-		</div>
-		<div class="row cl" style="width:470px;margin:0 auto;">
-			<label class="form-label col-xs-2 col-sm-3" style="width:110px"><span class="c-red">*</span>角色简介：</label>
-			<div class="formControls col-xs-4 col-sm-6">
-				<input type="text" class="input-text" style="width:350px" value="${bean.rolebewrite}" placeholder="" id="rolebewrite" name="rolebewrite">
-				<input type="hidden" value="${bean.roleId }" name="roleId" >
+				<input type="text"  class="input-text" style="width:350px" value="${deptbean.dept }" placeholder="" id="dept" name="dept">
+				<input type="hidden" name="deptId" value="${deptbean.deptId }">
 			</div>
 		</div>
 
