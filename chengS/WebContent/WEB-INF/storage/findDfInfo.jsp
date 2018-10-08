@@ -29,13 +29,16 @@ String path = request.getScheme() +"://"+request.getServerName()
 	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="<%=path%>lib/bootstrapValidator.css"/>
 <!--[if IE 6]>
 <script type="text/javascript" src="<%=path%>lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <title>药品剂型</title>
 </head>
-<body>
+<body >
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
 		药品管理 <span class="c-gray en">&gt;</span> 药品剂型 <a
@@ -46,9 +49,9 @@ String path = request.getScheme() +"://"+request.getServerName()
 	</nav>
 
 	<!-- 模态框（添加药品剂型） -->
-	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+	<div class="modal fade " id="addModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<form action="addDfInfo.action" method="post">
+		<form action="addDfInfo.action" method="post" id="addDfForm">
 		<div class="modal-dialog" style="width: 450px">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -65,22 +68,24 @@ String path = request.getScheme() +"://"+request.getServerName()
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												药品剂型：</th>
-											<td><input type="text" style="width: 200px"
-												class="input-text" value="" placeholder="" id="user-name"
-												name="dosageForm" datatype="*2-16" nullmsg="不能为空">
-												
+											<td>
+												<div class="form-group">
+												<input type="text" style="width: 200px"
+												class="input-text"  id="dosageForm" name="dosageForm" />
+												</div>
 											</td>
 										</tr>
 									</tbody>
 								</table>
-							
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
 					</button>
-					<button type="submit" class="btn btn-primary">提交更改</button>
+					 <div class="form-group">
+					<button type="submit" id="addSubmit" class="btn btn-primary">提交更改</button>
+					</div>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -91,7 +96,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<!-- 模态框（修改药品剂型） -->
 	<div class="modal fade" id="updModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<form action="updDfInfo.action" method="post" >
+		<form action="updDfInfo.action" method="post"  id="updDfInfoForm">
 		<div class="modal-dialog" style="width: 450px">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -108,10 +113,14 @@ String path = request.getScheme() +"://"+request.getServerName()
 										<tr>
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												药品剂型：</th>
-											<td><input type="text" style="width: 200px"
-												class="input-text" value="" placeholder="" id="updname"
-												name="dosageForm" datatype="*2-16" nullmsg="不能为空">
+											<td>
+												<div class="form-group">
+												<input type="text" style="width: 200px"
+													class="input-text"  id="updname" name="dosageForm" ><br />
+												</div>	
+												<div class="form-group">
 												<input type="hidden" id="updId" name="dosageId" value="" />
+												</div>
 											</td>
 										</tr>
 									</tbody>
@@ -121,8 +130,9 @@ String path = request.getScheme() +"://"+request.getServerName()
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="submit" class="btn btn-primary">提交更改</button>
-					
+					<div class="form-group">
+					<input type="submit" class="btn btn-primary" id="updSubmit" value="提交更改"/>
+					</div>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -134,13 +144,16 @@ String path = request.getScheme() +"://"+request.getServerName()
 	<div class="page-container">
 		<form action="findDfInfo.action" method="post" id="formDf" >
 		<div class="text-c">
+			<div class="form-group">
 			药品名称: <input type="text" class="input-text" id="" name="dosageForm" value="${dosageForm==null?"":dosageForm}" style="width: 150px">
+			
 			<button type="submit" class="btn btn-primary radius" id="" name="">
 				搜索剂型</button>
 			<button type="button" class="btn btn-primary radius" id="" name=""
 				onclick="addModel()">
 				<i class="Hui-iconfont">&#xe600;</i> 添加剂型
 			</button>
+			</div>
 		</div>
 		</form>
 		<div class="mt-20">
@@ -199,14 +212,83 @@ String path = request.getScheme() +"://"+request.getServerName()
 		src="<%=path%>lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
+	<script type="text/javascript"
+		src="<%=path%>lib/jquery.validate.min.js"></script>
+	<script type="text/javascript"
+		src="<%=path%>lib/jquery.validate.cn.js"></script>
+	<script type="text/javascript" src="<%=path%>lib/bootstrap.js"></script>	
+	<script type="text/javascript" src="<%=path%>lib/bootstrapValidator.js"></script>
 	<script type="text/javascript">
+ 
+		    //Modal验证销毁重构
+		    $(function(){
+		    	 $('#updModal').on('hidden.bs.modal', function() {
+		    		 $("#updDfInfoForm").data('bootstrapValidator').resetForm(); 
+				    });
+		    	 $('#addModal').on('hidden.bs.modal', function() {
+		    		 $("#addDfForm").data('bootstrapValidator').resetForm(); 
+				    });
+		    	 
+		    }) 
+		    //form验证规则(添加剂型)
+		    function addFormValidator(){
+		        $('#addDfForm').bootstrapValidator({
+		        	live: 'disabled',
+		            message: 'This value is not valid',
+		            feedbackIcons: {
+		            valid: 'glyphicon glyphicon-ok',
+		            invalid: 'glyphicon glyphicon-remove',
+		            validating: 'glyphicon glyphicon-refresh'
+		                    },
+		            fields: {
+		                //管理员名
+		                dosageForm: {
+		                    message: '验证失败',
+		                    validators: {
+		                        notEmpty: {
+		                            message: '输入不能为空'
+		                        }
+		                    }
+		                }
+		            }
+		        });
+		    }
+		    
+		    //form验证规则(修改剂型)
+		    function updFormValidator(){
+		        $('#updDfInfoForm').bootstrapValidator({
+		        	live: 'disabled',
+		            message: 'This value is not valid',
+		            feedbackIcons: {
+		            valid: 'glyphicon glyphicon-ok',
+		            invalid: 'glyphicon glyphicon-remove',
+		            validating: 'glyphicon glyphicon-refresh'
+		                    },
+		            fields: {
+		                //管理员名
+		                dosageForm: {
+		                    message: '验证失败',
+		                    validators: {
+		                        notEmpty: {
+		                            message: '输入不能为空'
+		                        }
+		                    }
+		                }
+		            }
+		        });
+		    }
+		
+		
+		
 		//弹出添加模态框
 		function addModel(){
+			addFormValidator();
 			$('#addModal').modal('show');
 		}
-	
+		
 		//弹出修改模态框
 		function updModel(id,name){
+			updFormValidator();
 			$('#updModal').modal('show');
 			$("#updname").val(name); 
 			$("#updId").val(id);
@@ -261,6 +343,8 @@ String path = request.getScheme() +"://"+request.getServerName()
 			//把form表单提交。
 			$("#formDf").submit();
 		}
+		
+	
 	</script>
 </body>
 </html>

@@ -1,10 +1,12 @@
 package org.great.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.great.bean.AdjustPriceBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DfBean;
 import org.great.bean.DrugTypeBean;
@@ -12,8 +14,10 @@ import org.great.bean.InventoryBean;
 import org.great.bean.PhaDrugBean;
 import org.great.bean.StoDrugBean;
 import org.great.bean.TabuBean;
+import org.great.bean.adjPriceStatisBean;
 import org.great.biz.IDrugAllocatBiz;
 import org.great.mapper.DrugAllocatMapper;
+import org.great.tools.Log;
 import org.great.tools.PageUtil;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -38,236 +42,146 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/storage")
 public class DrugAllocatHandle {
-	
-//	@Resource
-//	private IDrugAllocatBiz iDrugAllocatBiz;
 
-	private int pageTotal;	//总页数
-	private List<DfBean> dfList; //药品剂量信息表
-	private List<DrugTypeBean> drugTypeList; //药品分类表
-	private List<StoDrugBean> stoDrugList;	//药品信息表
-	private List<TabuBean> tabuList;	//配伍禁忌表
 	@Resource
-	private DrugAllocatMapper damapper;
-	@Resource
-	private InventoryBean it;	//药品入库信息
-	@Resource
-	private PhaDrugBean pd;		//药房药品信息
-	//进入主页
-	@RequestMapping(value="/toIndex.action")
-	public ModelAndView toIndex(HttpServletRequest req) {
-		System.out.println("进入主页........");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/storage/index");
-		return mav;
-	}
-	//进入右边主页面
-	@RequestMapping(value="/toIndexInfo.action")
-	public ModelAndView toIndexInfo(HttpServletRequest req) {
-			
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/storage/welcome");
-		return mav;
-	}	
+	private IDrugAllocatBiz iDrugAllocatBiz;
+
 	
 	/*************************************************************
 	 * @param 药品管理操作
-	 * @return
+	 * @author: 程帅 
 	 */
 		//进入药品信息列表
 		@RequestMapping(value="/findDrugInfo.action")
 		public ModelAndView findDrugInfo(CondiBean condi) {
 			
-			condi.setPageup(condi.getPage()*5);
-			condi.setPagedown((condi.getPage()*5-5)+1);
-			int count = damapper.findDrugCount(condi);
-			pageTotal = PageUtil.pageTotal(count);
-			
-			//查询药品分类表
-			drugTypeList = damapper.findAllSecondType();
-			//查询药品信息
-			stoDrugList = damapper.findDrugInfo(condi);
-			//查询所有药品剂型
-			dfList = damapper.findAllDf();
-			ModelAndView mav = new ModelAndView();
-			mav.addObject("drugTypeList",drugTypeList );
-			mav.addObject("stoDrugList", stoDrugList);
-			mav.addObject("dfList", dfList);
-			mav.addObject("pageTotal", pageTotal);
-			mav.addObject("condi", condi);
-			mav.setViewName("/storage/findDrugInfo");
-			return mav;
+			return iDrugAllocatBiz.findDrugInfo(condi);
 		}
+		
+		//药品信息查重
+		@RequestMapping(value="/checkInfo.action", method=RequestMethod.POST, 
+				produces="application/json;charset=utf-8")
+		@ResponseBody
+		public  int checkInfo(StoDrugBean sd){
+				System.out.println(sd.toString());
+			return iDrugAllocatBiz.checkInfo(sd);
+		}
+		
 		//添加药品信息
+		@Log(operationType = "添加操作", operationName = "添加药品信息")
 		@RequestMapping(value="/addDrugInfo.action")
-		public String addMedicineDictionary(StoDrugBean sd) {
-			//添加药品信息
-			int k = damapper.addDrugInfo(sd);
-			//添加药库存储信息
-			
-			it.setDrugId(sd.getDrugId());
-			it.setInventoryNum(0);
-			it.setMinimum(300);
-			it.setMaximum(3000);
-			int j = damapper.addInventory(it);
-			//添加药房药品信息
-			pd.setDrugId(sd.getDrugId());
-			pd.setDrugNum(0);
-			pd.setMaximum(100);
-			pd.setMinimum(10);
-			pd.setUseableId(2);
-			int i = damapper.addPhaDrug(pd);
-			
-			return "redirect:/storage/findDrugInfo.action";
+		public String addDrugInfo(StoDrugBean sd) {
+		
+			return iDrugAllocatBiz.addDrugInfo(sd);
 		}
 		
 		//获取所有药品剂型
-		@RequestMapping(value="/findDf.action", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+		@RequestMapping(value="/findDf.action", method=RequestMethod.POST, 
+				produces="application/json;charset=utf-8")
 		@ResponseBody
 		public  List<DfBean> findTopType(){
-			dfList = damapper.findAllDf();
-			return dfList;
+			
+			return iDrugAllocatBiz.findAllDf();
 		}
 		
 		//获取所有药品类型
-		@RequestMapping(value="/findSecondType.action", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+		@RequestMapping(value="/findSecondType.action", method=RequestMethod.POST, 
+				produces="application/json;charset=utf-8")
 		@ResponseBody
 		public  List<DrugTypeBean> findSecondType(DrugTypeBean dt){
 			
-			drugTypeList = damapper.findSecondType(dt);
-			
-			return drugTypeList;
+			return iDrugAllocatBiz.findSecondType(dt);
 		}
 				
-		//删除药品
-		@RequestMapping(value="/delDrugInfo.action")
-		public String delDrugInfo(StoDrugBean sd) {
-			
-			int k = damapper.delDrugInfo(sd);
-			
-			return "redirect:/storage/findDrugInfo.action";
-		}
 		
 		//修改药品信息
+		@Log(operationType = "修改操作", operationName = "添加药品信息")
 		@RequestMapping(value="/updDrugInfo.action")
-		public String updMedicineDictionary(StoDrugBean sd) {
+		public String updDrugInfo(StoDrugBean sd) {
 			
-			int k = damapper.updDrugInfo(sd);
-			return "redirect:/storage/findDrugInfo.action";
+			return iDrugAllocatBiz.updDrugInfo(sd);
 		}
 	
 		/********************************************************************
 		 * @param 药品剂型管理操作
-		 * @return
+		 * @author: 程帅 
 		 */
 		//进入药品剂型列表
 		@RequestMapping(value="/findDfInfo.action")
-		public ModelAndView toDfInfo(HttpServletRequest req,CondiBean condi) {
+		public ModelAndView findDf(CondiBean condi) {
 			
-			condi.setPageup(condi.getPage()*5);
-			condi.setPagedown((condi.getPage()*5-5)+1);
-			dfList = damapper.findDf(condi);
-			
-			int count = damapper.findDfCount(condi);
-			pageTotal = PageUtil.pageTotal(count);
-			
-			ModelAndView mav = new ModelAndView();
-			mav.addObject("dfList", dfList);
-			mav.addObject("pageTotal", pageTotal);
-			mav.addObject("condi", condi);
-			mav.addObject("dosageForm", condi.getDosageForm());
-			
-			mav.setViewName("/storage/findDfInfo");
-			return mav;
+			return iDrugAllocatBiz.findDf(condi);
 		}
 		
 		//添加药品剂型
+		@Log(operationType = "添加操作", operationName = "添加药品剂型")
 		@RequestMapping(value="/addDfInfo.action")
 		public String addDfInfo(HttpServletRequest req,DfBean df) {
-			int k = damapper.addDf(df);
-			return "redirect:/storage/findDfInfo.action";
+			
+			return iDrugAllocatBiz.addDf(df);
 		}
 		
 		//修改药品剂型
+		@Log(operationType = "修改操作", operationName = "修改药品剂型")
 		@RequestMapping(value="/updDfInfo.action")
 		public String updDfInfo(HttpServletRequest req,DfBean df) {
-			int k = damapper.updDf(df);
-			return "redirect:/storage/findDfInfo.action";
+			
+			return iDrugAllocatBiz.updDf(df);
 		}
 		//删除药品剂型
+		@Log(operationType = "删除操作", operationName = "删除药品剂型")
 		@RequestMapping(value="/delDfInfo.action")
 		public String delDfInfo(HttpServletRequest req,DfBean df) {
-			int k = damapper.delDf(df);
-			return "redirect:/storage/findDfInfo.action";
+			
+			return iDrugAllocatBiz.delDf(df);
 		}
 		
 		
 		/*******************************************************************
-		 * @param 药品类型操作
-		 * @return
+		 * @param 药品类型管理
+		 * @author: 程帅 
 		 */
 		//进入药品类型列表
+		
 		@RequestMapping(value="/findDrugTypeInfo.action")
-		public ModelAndView findDrugTypeInfo(HttpServletRequest req,CondiBean condi) {
+	
+		public ModelAndView findDrugTypeInfo(CondiBean condi) {
 			
-			condi.setPageup(condi.getPage()*5);
-			condi.setPagedown((condi.getPage()*5-5)+1);
-			drugTypeList = damapper.findDfDrugType(condi);
-			
-			int count = damapper.findDtCount(condi);
-			pageTotal = PageUtil.pageTotal(count);
-			
-			ModelAndView mav = new ModelAndView();
-			mav.addObject("drugTypeList", drugTypeList);
-			mav.addObject("pageTotal", pageTotal);
-			mav.addObject("condi", condi);
-			mav.addObject("drugType", condi.getDrugType());
-			
-			mav.setViewName("/storage/findDrugTypeInfo");
-			return mav;
+			return iDrugAllocatBiz.findDrugTypeInfo(condi);
 		}
 		
 		//添加药品类型
+		@Log(operationType = "添加操作", operationName = "添加药品类型")
 		@RequestMapping(value="/addDrugTypeInfo.action")
-		public String addDrugTypeInfo(HttpServletRequest req,DrugTypeBean dt) {
+		public String addDrugTypeInfo(DrugTypeBean dt) {
 			
-			int k = damapper.addDrugType(dt);
-			return "redirect:/storage/findDrugTypeInfo.action";
+			return iDrugAllocatBiz.addDrugType(dt);
 		}
 		//删除药品类型
+		@Log(operationType = "删除操作", operationName = "删除药品类型")
 		@RequestMapping(value="/delDrugTypeInfo.action")
-		public String delDrugTypeInfo(HttpServletRequest req,DrugTypeBean dt) {
-			int k = damapper.delDrugType(dt);
-			return "redirect:/storage/findDrugTypeInfo.action";
+		public String delDrugTypeInfo(DrugTypeBean dt) {
+			
+			return iDrugAllocatBiz.delDrugType(dt);
 		}
 		
 		//修改药品类型
+		@Log(operationType = "修改操作", operationName = "修改药品类型")
 		@RequestMapping(value="/updDrugTypeInfo.action")
 		public String updDrugTypeInfo(DrugTypeBean dt) {
-			System.out.println(dt.toString());
-			int k = damapper.updDrugType(dt);
-			return "redirect:/storage/findDrugTypeInfo.action";
+			
+			return iDrugAllocatBiz.updDrugType(dt);
 		}
 		
-	/***************************配伍禁忌管理**********************************/
+	/*******************************************************************
+	 * @param 配伍禁忌管理
+	 * @author: 程帅 
+	 */
 		//进入配伍禁忌管理
 		@RequestMapping(value="/findCompTaboo.action")
 		public ModelAndView findCompTaboo(CondiBean condi) {
 			
-			condi.setPageup(condi.getPage()*5);
-			condi.setPagedown((condi.getPage()*5-5)+1);
-			tabuList= damapper.findCompTaboo(condi);
-			
-			int count = damapper.findCompTabooCount(condi);
-			pageTotal = PageUtil.pageTotal(count);
-			
-			ModelAndView mav = new ModelAndView();
-			mav.addObject("tabuList", tabuList);
-			mav.addObject("pageTotal", pageTotal);
-			mav.addObject("condi", condi);
-	
-			mav.setViewName("/storage/findCompTaboo");
-			return mav;
+			return iDrugAllocatBiz.findCompTaboo(condi);
 		}
 		
 		//匹配第一个药品名
@@ -275,12 +189,8 @@ public class DrugAllocatHandle {
 				produces="application/json;charset=utf-8")
 		@ResponseBody
 		public  String findfirstName(TabuBean tb){
-			int k = damapper.findfirstName(tb);
-			if(k>0) {
-				return "";
-			}else {
-				return "此药品不存在";
-			}
+			
+			return iDrugAllocatBiz.findfirstName(tb);
 		}
 		
 		//匹配第二个药品名
@@ -288,33 +198,107 @@ public class DrugAllocatHandle {
 				produces="application/json;charset=utf-8")
 		@ResponseBody
 		public  String findSecondName(TabuBean tb){
-			int k = damapper.findSecondName(tb);
-			if(k>0) {
-				return "";
-			}else {
-				return "此药品不存在";
-			}
+			
+			return iDrugAllocatBiz.findSecondName(tb);
 		}
 		
 		//添加配伍禁忌
+		@Log(operationType = "添加操作", operationName = "添加配伍禁忌")
 		@RequestMapping(value="/addCompTaboo.action")
 		public String addCompTaboo(TabuBean tb) {
 			
-			int k = damapper.addCompTaboo(tb);
-			return "redirect:/storage/findCompTaboo.action";
+			return iDrugAllocatBiz.addCompTaboo(tb);
 		}
 		
-//		修改配伍禁忌
+		//修改配伍禁忌
+		@Log(operationType = "修改操作", operationName = "修改配伍禁忌")
 		@RequestMapping(value="/updCompTaboo.action")
 		public String updCompTaboo(TabuBean tb) {
-			int k = damapper.updCompTaboo(tb);
-			return "redirect:/storage/findCompTaboo.action";
+			
+			return iDrugAllocatBiz.updCompTaboo(tb);
 		}
 		
-//		删除配伍禁忌
+		//删除配伍禁忌
+		@Log(operationType = "删除操作", operationName = "删除配伍禁忌")
 		@RequestMapping(value="/delCompTaboo.action")
 		public String delCompTaboo(TabuBean tb) {
-			int k = damapper.delCompTaboo(tb);
-			return "redirect:/storage/findCompTaboo.action";
+			
+			return iDrugAllocatBiz.delCompTaboo(tb);
 		}
+	
+		/*******************************************************************
+		 * @param 药品库存管理
+		 * @author: 程帅 
+		 */
+		
+		//查询药品库存
+		
+		@RequestMapping(value="/findDrugInventory.action")
+		public ModelAndView findDrugInventory(CondiBean condi) {
+			
+			return iDrugAllocatBiz.findDrugInventory(condi);
+			
+		}
+		//修改库存限制
+		@Log(operationType = "修改操作", operationName = "修改库存限制")
+		@RequestMapping(value="updDrugInventory.action")
+		public String updDrugInventory(InventoryBean inventory) {
+			
+			return iDrugAllocatBiz.updDrugInventory(inventory);
+			
+		}
+	
+		/*******************************************************************
+		 * @param 药房库存管理
+		 * @author: 程帅 
+		 */
+		//查询药房库存信息
+		@RequestMapping(value="/findPharmacyStock.action")
+		public ModelAndView findPharmacyStock(CondiBean condi) {
+			
+			return iDrugAllocatBiz.findPharmacyStock(condi);
+		}
+		//修改药房库存限制
+		@Log(operationType = "修改操作", operationName = "修改药房库存限制")
+		@RequestMapping(value="/updPharmacyStock.action")
+		public String updPharmacyStock(PhaDrugBean phaDrug) {
+			
+			return iDrugAllocatBiz.updPharmacyStock(phaDrug);
+			
+		}
+		
+		/*******************************************************************
+		 * @param 药品调价统计
+		 * @author: 程帅 
+		 */
+		//进入药品调价页面
+		@RequestMapping(value="/findAdjustPrice.action")
+		public ModelAndView toAdjustPrice(CondiBean condiBean) {
+			
+			return iDrugAllocatBiz.findAdjustPrice(condiBean);
+			
+		}
+		
+		
+		
+		//进入药品调价统计页面
+		@RequestMapping(value="/toPriceStatistics.action")
+		public ModelAndView getDrugId(HttpServletRequest req,AdjustPriceBean adjustPrice) {
+			
+			ModelAndView mav =new ModelAndView("storage/priceStatistics");
+			mav.addObject("drugId", adjustPrice.getDrugId());
+			return mav;
+		}
+		
+		//查看药品调价统计
+		@RequestMapping(value="/showPriceStatistics.action", method=RequestMethod.POST, 
+				produces="application/json;charset=utf-8")
+		@ResponseBody
+		public  adjPriceStatisBean  showPriceStatistics(AdjustPriceBean adjustPrice){
+			
+			return iDrugAllocatBiz.priceData(adjustPrice);
+			
+		}
+		
+		
 }

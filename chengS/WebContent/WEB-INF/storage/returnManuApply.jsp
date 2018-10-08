@@ -25,10 +25,6 @@
 	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
 <title>退还厂家申请</title>
 <link rel="stylesheet"
 	href="<%=path%>lib/zTree/v3/css/zTreeStyle/zTreeStyle.css"
@@ -47,56 +43,75 @@
 		</nav>
 		<div class="page-container">
 			<div class="text-c">
-				药品编码：<input type="text" name="drugId" id="drugId" placeholder="药品编码"
-					style="width: 150px" class="input-text" readonly="readonly">&nbsp;<a
-					href="javascript:;"
-					onclick="drug_select('药品选择','<%=path%>storage/drugSelectShow.action','','510')"
-					class="btn btn-primary btn-sm">F1</a> &emsp;药品名称：<input type="text"
-					name="drugName" id="drugName" placeholder="药品名称"
-					style="width: 150px" class="input-text" readonly="readonly" />
-				&emsp;单位：<input type="text" name="unit" id="unit" placeholder="药品单位"
-					style="width: 150px" class="input-text" readonly="readonly" />
-				&emsp;规格：<input type="text" name="specific" id="specific"
-					placeholder="药品规格" style="width: 150px" class="input-text"
-					readonly="readonly" /> </br>生产厂商：<input type="text" name="drugmanu"
-					id="drugmanu" placeholder="生产厂商" style="width: 150px"
-					class="input-text" readonly="readonly" /> &emsp;药品产地：<input
-					type="text" name="proPlace" id="proPlace" placeholder="药品产地"
-					style="width: 150px" class="input-text" readonly="readonly" />
-				&emsp;申请人：<input type="text" name="adminName" id="adminName"
-					style="width: 150px; margin-top: 5px" class="input-text"
-					value="${sessionScope.USER.adminName}" readonly="readonly" />
-				&emsp;数量：<input type="text" name="applyNum" id="applyNum"
-					placeholder="请输入申请数量" style="width: 150px; margin-top: 5px"
-					class="input-text"
-					onkeyup="this.value=this.value.replace(/\D/g,'')"
-					onafterpaste="this.value=this.value.replace(/\D/g,'')" /> <input
-					type="hidden" name="inventoryNum" id="inventoryNum" /> <input
-					type="hidden" name="maximum" id="maximum" /> <label id="hint"></label>
-				</br>申请理由：<input type="text" name="applyReason" id="applyReason"
-					placeholder="请输入申请理由" style="width: 250px; margin-top: 5px"
-					class="input-text" />
-					<!-- 添加到列表的记录数 -->
-					<input type="hidden" id="total"/>
-				<button type="button" class="btn btn-primary" id=""
-					onclick="addApply()">添加</button>
-				&nbsp;&nbsp;
-				<button type="button" class="btn btn-primary" id=""
-					onclick="empty()">清空</button>
-				&nbsp;&nbsp;
-				<button type="button" class="btn btn-primary" id=""
-					onclick="subApply()">提交申请</button>
-				</br>
+				<table class="table table-border table-bordered table-bg">
+					<tr>
+						<td>药品编码：<input type="text" name="drugId" id="drugId"
+							placeholder="药品编码" style="width: 150px" class="input-text"
+							readonly="readonly">&nbsp;<a href="javascript:;"
+							onclick="drug_select('库存批次浏览','<%=path%>storage/getInventoryBatchList.action','','510')"
+							class="btn btn-primary btn-sm">F1</a></td>
+						<td>药品名称：<input type="text" name="drugName" id="drugName"
+							placeholder="药品名称" style="width: 150px" class="input-text"
+							readonly="readonly" /></td>
+						<td>单位：<input type="text" name="unit" id="unit"
+							placeholder="药品单位" style="width: 150px" class="input-text"
+							readonly="readonly" /></td>
+						<td>该批次剩余数量：<input type="text" name="handleNum"
+							id="handleNum" placeholder="原采购数量" style="width: 150px"
+							class="input-text" readonly="readonly" />
+						</td>
+					</tr>
+					<tr>
+						<td>生产厂商：<input type="text" name="stoDrugBean.drugmanu"
+							id="drugmanu" placeholder="生产厂商" style="width: 150px"
+							class="input-text" readonly="readonly" /></td>
+						<td>生产批号：<input type="text" name="manuBatch" id="manuBatch"
+							placeholder="生产批号" style="width: 150px" class="input-text"
+							readonly="readonly" /></td>
+						<td>库存数量：<input type="text" name="inventoryBean.inventoryNum"
+							id="inventoryNum" placeholder="库存数量" style="width: 150px"
+							class="input-text" readonly="readonly" /></td>
+						<td>进价(元)：<input type="text" name="purPrice" id="purPrice"
+							style="width: 150px; margin-top: 5px" class="input-text"
+							readonly="readonly" /></td>
+					</tr>
+					<tr>
+						<td>申请人：<input type="text" name="adminName" id="adminName"
+							style="width: 150px; margin-top: 5px" class="input-text"
+							value="${sessionScope.User.adminName}" readonly="readonly" /></td>
+						<td><span>退还数量：<input type="text" name="applyNum"
+								id="applyNum" placeholder="请输入申请数量"
+								style="width: 150px; margin-top: 5px" class="input-text"
+								onkeyup="this.value=this.value.replace(/\D/g,''),checkInput()"
+								onafterpaste="this.value=this.value.replace(/\D/g,'')"
+							     /> </br> <label
+								id="hint"></label></span></td>
+						<td>退还理由：<input type="text" name="applyReason"
+							id="applyReason" placeholder="请输入申请理由"
+							style="width: 200px; margin-top: 5px" class="input-text" /> <input
+							type="hidden" id="proDate" /> 
+							<input type="hidden" id="adminId" name="adminId" value="${User.adminId}"></td>
+							<input type="hidden" id="putBatch" name="putBatch">
+							<input type="hidden" id="batchDetailId" name="batchDetailId">
+						<td><button type="button" class="btn btn-primary" id=""
+								onclick="addApply()">添加</button></td>
+					</tr>
+				</table>
+
 			</div>
 
-			<form id="papply" action="purchaseApply.action" method="post">
+			<form id="papply" action="returnManuApply.action" method="post">
 			</form>
 
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
-				<span class="r">共有数据：<strong></strong> 条
-				</span>
+				<div align="right">
+					<button type="button" class="btn btn-primary" id=""
+						onclick="empty()">清空</button>
+					&nbsp;&nbsp;
+					<button type="button" class="btn btn-primary" id=""
+						onclick="subApply()">提交申请</button>
+				</div>
 			</div>
-			<form id="apply" action="" method="">
 				<div class="mt-20">
 					<table class="table table-border table-bordered table-bg"
 						id="tblDrugList">
@@ -104,19 +119,16 @@
 							<tr class="text-c">
 								<th width="80">药品编码</th>
 								<th width="100">药品名称</th>
-								<th width="60">申请数量</th>
-								<th width="60">单位</th>
 								<th width="100">生产厂商</th>
-								<th width="100">药品产地</th>
-								<th width="100">申请理由</th>
-								<th width="60">申请人</th>
+								<th width="100">生产批号</th>
+								<th width="100">生产日期</th>
+								<th width="100">退还数量</th>
+								<th width="100">退还理由</th>
 							</tr>
 						</thead>
-						<tbody id="tbodyId">
-						</tbody>
+						<tbody id="tbodyId"></tbody>
 					</table>
 				</div>
-			</form>
 		</div>
 	</div>
 
@@ -140,86 +152,101 @@
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
-/*药品-选择*/
-function drug_select(title,url,w,h){
-	layer_show(title,url,w,h);
-}
-	var count=0;
-	var arr=new Array();
-	var i=100;
-	var p=100;
-	for(var k=0;k<i;k++){
-		arr[k]=new Array(k);
-		for(var j=0;j<p;j++){
-			arr[k][j]="";
+		/*库存批次浏览*/
+		function drug_select(title, url, w, h) {
+			layer_show(title, url, w, h);
 		}
-	}
-	
-	/*  增加药品采购申请记录*/
-	function addApply(){
-		
-		var drugId=$("#drugId").val();
-		var drugName=$("#drugName").val();
-		var applyNum=$("#applyNum").val();
-		var applyReason=$("#applyReason").val();
-		var adminName=$("#adminName").val();
-		var unit=$("#unit").val();
-		var drugmanu=$("#drugmanu").val();
-		var proPlace=$("#proPlace").val();
-		var inventoryNum=$("#inventoryNum").val();
-		var maximum =$("#maximum").val();
-		var d=$("#"+drugId).val();
-		if(applyNum=="" || applyReason=="" ){
-			alert("请完善药品采购申请信息");
-			return;
-		}
-		/* 判断输入的数量是否超出所需可存储量 */
-		var stoage= (maximum -inventoryNum-applyNum);
-		if(stoage<0){
-			$("#hint").html("超过当前储存量");
-			$("#hint").css("color","red");	
-			return;
-		}else if(typeof(d)=="undefined"){
-		$("#hint").html("");
-		var input="<input type='hidden'id='"+drugId+"' name='applyList["+count+"].drugId' value='"+drugId+
-		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.drugName' value='"+drugName+
-		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+
-		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.unit' value='"+unit+
-		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.drugmanu' value='"+drugmanu+
-		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.proPlace' value='"+proPlace+
-		"'><input type='hidden' name='applyList["+count+"].applyReason' value='"+applyReason+
-		"'><input type='hidden' name='applyList["+count+"].adminName' value='"+adminName+
-		"'>";
-		$("#papply").append(input);
-		count+=1;
-	   // $("#total").val(count+=1);
-		
-		 var str="<tr id='tr"+count+"' class='text-c'><td>"+drugId+"</td><td>"+drugName+"</td><td>"+applyNum+"</td><td>"+unit+"</td><td>"+drugmanu+"</td><td>"+proPlace+"</td><td>"+applyReason+"</td><td>"+adminName+
-		 "</td></tr> ";
-		 
-		 $("#tblDrugList").append(str); 
-		}else{
-			alert("该药品已经添加，如需修改数量请清空重新选择");
-			return;
-		}
-	}
-	
-	/* 清空申请记录 */
-	function empty(){
-		$("#tbodyId").html("");
-		$("#papply").html("");
-		count=0;
-		//$("#total").val(count)
-	}
-	
-	/* 提交申请 */
-	function subApply(){
-		var r=confirm("确定提交吗?");
-		if(r){
-			$("#papply").submit();
-		}
-	}
 
-</script>
+		/**判断申请的数量是否小于当前批次剩余数量*/
+		function checkInput() {
+			var handleNum = $("#handleNum").val();
+			var applyNum = $("#applyNum").val();
+			if ((applyNum-handleNum)>0) {
+				$("#hint").html("超过当前储存量");
+				$("#hint").css("color", "red");
+				return;
+			}else{
+				$("#hint").html("");
+			}
+		}
+		
+		var count = 0;
+		/*  增加药品退还申请记录*/
+		function addApply() {
+
+			var drugId = $("#drugId").val();
+			var adminId = $("#adminId").val();
+			var drugName = $("#drugName").val();
+			var applyReason = $("#applyReason").val();
+			var adminName = $("#adminName").val();
+			var handleNum = $("#handleNum").val();
+			var applyNum = $("#applyNum").val();
+			var drugmanu = $("#drugmanu").val();
+			var inventoryNum = $("#inventoryNum").val();
+			var manuBatch = $("#manuBatch").val();
+			var purPrice = $("#purPrice").val();
+			var proDate = $("#proDate").val();
+			var putBatch = $("#putBatch").val();
+			var batchDetailId = $("#batchDetailId").val();
+			var d = $("#" + drugId).val();
+			if (applyNum == "" || applyReason == "") {
+				alert("请完善退还申请信息");
+				return;
+			}
+			if (typeof (d) == "undefined") {
+				var input = "<input type='hidden'id='"+drugId+"' name='applyList["+count+"].drugId' value='"+drugId+
+		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.drugName' value='"+drugName+
+		"'><input type='hidden' name='applyList["+count+"].adminId' value='"+adminId+
+		"'><input type='hidden' name='applyList["+count+"].bdBean.handleNum' value='"+handleNum+
+		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.drugmanu' value='"+drugmanu+
+		"'><input type='hidden' name='applyList["+count+"].manuBatch' value='"+manuBatch+
+		"'><input type='hidden' name='applyList["+count+"].bdBean.proDate' value='"+proDate+
+		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+
+		"'><input type='hidden' name='applyList["+count+"].applyReason' value='"+applyReason+
+		"'><input type='hidden' name='applyList["+count+"].bdBean.putBatch' value='"+putBatch+
+		"'><input type='hidden' name='applyList["+count+"].inventoryNum' value='"+inventoryNum+
+		"'><input type='hidden' name='applyList["+count+"].bdBean.batchDetailId' value='"+batchDetailId+
+		"'>";
+				$("#papply").append(input);
+				count += 1;
+
+				var str = "<tr id='tr"+count+"' class='text-c'><td>" + drugId
+						+ "</td><td>" + drugName + "</td><td>" + drugmanu
+						+ "</td><td>" + manuBatch + "</td><td>" + proDate
+						+ "</td><td>" + applyNum + "</td><td>" + applyReason
+						+ "</td></tr> ";
+
+				$("#tblDrugList").append(str);
+			} else {
+				alert("该药品已经添加，如需修改数量请清空重新选择");
+				return;
+			}
+		}
+
+		/* 清空申请记录 */
+		function empty() {
+			var r=confirm("确认清空列表？");
+			if(r){
+				
+			$("#tbodyId").html("");
+			$("#papply").html("");
+			count = 0;
+			}
+		}
+
+		/* 提交申请 */
+		function subApply() {
+			var d=$("#tbodyId").html();
+			if(d.length==0){
+				
+			alert("请选择药品");
+			return;
+			}
+			var r = confirm("确定提交吗?");
+			if (r) {
+				$("#papply").submit();
+			}
+		}
+	</script>
 </body>
 </html>

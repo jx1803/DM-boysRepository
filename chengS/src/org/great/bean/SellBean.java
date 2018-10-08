@@ -31,6 +31,8 @@ public class SellBean {
 	private String putBatch;//进货批次
 	private String manuBatch;//厂家批号
 	private StoDrugBean stoDrugBean;//药品信息
+	private BatchDetailBean batchDetailBean;//药品批次详情对象
+	private AdminBean adminBean;//管理员对象
 	public SellBean() {
 		super();
 	}
@@ -111,6 +113,22 @@ public class SellBean {
 
 	public void setStoDrugBean(StoDrugBean stoDrugBean) {
 		this.stoDrugBean = stoDrugBean;
+	}
+
+	public BatchDetailBean getBatchDetailBean() {
+		return batchDetailBean;
+	}
+
+	public void setBatchDetailBean(BatchDetailBean batchDetailBean) {
+		this.batchDetailBean = batchDetailBean;
+	}
+
+	public AdminBean getAdminBean() {
+		return adminBean;
+	}
+
+	public void setAdminBean(AdminBean adminBean) {
+		this.adminBean = adminBean;
 	}
 
 	@Override

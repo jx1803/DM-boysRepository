@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ request.getContextPath() + "/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -37,8 +41,7 @@
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			value="${condi.drugId==null?"":condi.drugId}">
-			<input type='hidden' id="h_drugId" value="0">
+			>
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
 			 style="width: 150px" value="${condi.pinyinCode==null?"":condi.pinyinCode}">
@@ -56,7 +59,7 @@
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
+			<button type="button" class="btn btn-primary radius" onclick="subSelect()" id="sub" name=""> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -100,8 +103,10 @@
 						<td>${sdList.antibiotic}</td>
 						<td>${sdList.drugmanu}</td>
 						<td>${sdList.proPlace}</td>
-						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=5&drugId=${sdList.drugId}',400,200)">修改零售价</a>
+
+						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}',400,300)">修改零售价</a>
 							</td>
+
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -133,6 +138,17 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+
+function subSelect(){
+	var drugId=$("#drugId").val();
+	if(drugId==""){
+		$("#drugId").val(0);
+		$("#formSd").submit();
+	}else{
+		$("#formSd").submit();
+	}
+}
+
 /*上一页  */
 function prePage(pageNum) {
 	var str1 = "";

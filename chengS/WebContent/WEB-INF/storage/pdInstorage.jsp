@@ -14,10 +14,6 @@
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css"
@@ -95,7 +91,7 @@
 									<td class="td-status"><span
 										class="label label-success radius">${buyApply.checkName}</span></td>
 									
-										<td><a href="<%=path %>storage/pdInstorageConfirm.action?drugApplyId=${buyApply.drugApplyId}&drugId=${buyApply.stoDrugBean.drugId}&applyNum=${buyApply.applyNum}&checkId=24" class="btn btn-success" onclick="return confirm('确认购买？')">购买</a>
+										<td><a href="<%=path %>storage/pdInstorageConfirm.action?drugApplyId=${buyApply.drugApplyId}&drugId=${buyApply.stoDrugBean.drugId}&applyNum=${buyApply.applyNum}&checkId=24" class="btn btn-success" onclick="return confirm('确认购买入库？')">购买入库</a>
 											</td>	
 								</tr>
 							</c:forEach>
@@ -103,11 +99,9 @@
 					</table>
 					</br>
 					<div class="text-c">
-						<%-- <a
-							href="toCancellingApplyList.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&page=${condiBean.pageNum-1}"> --%>
-							<button type="button" class="btn btn-success" onclick="prePage('${condiBean.pageNum}')">上一页</button>
-						<!-- </a> --> ${condiBean.pageNum}/${pageTotal} 
-						<%-- <a href="toCancellingApplyList.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&adminName=${condiBean.adminName}&page=${condiBean.pageNum+1}"> --%>
+						
+						<button type="button" class="btn btn-success" onclick="prePage('${condiBean.pageNum}')">上一页</button>
+						 ${condiBean.pageNum}/${pageTotal} 
 						<button type="button" class="btn btn-success" onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button><!-- </a> -->
 					</div>
 				</div>

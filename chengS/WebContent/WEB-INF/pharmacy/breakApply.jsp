@@ -37,29 +37,38 @@
 	<table class="table table-border table-bordered table-bg" id="tblSelect">
 			<tr><input type="hidden" id="batchDetailId" >
 				<td  width="100">报损药品名称:</td>
-				<td width="100"><input class="form-control" id="drugName" readonly="readonly"><button type="button" class="btn btn-default" id=""
+				<td width="100"><input class="form-control" id="drugName" readonly="readonly" placeholder="点击查询药品" style="width:100px;"><button type="button" class="btn btn-default" id=""
 					onclick="selectDrug('查询药品','selectPutDrug.action','800','500')">查询</button></td>
 				<td width="100">药品编号：</td>
-				<td width="100"> <input class="form-control" id="drugId" readonly="readonly"></td>
+				<td > <input class="form-control" id="drugId" readonly="readonly" style="width:70px;"></td>
+				<td width="70">单位:</td>
+				<td width="70"><input class="form-control" id="unit" readonly="readonly" style="width:90px;"></td>
+				<td width="70">规格:</td>
+				<td width="70"><input class="form-control" id="specific" readonly="readonly" style="width:100px;"></td>
 				<td width="100">报损药品厂家:</td>
-				<td width="100"><input class="form-control" id="drugManu" readonly="readonly"></td>
-				<td width="100">报损药品产品批号:</td>
-				<td width="100"><input class="form-control" id="manuBatch" readonly="readonly"></td>
-				<td width="100">报损药品产品批号:</td>
-				<td width="100"><input class="form-control" id="" readonly="readonly"></td>
+				<td width="100"><input class="form-control" id="drugManu" readonly="readonly" style="width:150px;"></td>
+				
+				<td width="100">药品进价(元):</td>
+				<td ><input class="form-control" id="purPrice" readonly="readonly" style="width:60px;"></td>
 				
 			</tr>
 			<tr>
-			<td width="100">药品剩余数量:</td>
-				<td width="100"><input class="form-control" id="drugNum" readonly="readonly"></td>
-			<td width="100">药品进价:</td>
-				<td width="100"><input class="form-control" id="purPrice" readonly="readonly"></td>
+			<td width="100">报损药品产品批号:</td>
+				<td width="100"><input class="form-control" id="manuBatch" readonly="readonly" style="width:100px;"></td>
+			<td width="100">剩余数量:</td>
+				<td width="100"><input  class="form-control" id="drugNum" readonly="readonly" style="width:50px;">  <span id="sUnit"></span></td>
+			
 				<td width="100">报损数量:</td>
-				<td width="100"><input class="form-control" id="applyNum" onkeyup="this.value=this.value.replace(/\D/g,''),setSales()" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></td>
+				<td ><input class="form-control" id="applyNum" placeholder="输入报损数量" style="width:70px;" oninput="setSales()" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ><span id="sunit"></span>
+				<input style="width:70px" class="form-control" id="applyNum1" placeholder="输入报损数量"  oninput="setSales()" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ><span id="sspecific"></span>
+				
+				</td>
 				<td width="100">报损药品金额(元):</td>
-				<td width="100"><input class="form-control" id="applyMoney" readonly="readonly" ></td>
+				<td width="100"><input class="form-control" id="applyMoney" readonly="readonly" style="width:100px;" ></td>
 				<th width="90">报损原因:</th>
-				<td width="100"><input class="form-control" id="applyReason" placeholer="输入报损原因"></td>
+				<td width="100"><input class="form-control" id="applyReason" placeholer="输入报损原因" style="width:150px;"></td>
+				<td width="70">申请人:</td>
+				<td width="70"><input class="form-control" id="adminId" value="${User.adminName }" readonly="readonly" style="width:60px;"></td>
 			</tr>
 	</table>
 	<div style="float:right;"><button type="button" class="btn btn-default" id=""
@@ -104,15 +113,7 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 	var count=0;
-	var arr=new Array();
-	var i=100;
-	var p=100;
-	for(var k=0;k<i;k++){
-		arr[k]=new Array(k);
-		for(var j=0;j<p;j++){
-			arr[k][j]="";
-		}
-	}
+
 	function showModal(){
 		
 		$("#drugModal").modal("show");
@@ -124,12 +125,15 @@
 
 	/*  增加药品报损记录*/
 	function addApply(){
-		
+		var specific=$("#specific").val();
+		var str=specific.split('-');
 		var drugName=$("#drugName").val();
 		var drugmanu=$("#drugManu").val();
 		var purPrice=$("#purPrice").val();
 		var manuBatch=$("#manuBatch").val();
-		var applyNum=$("#applyNum").val();
+		var applyNum1=$("#applyNum").val()*str[0];
+		var applyNum2=$("#applyNum1").val()*1;
+		var applyNum=applyNum1+applyNum2;
 		var applyMoney=$("#applyMoney").val();
 		var applyReason=$("#applyReason").val();
 		var drugId=$("#drugId").val();
@@ -161,9 +165,13 @@
 	
 	/* 清空申请记录 */
 	function empty(){
+		var r=confirm("确定清空药品申请列表吗？");
+		if(r){
+			
 		$("#tbodyId").html("");
 		$("#fapply").html("");
 		count=0;
+		}
 	}
 	
 	/* 提交申请 */
@@ -191,8 +199,20 @@
   			return;
   		}
   		var m=$("#purPrice").val();
-  		var num=$("#applyNum").val();
-  		var am=m*num;
+  		var num=$("#drugNum").val();
+  		var specific=$("#specific").val();
+		var str=specific.split('-');
+  		
+  		var snum=$("#applyNum").val()*str[0]+$("#applyNum1").val()*1;
+		var smoney=m/str[0];
+  		if(snum>num){
+  			alert("超出药品剩余量");
+  			$("#applyNum").val("");
+  			$("#applyNum1").val("");
+  			return;
+  		}
+  		var am=smoney*snum;
+  		
   		$("#applyMoney").val(am);
 	}
 	/*

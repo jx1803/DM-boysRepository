@@ -13,10 +13,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
+
 <link rel="stylesheet" type="text/css" href="<%=path %>static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=path %>static/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="<%=path %>lib/Hui-iconfont/1.0.8/iconfont.css" />
@@ -60,7 +57,7 @@
 					   <td>${sdBean.dfBean.dosageForm}</td>
 					   <td>${sdBean.drugmanu}</td>
 					   <td>${sdBean.proPlace}</td>
-					   <td><a class="btn btn-primary" onclick="addDrug('${sdBean.drugId}','${sdBean.drugName}','${sdBean.specific}','${sdBean.unit}','${sdBean.drugmanu}','${sdBean.proPlace}','${sdBean.inventoryBean.inventoryNum}','${sdBean.inventoryBean.maximum}')">选择</a></td>
+					   <td><a class="btn btn-primary" onclick="addDrug('${sdBean.drugId}','${sdBean.drugName}','${sdBean.specific}','${sdBean.unit}','${sdBean.drugmanu}','${sdBean.proPlace}','${sdBean.inventoryBean.inventoryNum}','${sdBean.inventoryBean.maximum}','${sdBean.purPrice}')">选择</a></td>
 					</tr>
 				</c:forEach>
 				</tbody>
@@ -84,7 +81,7 @@
 <script type="text/javascript" src="<%=path %>lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 /* 选择添加药品 */
- function addDrug(drugId,drugName,specific,unit,drugmanu,proPlace,inventoryNum,maximum){
+ function addDrug(drugId,drugName,specific,unit,drugmanu,proPlace,inventoryNum,maximum,purPrice){
 	parent.$("#drugId").val(drugId);
 	parent.$("#drugName").val(drugName);
 	parent.$("#specific").val(specific);
@@ -93,6 +90,7 @@
 	parent.$("#proPlace").val(proPlace);
 	parent.$("#inventoryNum").val(inventoryNum);
 	parent.$("#maximum").val(maximum);
+	parent.$("#purPrice").val(purPrice);
 	var index = parent.layer.getFrameIndex(window.name);
 	parent.layer.close(index);
 		

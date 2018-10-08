@@ -11,6 +11,8 @@ import org.great.bean.LogBean;
 import org.great.bean.ParamBean;
 import org.great.bean.PermissionBean;
 import org.great.bean.RoleBean;
+import org.great.bean.WarnBean;
+import org.great.mapper.DailyWorkMapper;
 import org.great.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +30,15 @@ public class UserBizImpl implements IUserBiz {
 	@Resource
 	private UserMapper userMapper;
 
+	@Resource
+	private DailyWorkMapper dailyWorkMapper;// 映射器（日常工作）
 	@Override
 	public String userlogin(AdminBean user, HttpSession session) {
 		// TODO Auto-generated method stub
 		//先判断状态，是否为已启用
 
 		user = userMapper.userlogin(user);
+
 		
 		if(null==user) {
 			flag="login";
@@ -47,6 +52,15 @@ public class UserBizImpl implements IUserBiz {
 			}else {
 				flag="login";
 			}
+
+		session.setAttribute("User", user);
+		
+		session.setAttribute("belongId", 21);// 登录通过角色判断属于药房21或药库22
+		List<WarnBean> warnList = dailyWorkMapper.selWarn(21);
+		session.setAttribute("warnCount", warnList.size());// 页面提醒数量
+		if (null != user) {
+			flag = "success";
+
 		}
 		
 		return flag;
