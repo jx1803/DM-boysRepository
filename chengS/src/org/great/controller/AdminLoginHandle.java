@@ -20,6 +20,7 @@ import org.great.bean.PermissionBean;
 import org.great.bean.RoleBean;
 import org.great.biz.IUserBiz;
 import org.great.tools.EncryMd5;
+import org.great.tools.Log;
 import org.great.tools.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +56,7 @@ public class AdminLoginHandle {
 	private IUserBiz iUserBiz;
 
 	// 获取用户管理的显示数据,需要分页和模糊查找
+	
 	@RequestMapping(value = "/memberList.action")
 	public ModelAndView userList(HttpServletRequest request,CondiBean cond) {
 		//带入搜索条件
@@ -74,6 +76,7 @@ public class AdminLoginHandle {
 	}
 	
 	//删除用户显示
+	
 	@RequestMapping(value="/memberDelList.action")
 	public ModelAndView memberDelList(HttpServletRequest request,CondiBean cond) {
 		//带入搜索条件
@@ -87,6 +90,7 @@ public class AdminLoginHandle {
 		return mav;
 	}
 	// 用户删除
+	@Log(operationType = "", operationName = "用户删除")
 	@RequestMapping(value ="/delUser.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public ModelAndView DelUser(HttpServletRequest request,AdminBean adbean) {
@@ -112,6 +116,7 @@ public class AdminLoginHandle {
 		
 	}
 	//ajax启用禁用状态改变
+	@Log(operationType = "", operationName = "启用禁用")
 	@RequestMapping(value ="/ChangeStateUser.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public AdminBean stateUser(AdminBean adbean) {
@@ -120,6 +125,7 @@ public class AdminLoginHandle {
 	}
 	
 	//密码一键重置，用ajax
+	@Log(operationType = "", operationName = "密码重置")
 	@RequestMapping(value="/ResetPassword.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public AdminBean resetpassword(AdminBean adbean) {
@@ -132,6 +138,7 @@ public class AdminLoginHandle {
 	}
 	
 	//用户增加
+	
 	@RequestMapping(value ="/memberListAdd.action")
 	public ModelAndView member_Add(HttpServletRequest request,CondiBean cond) {
 		//取出所有的部门信息返回给jsp页面啊
@@ -144,6 +151,7 @@ public class AdminLoginHandle {
 		mav.setViewName("user/memberListAdd");
 		return mav;
 	}
+	@Log(operationType = "", operationName = "增加新用户")
 	//用户增加插入到数据库
 	@RequestMapping(value="/memberAddSave.action")
 	public String member_add_save(HttpServletRequest request,AdminBean abean,
@@ -179,6 +187,7 @@ public class AdminLoginHandle {
 		return mav;
 	}
 	//用户修改提交
+	@Log(operationType = "", operationName = "修改用户信息")
 	@RequestMapping(value = "/memberUpdateSave.action")
 	public String memberUpdateSave(HttpServletRequest request,AdminBean abean,CondiBean cond) {
 		iUserBiz.memberUpdateSave(abean,cond);
@@ -211,6 +220,7 @@ public class AdminLoginHandle {
 	
 	
 	//角色添加保存,一个插入语句
+	@Log(operationType = "", operationName = "角色增加")
 	@RequestMapping(value ="/roleAddSave.action")
 	public String role_add_save(HttpServletRequest request,RoleBean rolebean) {
 		//将语句插入,进入biz层
@@ -234,6 +244,7 @@ public class AdminLoginHandle {
 	}
 	
 	//角色信息修改保存
+	@Log(operationType = "", operationName = "角色修改")
 	@RequestMapping(value="/roleListSave.action")
 	public String roleListSave(HttpServletRequest request,RoleBean rolebean) {
 		//进入页面修改
@@ -241,6 +252,7 @@ public class AdminLoginHandle {
 		return "redirect:roleList.action";
 	}
 	//角色删除ajax
+	@Log(operationType = "", operationName = "角色删除")
 	@RequestMapping(value="/roleDel.action", method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String roleDel(HttpServletRequest request,int roleid ) {
@@ -268,6 +280,7 @@ public class AdminLoginHandle {
 		return mav;
 	}
 	//部门增加
+	@Log(operationType = "", operationName = "增加部门")
 	@RequestMapping(value = "/deptListAdd.action")
 	public String deptListAdd(HttpServletRequest request,DeptBean dept){
 		iUserBiz.inserDept(dept);
@@ -275,6 +288,7 @@ public class AdminLoginHandle {
 	}
 
 	//部门删除
+	@Log(operationType = "", operationName = "删除部门")
 	@RequestMapping(value = "/deptlistDel.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	public @ResponseBody String delDept(HttpServletRequest request,int deptid) {
 		iUserBiz.delDept(deptid);
@@ -289,6 +303,7 @@ public class AdminLoginHandle {
 		return mav;
 	}
 	//部门编辑保存
+	@Log(operationType = "", operationName = "部门信息修改")
 	@RequestMapping(value="/deptSave.action")
 	public String deptSave(HttpServletRequest request,DeptBean dept) {
 		iUserBiz.deptSave(dept);
@@ -318,20 +333,22 @@ public class AdminLoginHandle {
 		return new ModelAndView();
 	}
 //一级菜单提交至数据库
+	@Log(operationType = "", operationName = "一级菜单增加")
 	@RequestMapping(value="/menuLevel1Save.action")
 	public String Menu_Level1_save(HttpServletRequest request,PermissionBean pbean) {
 		iUserBiz.insertPMenu(pbean);
 		return "redirect:menuLevel2List.action";
 	}
 	//一级菜单删除
+	@Log(operationType = "", operationName = "一级菜单删除")
 	@RequestMapping(value="/menuLevel1Del.action", method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String MenuLevel1del(HttpServletRequest request,int permissionId) {
 		iUserBiz.MenuOneDel(permissionId);
-		
 		return "redirect:menuLevel2List.action";
 	}
 	//二级菜单删除
+	@Log(operationType = "", operationName = "二级菜单删除")
 	@RequestMapping(value="/menuLevelTwoDel.action", method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String menuLevelTwoDel(HttpServletRequest request,int fid) {
@@ -370,6 +387,7 @@ public class AdminLoginHandle {
 		return mav;
 	}
 	//将添加的二级菜单提交到数据库中
+	@Log(operationType = "", operationName = "二级菜单添加")
 	@RequestMapping(value="/menuLevel2Save.action")
 	public String Menu_Level2_save(HttpServletRequest request,PermissionBean pbean) {
 		int i = iUserBiz.insertSMenu(pbean);
@@ -378,6 +396,7 @@ public class AdminLoginHandle {
 
 	
 	//二级菜单修改
+	
 	@RequestMapping(value="/menuLevel2Update.action")
 	public ModelAndView MenuLevel2update(HttpServletRequest request,PermissionBean pbean) {
 		ModelAndView mav = new ModelAndView();
@@ -385,6 +404,7 @@ public class AdminLoginHandle {
 		return mav;
 	}
 	//修改后的二级菜单添加后给数据库
+	@Log(operationType = "", operationName = "一二级菜单修改")
 	@RequestMapping(value="/updatemenuLevel.action")
 	public String menuLevel2Save(HttpServletRequest request,PermissionBean pbean) {
 		iUserBiz.menuSave(pbean);
@@ -421,6 +441,7 @@ public class AdminLoginHandle {
 	}
 	
 	//角色权限变化---删除权限
+	@Log(operationType = "", operationName = "删除权限")
 	@RequestMapping(value="/ConfigurationDel.action")
 	public String ConfigurationDel(HttpServletRequest request, 
 			@RequestParam(value = "time") String test,@RequestParam(value = "roleId") int roleId) {
@@ -441,6 +462,7 @@ public class AdminLoginHandle {
 	}
 	
 	//角色权限变化---增加权限
+	@Log(operationType = "", operationName = "增加权限")
 	@RequestMapping(value="/ConfigurationAdd.action")
 	public String ConfigurationAdd(HttpServletRequest request,
 			@RequestParam(value = "time1") String test,@RequestParam(value = "roleId") int roleId) {
@@ -479,6 +501,7 @@ public class AdminLoginHandle {
 	}
 	
 	//添加一级参数
+	@Log(operationType = "", operationName = "一级参数增加")
 	@RequestMapping(value="/addLevel1Parame.action")
 	public String addLevel1Parame(HttpServletRequest request,CondiBean cond) {
 		iUserBiz.inserLevel1Parame(cond);
@@ -486,6 +509,7 @@ public class AdminLoginHandle {
 	}
 	
 	//添加二级参数
+	@Log(operationType = "", operationName = "二级参数增加")
 	@RequestMapping(value="/addLevel2Parame.action")
 	public String addLevel2Parame(HttpServletRequest request,CondiBean cond) {
 		iUserBiz.inserLevel2Parame(cond);
@@ -493,6 +517,7 @@ public class AdminLoginHandle {
 	}
 	
 	//删除一级参数
+	@Log(operationType = "", operationName = "一级参数删除")
 	@RequestMapping(value="/oneparaDel.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	public @ResponseBody String delParam(HttpServletRequest request,int  paid){
 		iUserBiz.delOneParam(paid);
@@ -500,6 +525,7 @@ public class AdminLoginHandle {
 	}
 	
 	//删除二级参数
+	@Log(operationType = "", operationName = "二级参数删除")
 	@RequestMapping(value="/twoparaDel.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	public @ResponseBody String delTwoParam(HttpServletRequest request,int  paramId) {
 		iUserBiz.delTwoParam(paramId);
@@ -507,6 +533,7 @@ public class AdminLoginHandle {
 	}
 	
 	//参数配置修改
+	
 	@RequestMapping(value="/paramUpdate.action")
 	public ModelAndView paramUpdate(HttpServletRequest request,ParamBean paBean) {
 		ModelAndView mav = new ModelAndView();
@@ -515,6 +542,7 @@ public class AdminLoginHandle {
 		return mav;
 	}
 	//参数配置修改后保存
+	@Log(operationType = "", operationName = "一二级参数修改")
 	@RequestMapping(value="/paramSave.action")
 	public String paramSave(HttpServletRequest request,ParamBean paBean) {
 		iUserBiz.updatParam(paBean);

@@ -47,22 +47,32 @@ public class UserBizImpl implements IUserBiz {
 		
 			if(user.getParamId()==2) {
 				session.setAttribute("User", user);
-			
+				
+				RoleBean rb=dailyWorkMapper.selRole(user.getAdminAccount());
+				if(rb.getRoleId()==2) {
+					session.setAttribute("belongId", 22);// 登录通过角色判断属于药房21或药库22
+					List<WarnBean> warnList = dailyWorkMapper.selWarn(22);
+					session.setAttribute("warnCount", warnList.size());// 页面提醒数量
+				}
+				else if(rb.getRoleId()==3) {
+					session.setAttribute("belongId", 21);// 登录通过角色判断属于药房21或药库22
+					List<WarnBean> warnList = dailyWorkMapper.selWarn(21);
+					session.setAttribute("warnCount", warnList.size());// 页面提醒数量
+				}else {
+					session.setAttribute("belongId", 0);// 登录通过角色判断属于药房21或药库22
+					List<WarnBean> warnList = dailyWorkMapper.selWarn(0);
+					session.setAttribute("warnCount", warnList.size());// 页面提醒数量
+
+				}
+
+				
 				flag="pharmacy/index";
 			}else {
 				flag="login";
 			}
 
-		session.setAttribute("User", user);
-		
-		session.setAttribute("belongId", 21);// 登录通过角色判断属于药房21或药库22
-		List<WarnBean> warnList = dailyWorkMapper.selWarn(21);
-		session.setAttribute("warnCount", warnList.size());// 页面提醒数量
-		if (null != user) {
-			flag = "success";
-
+		session.setAttribute("User", user);				
 		}
-		
 		return flag;
 	}
 

@@ -26,6 +26,7 @@ import org.great.bean.DrugApplyBean;
 import org.great.bean.InventoryBean;
 import org.great.bean.StoDrugBean;
 import org.great.biz.IStockWorkBiz;
+import org.great.tools.Log;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,6 +82,7 @@ public class StockWorkHandle {
 	}
 
 	/** 药品采购申请，插入申请记录 */
+	@Log(operationType = "", operationName = "采购申请")
 	@RequestMapping(value = "/purchaseApply.action")
 	public String purchaseApply(HttpServletRequest request, DrugApplyBean drugApply) {
 		System.out.println("插入数据");
@@ -101,6 +103,7 @@ public class StockWorkHandle {
 	}
 
 	/** 药品采购申请审核不通过 */
+	@Log(operationType = "", operationName = "不通过采购申请")
 	@RequestMapping(value = "/purchaseAuditFail.action")
 	public String purchaseAuditFail(DrugApplyBean drugApplyBean) {
 		System.out.println("进入审核不通过");
@@ -120,6 +123,7 @@ public class StockWorkHandle {
 	}
 
 	/** 药品采购入库成功 */
+	@Log(operationType = "", operationName = "采购药品入库")
 	@RequestMapping(value = "/pdInstorageSuccess.action")
 	public String pdInstorageSuccess(BatchDetailBean batchDetailBean) {
 		return stockWorkBizImpl.pdInstorageSuccess(batchDetailBean);
@@ -141,6 +145,7 @@ public class StockWorkHandle {
 	}
 
 	/** 提交退还申请 */
+	@Log(operationType = "", operationName = "提交退还申请")
 	@RequestMapping(value = "/returnManuApply.action")
 	public ModelAndView returnManuApply(DrugApplyBean drugApplyBean) {
 		return stockWorkBizImpl.returnManuApply(drugApplyBean);
@@ -159,6 +164,7 @@ public class StockWorkHandle {
 	}
 
 	/** 退还厂家审核 */
+	@Log(operationType = "", operationName = "退还审核")
 	@RequestMapping(value = "/returnManuAudit.action")
 	public String returnManuAudit(DrugApplyBean drugApplyBean) {
 		return stockWorkBizImpl.returnManuAudit(drugApplyBean);
@@ -168,6 +174,7 @@ public class StockWorkHandle {
 	 * 导出Excel文件
 	 * @throws Exception
 	 */
+	@Log(operationType = "", operationName = "导出已采购药品清单")
 	@RequestMapping("/exportExcel.action")
 	public void exportExcel(HttpServletRequest request, HttpServletResponse response,
 			CondiBean condibean) throws Exception {

@@ -15,6 +15,7 @@ import org.great.bean.DrugApplyBean;
 import org.great.bean.StoDrugBean;
 import org.great.bean.TakeStockBean;
 import org.great.biz.IDailyWorkBiz;
+import org.great.tools.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,7 @@ public class DailyWorkHandle {
 	 * @date 2018年9月18日下午2:47:54
 	 */
 	//药品审核
+	@Log(operationType = "", operationName = "药品报损审核")
 	@RequestMapping("/breakCheck.action")
 	public String breakCheck(HttpServletRequest req,DrugApplyBean drugApplyBean) {
 		
@@ -71,6 +73,7 @@ public class DailyWorkHandle {
 	}
 
 	/*报损申请*/
+	@Log(operationType = "", operationName = "药品报损申请")
 	@RequestMapping("/breakApply.action")
 	public String breakApply(HttpServletRequest req ,DrugApplyBean drugApplyBean) {
 		
@@ -86,6 +89,7 @@ public class DailyWorkHandle {
 	
 	
 	//调整药品价格
+	@Log(operationType = "", operationName = "调整药品价格")
 	@RequestMapping("/adjustPrice.action")
 	public String adjustPrice(AdjustPriceBean adjustPriceBean) {
 		return dailyWorkBizImpl.adjustPrice(adjustPriceBean);
@@ -103,7 +107,7 @@ public class DailyWorkHandle {
 	
 	}
 	
-	//查询出药品信息，药品调价入口（未完成）
+	//查询出药品信息，药品调价入口
 	@RequestMapping("/toAdjustPrice.action")
 	public ModelAndView toAdjustPrice(CondiBean condiBean) {
 		
@@ -124,6 +128,7 @@ public class DailyWorkHandle {
 	}
 	
 	//开始发药
+	@Log(operationType = "", operationName = "发药")
 	@RequestMapping("/sellDrug.action")
 	public String sellDrug(HttpServletRequest req,StoDrugBean stoDrugBean) {
 		return dailyWorkBizImpl.sellDrug(req,stoDrugBean);
@@ -136,24 +141,25 @@ public class DailyWorkHandle {
 	}
 	
 	//停用药品
+	@Log(operationType = "", operationName = "药品停用")
 	@RequestMapping("/forbidDrug.action")
 	public String forbidDrug(StoDrugBean stoDrugBean) {
 		return dailyWorkBizImpl.forbidDrug(stoDrugBean);
 	}
 	
 	//每个月最后一天自动盘点盈亏
-//	@Scheduled(cron="0 0 0 1 * ?")
-//	@Scheduled(cron="10 * * * * ?")
-//	public void checkTask() {
-//		System.out.println("开始盘点啦");
-//		dailyWorkBizImpl.checkProfit();
-//		dailyWorkBizImpl.checkStock();
-//		
-//	}
+	@Scheduled(cron="0 0 0 1 * ?")
+	public void checkTask() {
+		System.out.println("开始盘点啦");
+		dailyWorkBizImpl.checkProfit();
+		dailyWorkBizImpl.checkStock();
+		
+	}
 	
 	/*
 	 * 管理员录入药房药品实际库存
 	 */
+	@Log(operationType = "", operationName = "盘点药品")
 	@RequestMapping("/checkStockData.action")
 	public String checkStockData(TakeStockBean takeStockBean) {
 		return dailyWorkBizImpl.checkStockData(takeStockBean);
@@ -177,10 +183,7 @@ public class DailyWorkHandle {
 		return dailyWorkBizImpl.selectPhaDrug(condiBean);
 	}
 	
-	@RequestMapping("/toIndex.action")
-	public ModelAndView toIndex() {
-		return new ModelAndView("pharmacy/index");
-	}
+
 	
 	/*蓝鹏功能*/
 	
@@ -238,6 +241,7 @@ public class DailyWorkHandle {
 		}
 
 		// 提交退库申请
+		@Log(operationType = "", operationName = "提交退库申请")
 		@RequestMapping("/cacellingApply.action")
 		public ModelAndView cacellingApply(HttpServletRequest request, DrugApplyBean drugApplyBean) {
 			return dailyWorkBizImpl.cacellingApply(request, drugApplyBean);
@@ -245,6 +249,7 @@ public class DailyWorkHandle {
 		}
 
 		// 同意退库申请
+		@Log(operationType = "", operationName = "同意退库申请")
 		@RequestMapping("/chickSuccess.action")
 		public ModelAndView chickSuccess(HttpServletRequest request, String drugApplyId, BatchDetailBean batchDetailBean) {
 			System.out.println(drugApplyId);
@@ -254,6 +259,7 @@ public class DailyWorkHandle {
 		}
 
 		// 不同意退库申请
+		@Log(operationType = "", operationName = "不同意退库申请")
 		@RequestMapping("/chickError.action")
 		public ModelAndView chickError(HttpServletRequest requset, String drugApplyId) {
 			return dailyWorkBizImpl.chickError(requset, drugApplyId);
@@ -268,6 +274,7 @@ public class DailyWorkHandle {
 		}
 
 		// 不同意请领申请
+		@Log(operationType = "", operationName = "不同意请领申请")
 		@RequestMapping("/takeError.action")
 		public ModelAndView takeError(HttpServletRequest requset, String drugApplyId) {
 
@@ -276,6 +283,7 @@ public class DailyWorkHandle {
 		}
 
 		// 查看所有退库记录
+		
 		@RequestMapping("/toAllCancApply.action")
 		public ModelAndView toAllCancApply(CondiBean condiBean) {
 
@@ -289,6 +297,7 @@ public class DailyWorkHandle {
 		}
 
 		// 同意请领申请
+		@Log(operationType = "", operationName = "同意请领申请")
 		@RequestMapping("/takeSuccess.action")
 		public ModelAndView takeSuccess(HttpServletRequest request, String drugApplyId, BatchDetailBean batchDetailBean) {
 			System.out.println("请领数量为" + batchDetailBean.getHandleNum());

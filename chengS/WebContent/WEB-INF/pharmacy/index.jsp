@@ -1,8 +1,10 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 			+ request.getContextPath() + "/";
-%> 
+%>
 <html>
 <head>
 <meta charset="utf-8">
@@ -11,22 +13,24 @@
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<link rel="Bookmark" href="/favicon.ico">
-<link rel="Shortcut Icon" href="/favicon.ico" />
+<link rel="Bookmark" href="<%=path%>/favicon.ico">
+<link rel="Shortcut Icon" href="<%=path%>/favicon.ico" />
 <!--[if lt IE 9]>
 <script type="text/javascript" src="lib/html5shiv.js"></script>
 <script type="text/javascript" src="lib/respond.min.js"></script>
 <![endif]-->
 <link rel="stylesheet" type="text/css"
-	href="../static/h-ui/css/H-ui.min.css" />
+	href="<%=path%>static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css"
-	href="../static/h-ui.admin/css/H-ui.admin.css" />
+	href="<%=path%>static/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css"
-	href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+	href="<%=path%>lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css"
-	href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
-	href="../static/h-ui.admin/css/style.css" />
+	href="<%=path%>static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" href="<%=path%>lib/bootstrap.css" />
+<link href="<%=path%>lib/bootstrapValidator.css" rel="stylesheet" />
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -35,11 +39,70 @@
 
 </head>
 <body>
+	<!-- 修改密码 -->
+	<div class="modal fade" id="changepassword" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<form action="<%=path%>admin/forgetPassword.action" method="post"
+			id="form2" name="form2">
+			<div class="modal-dialog" style="width: 450px">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">修改密码</h4>
+					</div>
+					<div class="modal-body">
+						<div class="pd-20">
+							<div class="Huiform">
+
+								<table class="table table-bg">
+									<tbody>
+
+										<input type="hidden"
+											value="${sessionScope.User.adminAccount }" name="accoutAdmin" />
+										<tr class="row cl form-group">
+											<th width="100" class="text-r"><span class="c-red">*</span>
+												原始密码：</th>
+											<td><input type="password" style="width: 200px"
+												class="form-control" value="" placeholder="" id="password1"
+												name="password"></td>
+										</tr>
+										<tr class="row cl form-group">
+											<th width="100" class="text-r"><span class="c-red">*</span>
+												新密码：</th>
+											<td><input type="password" style="width: 200px"
+												class="form-control" value="" placeholder=""
+												id="newpassword" name="newpassword"></td>
+										</tr>
+										<tr class="row cl form-group">
+											<th width="100" class="text-r"><span class="c-red">*</span>
+												确认密码：</th>
+											<td><input type="password" style="width: 200px"
+												class="form-control" value="" placeholder=""
+												id="new1passowrd" name="new1passowrd"></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="submit"
+							class="btn btn-primary btn-success radius size-L"
+							style="width: 150px" name="signup" value="Sign up">提交</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+		</form>
+	</div>
 	<header class="navbar-wrapper">
 		<div class="navbar navbar-fixed-top">
 			<div class="container-fluid cl">
 				<a class="logo navbar-logo f-l mr-10 hidden-xs"
-					href="/aboutHui.shtml">SPMS智慧药房 </a> <span
+					href="<%=path%>/aboutHui.shtml">SPMS智慧药房 </a> <span
 					class="logo navbar-slogan f-l mr-10 hidden-xs">V1.0</span> <a
 					aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs"
 					href="javascript:;">&#xe667;</a>
@@ -52,12 +115,16 @@
 							class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
 							<ul class="dropDown-menu menu radius box-shadow">
 								<li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
-								<li><a href="#">切换账户</a></li>
-								<li><a href="#">退出</a></li>
+
+								<li><a href="javascript:;" onclick="forgetpassword()">修改密码</a></li>
+								<li><a href="<%=path%>admin/toLogin.action">退出</a></li>
 							</ul></li>
-						<li id="Hui-msg"><a href="#" title="消息"><span
-								class="badge badge-danger">1</span><i class="Hui-iconfont"
-								style="font-size: 18px">&#xe68a;</i></a></li>
+
+						<li id="Hui-msg"><a href="javascript:;"
+							onclick="member_add('消息提醒','<%=path%>pharmacy/toWarn.action','','510')"
+							title="消息"><span class="badge badge-danger">${warnCount}</span><i
+								class="Hui-iconfont" style="font-size: 18px">&#xe68a;</i></a></li>
+
 						<li id="Hui-skin" class="dropDown right dropDown_hover"><a
 							href="javascript:;" class="dropDown_A" title="换肤"><i
 								class="Hui-iconfont" style="font-size: 18px">&#xe62a;</i></a>
@@ -77,8 +144,8 @@
 	</header>
 	<aside class="Hui-aside">
 		<div class="menu_dropdown bk_2">
-		
-		<dl id="menu-system">
+
+			<%-- <dl id="menu-system">
 			<dt><i class="Hui-iconfont">&#xe62e;</i> 药品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
@@ -89,27 +156,44 @@
 					<li><a data-href="system-log.html" data-title="系统日志" href="javascript:void(0)">系统日志</a></li>
 			</ul>
 		</dd>
-	</dl>
-		
-		<dl id="menu-product">
-			<dt><i class="Hui-iconfont">&#xe620;</i> 库存工作<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
+	</dl>  --%>
+
+			<c:forEach items="${ulist}" var="list">
+
+				<dl id="menu-product">
+					<c:if test="${list.pid == 0 }">
+						<dt>
+							<i class="Hui-iconfont">&#xe620;</i> ${list.permission }<i
+								class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+						</dt>
+					</c:if>
+					<dd>
+						<c:forEach items="${ulist }" var="slist">
+							<c:if test="${list.permissionId == slist.pid }">
+								<ul>
+									<li><a data-href="<%=path%>${slist.url}"
+										data-title="${slist.permission }" href="javascript:void(0)">${slist.permission}</a></li>
+								</ul>
+							</c:if>
+						</c:forEach>
+					</dd>
+				</dl>
+
+			</c:forEach>
+			<%--  <dd>
 				<ul>
 					<li><a data-href="<%=path%>storage/purchaseApplyShow.action" data-title="药品采购申请" href="javascript:void(0)">药品采购申请</a></li>
 					<li><a data-href="<%=path%>storage/purchaseApplyLook.action" data-title="药品采购申请记录" href="javascript:void(0)">药品采购申请记录</a></li>
 					<li><a data-href="<%=path%>storage/pdInstorage.action" data-title="药品采购入库" href="javascript:void(0)">药品采购入库</a></li>
-					<li><a data-href="<%=path%>storage/toReturnManuApply.action" data-title="退还厂家" href="javascript:void(0)">退还厂家</a></li>
-					<li><a data-href="<%=path%>storage/toAllReturnManuApply.action" data-title="查看退还记录" href="javascript:void(0)">查看退还记录</a></li>
-					<li><a data-href="<%=path%>storage/toReturnManuAuditList.action" data-title="退还审核" href="javascript:void(0)">退还审核</a></li>
+					<li><a data-href="admin-permission.html" data-title="退还厂家" href="javascript:void(0)">退还厂家</a></li>
+					<li><a data-href="admin-list.html" data-title="出库审核" href="javascript:void(0)">出库审核</a></li>
 					<li><a data-href="<%=path%>storage/drugApplyAudit.action" data-title="药品采购审核" href="javascript:void(0)">药品采购审核</a></li>
-					<li><a data-href="<%=path%>storage/drugOutInStatistics.action" data-title="药品出入库统计" href="javascript:void(0)">药品出入库统计</a></li>
-					<li><a data-href="<%=path%>storage/dpStatistics.action" data-title="药品采购统计" href="javascript:void(0)">药品采购统计</a></li>
+					<li><a data-href="admin-list.html" data-title="退还审核" href="javascript:void(0)">退还审核</a></li>
 			</ul>
-		</dd>
-	</dl>
+		</dd> 
 	
 		
-			<dl id="menu-comments">
+		 	<dl id="menu-comments">
 				<dt>
 					<i class="Hui-iconfont">&#xe622;</i> 日常工作<i
 						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
@@ -146,8 +230,7 @@
 			<dd>
 				<ul>
 					<li><a data-href="<%=path %>user/memberList.action" data-title="会员列表" href="javascript:;">会员列表</a></li>
-					<li><a data-href="member-del.html" data-title="删除的会员" href="javascript:;">删除的会员</a></li>
-					
+					<li><a data-href="<%=path %>user/memberDelList.action" data-title="删除的会员" href="javascript:;">删除的会员</a></li>
 			</ul>
 		</dd>
 	</dl>
@@ -156,15 +239,14 @@
 			<dd>
 				<ul>
 					<li><a data-href="<%=path %>user/roleList.action" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
-					<li><a data-href="admin-permission.html" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
-					<li><a data-href="admin-list.html" data-title="管理员列表" href="javascript:void(0)">管理员列表</a></li>
+					<li><a data-href="<%=path %>user/parameterList.action" data-title="参数配置" href="javascript:void(0)">参数配置</a></li>
 					<li><a data-href="<%=path %>user/deptList.action" data-title="部门管理" href="javascript:void(0)">部门管理</a></li>
-					<li><a data-href="<%=path %>user/menuLevel1List.action" data-title="一级菜单管理" href="javascript:void(0)">一级菜单管理</a></li>
-					<li><a data-href="<%=path %>user/menuLevel2List.action" data-title="二级菜单管理" href="javascript:void(0)">二级菜单管理</a></li>
+					<li><a data-href="<%=path %>user/logSelect.action" data-title="日志查看" href="javascript:void(0)">日志查看</a></li>
+					<li><a data-href="<%=path %>user/menuLevel2List.action" data-title="菜单管理" href="javascript:void(0)">菜单管理</a></li>
 					<li><a data-href="<%=path %>user/pConfiguration.action" data-title="权限配置" href="javascript:void(0)">权限配置</a></li>
 			</ul>
 		</dd>
-	</dl>
+	</dl>  --%>
 
 		</div>
 	</aside>
@@ -202,17 +284,112 @@
 		</ul>
 	</div>
 	<!--_footer 作为公共模版分离出去-->
-	<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
-	<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
 	<script type="text/javascript"
-		src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+		src="<%=path%>lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="<%=path%>lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript"
+		src="<%=path%>static/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript"
+		src="<%=path%>static/h-ui.admin/js/H-ui.admin.js"></script>
+	<script type="text/javascript"
+		src="<%=path%>lib/bootstrapValidator.js"></script>
+	<script type="text/javascript" src=".<%=path%>lib/bootstrap.min.js"></script>
 	<!--/_footer 作为公共模版分离出去-->
 
 	<!--请在下方写此页面业务相关的脚本-->
 	<script type="text/javascript"
-		src="../lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
+		src="<%=path%>lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 	<script type="text/javascript">
+		$(function() {
+			addModelFrom2();
+
+		})
+		//弹出修改密码模态框
+		function forgetpassword() {
+
+			$('#changepassword').modal('show');
+			addModelFrom2();
+		};
+
+		$(function() {
+
+			$('#changepassword').on(
+					'hidden.bs.modal',
+					function() {
+						$("div.form-group").removeClass(
+								"has-feedback has-success has-error");
+						$('#password1').val("");
+						$("form2").bootstrapValidator('removeField',
+								'password1');
+
+					});
+		})
+		function addModelFrom2() {
+			/* $(function () { */
+			$('#form2').bootstrapValidator({
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+
+					password : {
+						validators : {
+							notEmpty : {
+								message : '密码不得为空'
+							},
+							stringLength : {
+								min : 5,
+								max : 30,
+								message : '密码长度不得小于6位或大于30位'
+							},
+							different : {
+								field : 'adminAccount',
+								message : '密码不能与账户一致'
+							}
+						}
+					},
+					newpassword : {
+						validators : {
+							notEmpty : {
+								message : '新密码不得为空'
+							},
+							stringLength : {
+								min : 5,
+								max : 30,
+								message : '密码长度不得小于6位或大于30位'
+							},
+							identical : {
+								field : 'new1passowrd',
+								message : '密码不一致'
+							},
+							different : {
+								field : 'adminAccount',
+								message : '密码不得与账户名一致'
+							}
+						}
+					},
+					new1passowrd : {
+						validators : {
+							notEmpty : {
+								message : '确认密码不得为空'
+							},
+							identical : {
+								field : 'newpassword',
+								message : '密码不一致'
+							},
+							different : {
+								field : 'adminAccount',
+								message : '密码不得与账户名一致'
+							}
+						}
+					},
+
+				}
+			});
+		}
+
 		function myselfinfo() {
 			layer.open({
 				type : 1,

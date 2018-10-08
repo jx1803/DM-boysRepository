@@ -53,7 +53,7 @@ public class LogAop
 		int userId = adminBean.getAdminId();
 		logBean.setAdminId(userId);
 		// 获取系统时间
-		logBean.setOperateDate(DateUtil.getDayBegin());
+		logBean.setOperateDate(DateUtil.getNowDay1());
 		// 拦截的实体类，就是当前正在执行的controller
 		Object target = pjp.getTarget();
 		// 拦截的方法名称。当前正在执行的方法

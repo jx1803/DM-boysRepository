@@ -111,6 +111,15 @@ public class DateUtil {
 				return time;
 			}
 		 
+			//获取当天时间
+			public static String getNowDay1() {
+				Calendar cal = new GregorianCalendar();
+				cal.set(Calendar.HOUR_OF_DAY, 0);
+				cal.set(Calendar.MINUTE, 0);
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				String time=df.format(cal.getTime());
+				return time;
+			}
 		 
 	}
 

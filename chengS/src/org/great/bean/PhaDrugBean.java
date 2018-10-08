@@ -80,7 +80,7 @@ public class PhaDrugBean {
 
 	public void setMaximum(long maximum) {
 		this.maximum = maximum;
-
+	}
 	public String getUseable() {
 		return useable;
 	}

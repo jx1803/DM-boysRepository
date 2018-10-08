@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.great.bean.AdminBean;
 import org.great.biz.IUserBiz;
 import org.great.tools.EncryMd5;
+import org.great.tools.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,7 @@ public class LoginHandle {
 	}
 	
 	// 进入index页面
+	@Log(operationType = "登录", operationName = "登录")
 		@RequestMapping(value = "/toIndex.action")
 		public ModelAndView toIndex(HttpServletRequest req, AdminBean user,String loginy) {
 			
@@ -60,6 +62,7 @@ public class LoginHandle {
 		}
 		
 		//修改密码
+	@Log(operationType = "", operationName = "修改密码")
 		@RequestMapping(value="/forgetPassword.action")
 		public ModelAndView changePassword(HttpServletRequest req,AdminBean admin,String newpassword) {
 			EncryMd5 md =new EncryMd5();

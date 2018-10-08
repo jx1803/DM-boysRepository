@@ -281,13 +281,6 @@ public class StoDrugBean {
 		this.drugTypeBean = drugTypeBean;
 	}
 
-	public double getPurPrice() {
-		return purPrice;
-	}
-
-	public void setPurPrice(double purPrice) {
-		this.purPrice = purPrice;
-	}
 
 	
 
