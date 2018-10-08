@@ -97,8 +97,11 @@
 							<td>药品进价：</td>
 							<td><input type="text" name="purPrice" id="purPrice"
 								placeholder="药品进价" style="width: 150px" class="input-text"
+								value="${sdBean.purPrice}"
 								onkeyup="this.value=this.value.replace(/\D/g,''),countMoney()"
-								onafterpaste="this.value=this.value.replace(/\D/g,'')"/></td>
+								onafterpaste="this.value=this.value.replace(/\D/g,'')"
+								oninput="countMoney()"
+								/></td>
 						</tr>
 						<tr>
 							<td>入库批次：</td>
@@ -125,13 +128,17 @@
 							<td>操作人：</td>
 							<td><input type="text" name="adminName" id="adminName"
 								style="width: 150px; margin-top: 5px" class="input-text"
-								value="${sessionScope.USER.adminName}" readonly="readonly" />
-								<input type="hidden" id="adminId" name="outAndInBean.adminId" value="${User.adminId }"/></td>
+								value="${sessionScope.User.adminName}" readonly="readonly" />
+								<input type="hidden" id="adminId" name="outAndInBean.adminId" value="${User.adminId }"/>
+								<input type="hidden" name="drugApplyBean.auditorId" id="auditorId" value="${User.adminId }"/>
+								</td>
+								
 							<td>合计(元)：</td>
 							<td><input type="text" name="totalMoney" id="totalMoney"
 								placeholder="药品总价" style="width: 150px" class="input-text"
-								readonly="readonly"/></td>
+								value="${daBean.applyNum*sdBean.purPrice}"readonly="readonly"/></td>
 							</td>
+							
 						</tr>
 						<tr style="align: center">
 							<td colspan="6"><button type="button"
@@ -195,15 +202,6 @@
 			layer_show(title, url, w, h);
 		}
 		var count = 0;
-		var arr = new Array();
-		var i = 100;
-		var p = 100;
-		for (var k = 0; k < i; k++) {
-			arr[k] = new Array(k);
-			for (var j = 0; j < p; j++) {
-				arr[k][j] = "";
-			}
-		}
 
 		/*确认入库*/
 		function cfInstorage() {
@@ -221,9 +219,6 @@
 			}else{
 				var r = confirm("确定核对准确入库?");
 				if (r) {
-					//var a = $("#totalInventory").val(($("#applyNum").val()+$("#inventoryNum").val()))
-					//alert(applyNum,inventoryNum);
-					//alert($("#totalInventory").val(($("#applyNum").val()+$("#inventoryNum").val())));
 					$("#submitInstorage").submit();
 				}
 			}
@@ -235,7 +230,6 @@
 			$("#tbodyId").html("");
 			$("#papply").html("");
 			count = 0;
-			//$("#total").val(count)
 		}
 
 		/* 提交申请 */

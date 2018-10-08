@@ -118,7 +118,9 @@
 								<td>${drugList.proDate}</td>
 								<td>${drugList.manuBatch}</td>
 								<td><a class="btn btn-success"
+
 									onclick="setValue(${drugList.stoDrugBean.drugId},'${drugList.stoDrugBean.drugName}','${drugList.stoDrugBean.drugmanu}',${drugList.phaDrugBean.drugNum},'${drugList.stoDrugBean.specific}',${drugList.handleNum},'${drugList.proDate}','${drugList.manuBatch}','${drugList.stoDrugBean.unit}')">确定</a></td>
+
 							</tr>
 						</c:forEach>
 					</tbody>

@@ -53,6 +53,7 @@ public interface DailyWorkMapper {
 	public int reducePhaPutDrugNum(SellBean sellBean);//减少药房入库对应的批次详情的药品数量
 	public List<StoDrugBean> findDrugInfo(CondiBean condi);//查询药品信息
 	public int findDrugCount(CondiBean condi);//查询药品数量
+
 	public int forbidDrug(PhaDrugBean phaDrugBean);//停用/启用药房药品
 	public List<SellBean> selectSellDrug(CondiBean condiBean);//查询销售记录
 	public int insertCheckProfit(CheckBean checkBean);//插入盘点记录
@@ -62,6 +63,7 @@ public interface DailyWorkMapper {
 	public int checkStockData(TakeStockBean takeStockBean);//核对药房药品库存
 	public List<TakeStockBean> selectTakeStockList(CondiBean condiBean);//获取药房盘点盈亏记录
 	public int getTakeStockCount(CondiBean condiBean);//获取药房盘点记录数
+
 	
 	
 	/*蓝鹏鹏功能*/

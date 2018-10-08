@@ -69,23 +69,17 @@
 				&emsp;数量：<input type="text" name="applyNum" id="applyNum"
 					placeholder="请输入申请数量" style="width: 150px; margin-top: 5px"
 					class="input-text"
-					onkeyup="this.value=this.value.replace(/\D/g,'')"
+					onkeyup="this.value=this.value.replace(/\D/g,''),checkInput()"
 					onafterpaste="this.value=this.value.replace(/\D/g,'')" /> <input
 					type="hidden" name="inventoryNum" id="inventoryNum" /> <input
 					type="hidden" name="maximum" id="maximum" /> <label id="hint"></label>
 				</br>申请理由：<input type="text" name="applyReason" id="applyReason"
 					placeholder="请输入申请理由" style="width: 250px; margin-top: 5px"
 					class="input-text" />
-					<!-- 添加到列表的记录数 -->
-					<input type="hidden" id="total"/>
+				<!-- 添加到列表的记录数 -->
+				<input type="hidden" id="total" />
 				<button type="button" class="btn btn-primary" id=""
 					onclick="addApply()">添加</button>
-				&nbsp;&nbsp;
-				<button type="button" class="btn btn-primary" id=""
-					onclick="empty()">清空</button>
-				&nbsp;&nbsp;
-				<button type="button" class="btn btn-primary" id=""
-					onclick="subApply()">提交申请</button>
 				</br>
 			</div>
 
@@ -93,8 +87,13 @@
 			</form>
 
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
-				<span class="r">共有数据：<strong></strong> 条
-				</span>
+				<div align="right">
+					<button type="button" class="btn btn-primary" id=""
+						onclick="empty()">清空</button>
+					&nbsp;&nbsp;
+					<button type="button" class="btn btn-primary" id=""
+						onclick="subApply()">提交申请</button>
+				</div>
 			</div>
 			<form id="apply" action="" method="">
 				<div class="mt-20">
@@ -112,8 +111,7 @@
 								<th width="60">申请人</th>
 							</tr>
 						</thead>
-						<tbody id="tbodyId">
-						</tbody>
+						<tbody id="tbodyId"></tbody>
 					</table>
 				</div>
 			</form>
@@ -140,48 +138,62 @@
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
-/*药品-选择*/
-function drug_select(title,url,w,h){
-	layer_show(title,url,w,h);
-}
-	var count=0;
-	var arr=new Array();
-	var i=100;
-	var p=100;
-	for(var k=0;k<i;k++){
-		arr[k]=new Array(k);
-		for(var j=0;j<p;j++){
-			arr[k][j]="";
+		/*药品-选择*/
+		function drug_select(title, url, w, h) {
+			layer_show(title, url, w, h);
 		}
-	}
-	
-	/*  增加药品采购申请记录*/
-	function addApply(){
-		
-		var drugId=$("#drugId").val();
-		var drugName=$("#drugName").val();
-		var applyNum=$("#applyNum").val();
-		var applyReason=$("#applyReason").val();
-		var adminName=$("#adminName").val();
-		var unit=$("#unit").val();
-		var drugmanu=$("#drugmanu").val();
-		var proPlace=$("#proPlace").val();
-		var inventoryNum=$("#inventoryNum").val();
-		var maximum =$("#maximum").val();
-		var d=$("#"+drugId).val();
-		if(applyNum=="" || applyReason=="" ){
-			alert("请完善药品采购申请信息");
-			return;
+		var count = 0;
+		var arr = new Array();
+		var i = 100;
+		var p = 100;
+		for (var k = 0; k < i; k++) {
+			arr[k] = new Array(k);
+			for (var j = 0; j < p; j++) {
+				arr[k][j] = "";
+			}
 		}
-		/* 判断输入的数量是否超出所需可存储量 */
-		var stoage= (maximum -inventoryNum-applyNum);
-		if(stoage<0){
-			$("#hint").html("超过当前储存量");
-			$("#hint").css("color","red");	
-			return;
-		}else if(typeof(d)=="undefined"){
-		$("#hint").html("");
-		var input="<input type='hidden'id='"+drugId+"' name='applyList["+count+"].drugId' value='"+drugId+
+
+		function checkInput() {
+			var applyNum = $("#applyNum").val();
+			var inventoryNum = $("#inventoryNum").val();
+			var maximum = $("#maximum").val();
+			var stoage = (maximum - inventoryNum - applyNum);
+			if (stoage < 0) {
+				$("#hint").html("超过当前储存量");
+				$("#hint").css("color", "red");
+				return;
+			} else {
+				$("#hint").html("");
+			}
+		}
+
+		/*  增加药品采购申请记录*/
+		function addApply() {
+
+			var drugId = $("#drugId").val();
+			var drugName = $("#drugName").val();
+			var applyNum = $("#applyNum").val();
+			var applyReason = $("#applyReason").val();
+			var adminName = $("#adminName").val();
+			var unit = $("#unit").val();
+			var drugmanu = $("#drugmanu").val();
+			var proPlace = $("#proPlace").val();
+			var inventoryNum = $("#inventoryNum").val();
+			var maximum = $("#maximum").val();
+			var d = $("#" + drugId).val();
+			if (applyNum == "" || applyReason == "") {
+				alert("请完善药品采购申请信息");
+				return;
+			}
+			/* 判断输入的数量是否超出所需可存储量 */
+			var stoage = (maximum - inventoryNum - applyNum);
+			if (stoage < 0) {
+				$("#hint").html("超过当前储存量");
+				$("#hint").css("color", "red");
+				return;
+			} else if (typeof (d) == "undefined") {
+				$("#hint").html("");
+				var input = "<input type='hidden'id='"+drugId+"' name='applyList["+count+"].drugId' value='"+drugId+
 		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.drugName' value='"+drugName+
 		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+
 		"'><input type='hidden' name='applyList["+count+"].stoDrugBean.unit' value='"+unit+
@@ -190,36 +202,48 @@ function drug_select(title,url,w,h){
 		"'><input type='hidden' name='applyList["+count+"].applyReason' value='"+applyReason+
 		"'><input type='hidden' name='applyList["+count+"].adminName' value='"+adminName+
 		"'>";
-		$("#papply").append(input);
-		count+=1;
-	   // $("#total").val(count+=1);
-		
-		 var str="<tr id='tr"+count+"' class='text-c'><td>"+drugId+"</td><td>"+drugName+"</td><td>"+applyNum+"</td><td>"+unit+"</td><td>"+drugmanu+"</td><td>"+proPlace+"</td><td>"+applyReason+"</td><td>"+adminName+
-		 "</td></tr> ";
-		 
-		 $("#tblDrugList").append(str); 
-		}else{
-			alert("该药品已经添加，如需修改数量请清空重新选择");
-			return;
-		}
-	}
-	
-	/* 清空申请记录 */
-	function empty(){
-		$("#tbodyId").html("");
-		$("#papply").html("");
-		count=0;
-		//$("#total").val(count)
-	}
-	
-	/* 提交申请 */
-	function subApply(){
-		var r=confirm("确定提交吗?");
-		if(r){
-			$("#papply").submit();
-		}
-	}
+				$("#papply").append(input);
+				count += 1;
 
-</script>
+				var str = "<tr id='tr"+count+"' class='text-c'><td>" + drugId
+						+ "</td><td>" + drugName + "</td><td>" + applyNum
+						+ "</td><td>" + unit + "</td><td>" + drugmanu
+						+ "</td><td>" + proPlace + "</td><td>" + applyReason
+						+ "</td><td>" + adminName + "</td></tr> ";
+
+				$("#tblDrugList").append(str);
+			} else {
+				alert("该药品已经添加，如需修改数量请清空重新选择");
+				return;
+			}
+		}
+
+		/* 清空申请记录 */
+		function empty() {
+			var r = confirm("确定清空列表？");
+			if (r) {
+				$("#tbodyId").html("");
+				$("#papply").html("");
+				count = 0;
+
+			}
+
+		}
+
+		/* 提交申请 */
+		function subApply() {
+
+			var d = $("#tbodyId").html();
+			if (d.length == 0) {
+
+				alert("请选择药品");
+				return;
+			}
+			var r = confirm("确定提交吗?");
+			if (r) {
+				$("#papply").submit();
+			}
+		}
+	</script>
 </body>
 </html>

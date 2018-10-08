@@ -27,7 +27,11 @@ public class DrugApplyBean {
 	private BatchDetailBean bdBean;//获取批次详情
 	private ArrayList<DrugApplyBean> applyList;//申请记录列表
 	private int auditorId;//审核人id
+
 	private String auditorName;//审核人
+
+	private int inventoryNum;//药库库存量
+
 	public DrugApplyBean() {
 		super();
 	}
@@ -230,6 +234,7 @@ public class DrugApplyBean {
 	}
 
 
+
 	public String getAuditorName() {
 		return auditorName;
 	}
@@ -238,5 +243,15 @@ public class DrugApplyBean {
 	public void setAuditorName(String auditorName) {
 		this.auditorName = auditorName;
 	}
+
+	public int getInventoryNum() {
+		return inventoryNum;
+	}
+
+
+	public void setInventoryNum(int inventoryNum) {
+		this.inventoryNum = inventoryNum;
+	}
+	
 
 }

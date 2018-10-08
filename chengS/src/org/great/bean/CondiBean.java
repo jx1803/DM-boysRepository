@@ -54,7 +54,12 @@ public class CondiBean {
 	private int typeId;			//药品分类id
 	private String drugId1;		//药品名
 	
-
+	/**
+	 * 库存批次详情查询条件
+	 * @author 志展
+	 * */
+    private String manuBatch;//生产批号
+    private String putBatch;//入库批次
 
 
 
@@ -269,6 +274,7 @@ public class CondiBean {
 	}
 
 
+
 	public int getUseableId() {
 		return useableId;
 	}
@@ -326,6 +332,25 @@ public class CondiBean {
 
 	public void setEventId(int eventId) {
 		this.eventId = eventId;
+
+	public String getManuBatch() {
+		return manuBatch;
+	}
+
+
+	public void setManuBatch(String manuBatch) {
+		this.manuBatch = manuBatch;
+	}
+
+
+	public String getPutBatch() {
+		return putBatch;
+	}
+
+
+	public void setPutBatch(String putBatch) {
+		this.putBatch = putBatch;
+
 	}
 	
 	

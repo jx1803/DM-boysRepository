@@ -878,7 +878,9 @@
 
 
 	<!-- 通过拼音码/id/名称 //生产日期查找退库药品 -->
+
 	<select id="chooseCaceDrug"
+
 		parameterType="org.great.bean.StoDrugBean" resultMap="caceDruginfo">
 		select s.*,p.drugNum,b.*
 		from TBLStoDrug
@@ -933,6 +935,7 @@
 			<result property="drugNum" column="drugNum" />
 		</association>
 	</resultMap>
+
 	<!--审核退库操作 -->
 	<!-- 改变退库申请状态时间 -->
 	<update id="updayeCaceApply" parameterType="String">

@@ -28,6 +28,7 @@ public class StoDrugBean {
 	private String specific;// 规格
 	private String unit;// 单位
 	private double retailPrice;// 零售价
+	private double purPrice;//进价
 	private int dosageId;// 剂量ID
 	private String usage;// 使用方法
 	private String invoiceTitle;// 发票抬头
@@ -270,6 +271,14 @@ public class StoDrugBean {
 
 	public void setDrugTypeBean(DrugTypeBean drugTypeBean) {
 		this.drugTypeBean = drugTypeBean;
+	}
+
+	public double getPurPrice() {
+		return purPrice;
+	}
+
+	public void setPurPrice(double purPrice) {
+		this.purPrice = purPrice;
 	}
 
 	

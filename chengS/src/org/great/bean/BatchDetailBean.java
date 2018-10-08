@@ -14,13 +14,16 @@ public class BatchDetailBean {
 	private double sellPrice;//销售价
 	private String inDate;//有效日期
 	private double totalMoney;//总价
-	private PhaDrugBean phaDrugBean;//药房药品
+
+	private PhaDrugBean phaDrugBean;//药房实体bean
+
 	
 	/**志展添加*/
     private StoDrugBean stoDrugBean;//药品实体bean
 	private OutAndInBean outAndInBean;//出入库记录表，新增用于药库采购药品用
 	private InventoryBean inventoryBean;//库存实体bean，用于采购药品入库时更新库存
 	private DrugApplyBean drugApplyBean;//药品申请实体bean，用于更改采购药品购买入库状态
+	private AdminBean adminBean;//用户实体bean
 	
 	public BatchDetailBean() {
 		// TODO Auto-generated constructor stub
@@ -140,6 +143,7 @@ public class BatchDetailBean {
 		this.drugApplyBean = drugApplyBean;
 	}
 
+
 	public PhaDrugBean getPhaDrugBean() {
 		return phaDrugBean;
 	}
@@ -148,12 +152,24 @@ public class BatchDetailBean {
 		this.phaDrugBean = phaDrugBean;
 	}
 
+	
+
+	public AdminBean getAdminBean() {
+		return adminBean;
+	}
+
+	public void setAdminBean(AdminBean adminBean) {
+		this.adminBean = adminBean;
+	}
+
+
 	@Override
 	public String toString() {
 		return "BatchDetailBean [batchDetailId=" + batchDetailId + ", putBatch=" + putBatch + ", manuBatch=" + manuBatch
 				+ ", drugId=" + drugId + ", proDate=" + proDate + ", handleNum=" + handleNum + ", purPrice=" + purPrice
 				+ ", sellPrice=" + sellPrice + ", inDate=" + inDate + ", totalMoney=" + totalMoney + "]";
 	}
+	
 	
 	
 

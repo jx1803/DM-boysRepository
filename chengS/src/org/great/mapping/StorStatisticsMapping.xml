@@ -2,5 +2,217 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="org.great.mapper.StorStatisticsMapper">
-	 
+ <!--获取已购买列表 -->
+   <select id="getPurchaseList"
+        parameterType="org.great.bean.CondiBean" resultMap="purchaseApply">
+       select * from(select distinct b.*,da.APPLYNUM,sd.DRUGNAME,o.HANDLEDATE,sd.DRUGMANU,sd.proPlace,ad.ADMINNAME,rownum r from TBLBATCHDETAIL b 
+       left join TBLOUTANDIN o on o.PUTBATCH=b.PUTBATCH
+       left join TBLDRUGAPPLY da on da.putBatch=b.putbatch
+       left join TBLSTODRUG sd on sd.drugId = da.DRUGID
+       left join TBLADMIN ad on ad.adminId = da.auditorId
+        <where>
+            <if test="adminName!=null and adminName!=''">
+                and ad.adminName like concat(concat('%',#{adminName}),'%')
+            </if>
+            <if test="afterDate!=null and afterDate!='' ">
+                and o.HANDLEDATE &gt;=#{afterDate}
+            </if>
+            <if test="beforeDate!=null and beforeDate!='' ">
+                and o.HANDLEDATE &lt;=#{beforeDate}
+            </if>
+             <if test="null != pinyinCode and !''.equals(pinyinCode)">
+            and sd.pinyinCode like concat(concat('%',#{pinyinCode}),'%')
+            </if>
+            <if test="null != drugName and !''.equals(drugName)">
+            and sd.drugName like concat(concat('%',#{drugName}),'%')
+            </if>
+            <if test="0!= drugId">
+            and b.drugId like concat(concat('%',#{drugId}),'%')
+            </if>
+            <if test="putBatch!=null and putBatch!=''">
+                and b.putBatch like concat(concat('%',#{putBatch}),'%')
+            </if>
+            <if test="checkId!=0 ">
+                and da.checkid=#{checkId}
+            </if>
+            <if test="applyTypeId!=0 ">
+                and da.applytypeid =#{applyTypeId}
+            </if>
+            and o.DRUGSOURCE!='药房' and o.placeId=22 and o.outinId=18 order by o.HANDLEDATE desc
+        </where>
+        )where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
+        r&lt;=#{pageNum}*#{pageLimit}
+    </select>
+    
+        <!-- 药品购买列表 -->
+    <resultMap type="org.great.bean.BatchDetailBean" id="purchaseApply">
+      <id property="batchDetailId" column="batchDetailId" />
+        <result property="putBatch" column="putBatch" />
+        <result property="drugId" column="drugId" />    
+        <result property="purPrice" column="purPrice" />
+        <result property="inDate" column="inDate" />
+        <result property="manuBatch" column="manuBatch" />
+        <association property="adminBean" column="ADMINID"
+            javaType="org.great.bean.AdminBean">
+            <id property="adminId" column="adminid"></id>
+            <result property="adminName" column="adminname" />
+        </association>
+        <association property="stoDrugBean" column="drugid"
+            javaType="org.great.bean.StoDrugBean">
+            <id property="drugId" column="drugid" />
+            <result property="drugName" column="drugname" />
+            <result property="drugmanu" column="drugmanu" />
+            <result property="proPlace" column="proplace" />
+        </association>
+        <association property="drugApplyBean"
+            javaType="org.great.bean.DrugApplyBean">
+            <result property="applyNum" column="applyNum" />
+        </association>
+         <association property="outAndInBean"
+            javaType="org.great.bean.OutAndInBean">
+            <result property="handleDate" column="handleDate" />
+        </association>
+    </resultMap>
+	
+<!--药品购买记录总数  -->
+ <select id="getPurchaseListCount"
+        parameterType="org.great.bean.CondiBean" resultType="Integer">
+       select count(*) from TBLBATCHDETAIL b 
+       left join TBLOUTANDIN o on o.PUTBATCH=b.PUTBATCH
+       left join TBLDRUGAPPLY da on da.putBatch=b.putbatch
+       left join TBLSTODRUG sd on sd.drugId = da.DRUGID
+       left join TBLADMIN ad on ad.adminId = da.auditorId
+        <where>
+            <if test="adminName!=null and adminName!=''">
+                and ad.adminName like concat(concat('%',#{adminName}),'%')
+            </if>
+            <if test="afterDate!=null and afterDate!='' ">
+                and o.HANDLEDATE &gt;=#{afterDate}
+            </if>
+            <if test="beforeDate!=null and beforeDate!='' ">
+                and o.HANDLEDATE &lt;=#{beforeDate}
+            </if>
+             <if test="null != pinyinCode and !''.equals(pinyinCode)">
+            and sd.pinyinCode like concat(concat('%',#{pinyinCode}),'%')
+            </if>
+            <if test="null != drugName and !''.equals(drugName)">
+            and sd.drugName like concat(concat('%',#{drugName}),'%')
+            </if>
+            <if test="0!= drugId">
+            and b.drugId like concat(concat('%',#{drugId}),'%')
+            </if>
+            <if test="putBatch!=null and putBatch!=''">
+                and b.putBatch like concat(concat('%',#{putBatch}),'%')
+            </if>
+            <if test="checkId!=0 ">
+                and da.checkid=#{checkId}
+            </if>
+            <if test="applyTypeId!=0 ">
+                and da.applytypeid =#{applyTypeId}
+            </if>
+            and o.DRUGSOURCE!='药房' and o.placeId=22 and o.outinId=18 
+        </where>
+    </select>
+    
+    <!-- 出入库信息列表 -->
+    <select id="getDrugOutInList" parameterType="org.great.bean.CondiBean" resultMap="outInList">
+    select * from(select da.*,sd.PURPRICE,sd.drugmanu,sd.drugName,ad.ADMINNAME,rownum r from TBLDRUGAPPLY da
+    left join TBLSTODRUG sd on da.DRUGID = sd.DRUGID
+    left join TBLADMIN ad on ad.ADMINID = da.AUDITORID
+    <where>
+            <if test="adminName!=null and adminName!=''">
+                and ad.adminName like concat(concat('%',#{adminName}),'%')
+            </if>
+            <if test="afterDate!=null and afterDate!='' ">
+                and da.CHECKDATE &gt;=#{afterDate}
+            </if>
+            <if test="beforeDate!=null and beforeDate!='' ">
+                and da.CHECKDATE &lt;=#{beforeDate}
+            </if>
+             <if test="null != pinyinCode and !''.equals(pinyinCode)">
+                and sd.pinyinCode like concat(concat('%',#{pinyinCode}),'%')
+            </if>
+            <if test="null != drugName and !''.equals(drugName)">
+               and sd.drugName like concat(concat('%',#{drugName}),'%')
+            </if>
+            <if test="0!= drugId">
+               and da.drugId like concat(concat('%',#{drugId}),'%')
+            </if>
+            <if test="applyTypeId!=0 ">
+                and da.applytypeid =#{applyTypeId}
+            </if>
+            <if test="applyTypeId==0 ">
+            and da.APPLYTYPEID!=12
+            <!-- and da.APPLYTYPEID=10 or da.APPLYTYPEID=11 or da.APPLYTYPEID=19 or da.APPLYTYPEID=13 -->
+            </if>
+            and da.checkid!=7 and da.checkid!=8 order by da.CHECKDATE desc
+        </where>
+        )where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
+        r&lt;=#{pageNum}*#{pageLimit} 
+    </select>
+    <!-- 出入库信息集合 -->
+    <resultMap type="org.great.bean.DrugApplyBean" id="outInList">
+     <id property="drugApplyId" column="DRUGAPPLYID" />
+		<result property="drugId" column="drugid" />
+		<result property="applyNum" column="applynum" />
+		<result property="adminId" column="ADMINID" />
+		<result property="applyDate" column="applydate" />
+		<result property="applyReason" column="applyreason" />
+		<result property="applyType" column="applytype" />
+		<result property="checkName" column="checkname" />
+		<result property="checkDate" column="checkdate" />
+		<result property="manuBatch" column="manubatch" />
+		<result property="putBatch" column="putbatch" />
+		<result property="checkId" column="checkid" />
+		<result property="applyTypeId" column="applytypeid" />
+        <result property="auditorId" column="auditorId" />
+        <association property="adminBean" column="ADMINID"
+            javaType="org.great.bean.AdminBean">
+            <id property="adminId" column="adminid"></id>
+            <result property="adminName" column="adminname" />
+        </association>
+        <association property="stoDrugBean" column="drugid"
+            javaType="org.great.bean.StoDrugBean">
+            <id property="drugId" column="drugid" />
+            <result property="drugName" column="drugname" />
+            <result property="drugmanu" column="drugmanu" />
+            <result property="purPrice" column="purPrice" />
+        </association>  
+    </resultMap>
+    
+  <!--   出入库记录总条数 -->
+  <select id="getDrugOutInListCount"
+        parameterType="org.great.bean.CondiBean" resultType="Integer">
+       select count(*) from TBLDRUGAPPLY da
+    left join TBLSTODRUG sd on da.DRUGID = sd.DRUGID
+    left join TBLADMIN ad on ad.ADMINID = da.AUDITORID
+         <where>
+            <if test="adminName!=null and adminName!=''">
+                and ad.adminName like concat(concat('%',#{adminName}),'%')
+            </if>
+            <if test="afterDate!=null and afterDate!='' ">
+                and da.CHECKDATE &gt;=#{afterDate}
+            </if>
+            <if test="beforeDate!=null and beforeDate!='' ">
+                and da.CHECKDATE &lt;=#{beforeDate}
+            </if>
+             <if test="null != pinyinCode and !''.equals(pinyinCode)">
+                and sd.pinyinCode like concat(concat('%',#{pinyinCode}),'%')
+            </if>
+            <if test="null != drugName and !''.equals(drugName)">
+               and sd.drugName like concat(concat('%',#{drugName}),'%')
+            </if>
+            <if test="0!= drugId">
+               and da.drugId like concat(concat('%',#{drugId}),'%')
+            </if>
+            <if test="applyTypeId!=0 ">
+                and da.applytypeid =#{applyTypeId}
+            </if>
+            <if test="applyTypeId==0 ">
+            and da.APPLYTYPEID!=12
+           <!--  and da.APPLYTYPEID=10 or da.APPLYTYPEID=11 or da.APPLYTYPEID=19 or da.APPLYTYPEID=13 -->
+            </if>
+             and da.checkid!=7 and da.checkid!=8
+        </where>
+    </select>
 </mapper>
