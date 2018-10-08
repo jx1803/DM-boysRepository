@@ -318,6 +318,7 @@
 		<result property="generalName" column="generalName" />
 		<result property="specific" column="specific" />
 		<result property="unit" column="unit" />
+		<result property="purPrice" column="purPrice"/>
 		<result property="retailPrice" column="retailPrice" />
 		<result property="dosageId" column="dosageId" />
 		<result property="usage" column="usage" />
