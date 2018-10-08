@@ -463,9 +463,6 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 
 		List<BatchDetailBean> drugList = dailyWorkMapper.chooseCaceDrug(stoDrugBean);
 
-
-		List<BatchDetailBean> drugList = dailyWorkMapper.chooseCaceDrug(stoDrugBean);
-
 		System.out.println("查找出来有几条" + drugList.size());
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("pharmacy/chooseCaceDrug");

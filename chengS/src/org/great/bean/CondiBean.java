@@ -332,7 +332,7 @@ public class CondiBean {
 
 	public void setEventId(int eventId) {
 		this.eventId = eventId;
-
+	}
 	public String getManuBatch() {
 		return manuBatch;
 	}

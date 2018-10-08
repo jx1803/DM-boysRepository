@@ -98,10 +98,12 @@
 					<li><a data-href="<%=path%>storage/purchaseApplyShow.action" data-title="药品采购申请" href="javascript:void(0)">药品采购申请</a></li>
 					<li><a data-href="<%=path%>storage/purchaseApplyLook.action" data-title="药品采购申请记录" href="javascript:void(0)">药品采购申请记录</a></li>
 					<li><a data-href="<%=path%>storage/pdInstorage.action" data-title="药品采购入库" href="javascript:void(0)">药品采购入库</a></li>
-					<li><a data-href="admin-permission.html" data-title="退还厂家" href="javascript:void(0)">退还厂家</a></li>
-					<li><a data-href="admin-list.html" data-title="出库审核" href="javascript:void(0)">出库审核</a></li>
+					<li><a data-href="<%=path%>storage/toReturnManuApply.action" data-title="退还厂家" href="javascript:void(0)">退还厂家</a></li>
+					<li><a data-href="<%=path%>storage/toAllReturnManuApply.action" data-title="查看退还记录" href="javascript:void(0)">查看退还记录</a></li>
+					<li><a data-href="<%=path%>storage/toReturnManuAuditList.action" data-title="退还审核" href="javascript:void(0)">退还审核</a></li>
 					<li><a data-href="<%=path%>storage/drugApplyAudit.action" data-title="药品采购审核" href="javascript:void(0)">药品采购审核</a></li>
-					<li><a data-href="admin-list.html" data-title="退还审核" href="javascript:void(0)">退还审核</a></li>
+					<li><a data-href="<%=path%>storage/drugOutInStatistics.action" data-title="药品出入库统计" href="javascript:void(0)">药品出入库统计</a></li>
+					<li><a data-href="<%=path%>storage/dpStatistics.action" data-title="药品采购统计" href="javascript:void(0)">药品采购统计</a></li>
 			</ul>
 		</dd>
 	</dl>
