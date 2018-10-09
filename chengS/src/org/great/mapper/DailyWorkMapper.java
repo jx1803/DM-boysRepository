@@ -2,6 +2,8 @@ package org.great.mapper;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Param;
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.BatchDetailBean;
@@ -155,5 +157,6 @@ public interface DailyWorkMapper {
 	public void affirmWarn(int warnId);
 	
 	public RoleBean selRole(String adminId);//查找用户角色
+	
 
 }

@@ -122,7 +122,7 @@
 							<td>有效日期(天)：</td>
 							<td><input type="number" name="inDate" id="inDate"
 								placeholder="请输入有效日期" style="width: 150px" class="input-text"
-								oninput="if(value>1100)value=1100;if(value.length>4)value=value.slice(0,4);if(value<=0)value=15"
+								oninput="if(value>1826)value=1826;if(value.length>4)value=value.slice(0,4);if(value<=0)value=15"
 								onkeyup="this.value=this.value.replace(/\D/g,'')"
 								onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
 							<td>操作人：</td>
