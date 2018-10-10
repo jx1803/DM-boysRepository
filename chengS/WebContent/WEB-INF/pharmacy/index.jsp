@@ -29,6 +29,7 @@
 	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
+
 <link href="<%=path%>lib/bootstrapValidator.css" rel="stylesheet" />
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>

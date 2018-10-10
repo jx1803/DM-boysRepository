@@ -28,7 +28,7 @@
 <title></title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span>药品库存查询 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span>特殊药品销售登记 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <!-- 主页面 -->
 	<div class="page-container">
 		<div class="text-c">
@@ -38,21 +38,21 @@
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			value="${condi.drugId==null?"":condi.drugId}">
+			value="${condiBean.drugId==null?'':condi.drugId}">
 			<input type='hidden' id="h_drugId" value="0">
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
-			 style="width: 150px" value="${condi.pinyinCode==null?"":condi.pinyinCode}">
+			 style="width: 150px" value="${condiBean.pinyinCode==null?"":condi.pinyinCode}">
 			药品分类：
 			<span class="select-box" id="addShowDt" style="width:160px"> 
 				<select class="select" size="1" name="typeId" id="typeId" >
 						<option value="0">请选择类型</option>
 						<c:forEach items="${drugTypeList}" var="typeList">
-						<c:if test="${typeList.typeId ==condi.typeId }">
-						<option value="${typeList.typeId}" selected="selected">${typeList.drugType}</option>
+						<c:if test="${typeList.stoDrugBean.typeId ==condiBean.typeId }">
+						<option value="${typeList.stoDrugBean.typeId}" selected="selected">${typeList.stoDrugBean.dtBean.drugType}</option>
 						</c:if>
-						<c:if test="${typeList.typeId !=condi.typeId }">
-						<option value="${typeList.typeId}" >${typeList.drugType}</option>
+						<c:if test="${typeList.stoDrugBean.typeId !=condiBean.typeId }">
+						<option value="${typeList.stoDrugBean.typeId}" >${typeList.stoDrugBean.dtBean.drugType}</option>
 						</c:if>
 						</c:forEach>
 				</select>
@@ -73,20 +73,17 @@
 						<th>单位</th>
 						<th>零售价</th>
 						<th>类别</th>
-						<th>剂型</th>
-						<th>抗生素</th>
-						<th>生产厂商</th>
-						<th>生产场地</th>
-						<th>库存</th>
-						<th>库存低限</th>
-						<th>库存上限</th>
+						<th>销售人员</th>
+						<th>销售时间</th>
+						<th>厂家批号</th>
+						<th>入库批次</th>
+						
 						<th>当前状态</th>
 					</tr>
 				</thead>
 				<tbody>
 				<c:forEach items="${drugList}" var="sdList" varStatus="vs">
-					<tr class="text-c">
-
+					<tr>
 						<td>${sdList.stoDrugBean.drugId}</td>
 						<td>${sdList.stoDrugBean.drugName}</td>
 						<td>${sdList.stoDrugBean.generalName}</td>
@@ -98,11 +95,9 @@
 						<td>${sdList.stoDrugBean.antibiotic}</td>
 						<td>${sdList.stoDrugBean.drugmanu}</td>
 						<td>${sdList.stoDrugBean.proPlace}</td>
-						<td>${sdList.drugNum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
-						<td>${sdList.minimum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
-						<td>${sdList.maximum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
-						<td>${sdList.useable}</td>
 						
+						<td>${sdList.useable}</td>
+
 					</tr>
 					</c:forEach>
 				</tbody>
