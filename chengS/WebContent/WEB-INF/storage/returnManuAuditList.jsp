@@ -103,11 +103,18 @@
 		</table>
 		<br>
 		<div class="text-c">
-			<button type="button" class="btn btn-success"
+			<button type="button" class="btn btn-secondary-outline radius"
 				onclick="prePage('${condiBean.pageNum}')">上一页</button>
-			${condiBean.pageNum}/${pageTotal}
-			<button type="button" class="btn btn-success"
+			<label class="label label-default radius"><font size="2">当前页${condiBean.pageNum}/共${pageTotal}页</font></label>
+			<button type="button" class="btn btn-secondary-outline radius"
 				onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button>
+			<input type="text" style="width: 30px" class="input-text" id="page"
+			    onkeyup="this.value=this.value.replace(/\D/g,'')"
+				onafterpaste="this.value=this.value.replace(/\D/g,'')">
+			<button type="submit" class="btn btn-secondary-outline radius"
+				onclick="goPage('${pageTotal}')">
+				跳转
+				</button>
 		</div>
 	</div>
 
@@ -174,6 +181,19 @@
 
 			} else {
 				return;
+			}
+			$("#returnApply").attr("action", str2);
+			$("#returnApply").submit();
+		}
+
+		/*跳转页面*/
+		function goPage(total) {
+			var pageNum = $("#page").val();
+			var str2 = "";
+			if (pageNum > total || pageNum == 0 || pageNum == "") {
+				return;
+			} else {
+				str2 = "toReturnManuAuditList.action?pageNum=" + pageNum;
 			}
 			$("#returnApply").attr("action", str2);
 			$("#returnApply").submit();

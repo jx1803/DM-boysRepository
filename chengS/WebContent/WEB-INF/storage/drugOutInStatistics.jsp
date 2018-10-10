@@ -45,8 +45,8 @@
 				href="javascript:location.replace(location.href);" title="刷新"><i
 				class="Hui-iconfont">&#xe68f;</i></a>
 		</nav>
-		<form id="audit" action="drugOutInStatistics.action" method="post">
 			<div class="page-container">
+			<form id="audit" action="drugOutInStatistics.action" method="post">
 				<div class="text-c">
 					<table class="table table-border table-bordered table-bg">
 						<tr>
@@ -54,8 +54,7 @@
 								onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })"
 								id="logmin" name="afterDate" class="input-text Wdate"
 								value="${condiBean.afterDate==null?'':condiBean.afterDate}"
-								style="width: 120px;"> -
-							<input type="text"
+								style="width: 120px;"> - <input type="text"
 								onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })"
 								id="logmax" name="beforeDate" class="input-text Wdate"
 								value="${condiBean.beforeDate==null?'':condiBean.beforeDate}"
@@ -64,13 +63,17 @@
 								placeholder="经办人"
 								value="${condiBean.adminName==null?'':condiBean.adminName}"
 								style="width: 120px" class="input-text"></td>
-							<td>出入库类型：<select name="applyTypeId" id="outInId" >
-						            <option value="0">请选择</option>
-									<option value="10"<c:if test="${condiBean.applyTypeId==10}">selected="selected"</c:if>>请领出库</option>
-									<option value="11" <c:if test="${condiBean.applyTypeId==11}">selected="selected"</c:if>>药品退库</option>
-									<option value="13" <c:if test="${condiBean.applyTypeId==13}">selected="selected"</c:if>>采购入库</option>
-									<option value="19" <c:if test="${condiBean.applyTypeId==19}">selected="selected"</c:if>>退还厂家</option>
-							    </select>
+							<td>出入库类型：<select name="applyTypeId" id="outInId">
+									<option value="0">请选择</option>
+									<option value="10"
+										<c:if test="${condiBean.applyTypeId==10}">selected="selected"</c:if>>请领出库</option>
+									<option value="11"
+										<c:if test="${condiBean.applyTypeId==11}">selected="selected"</c:if>>药品退库</option>
+									<option value="13"
+										<c:if test="${condiBean.applyTypeId==13}">selected="selected"</c:if>>采购入库</option>
+									<option value="19"
+										<c:if test="${condiBean.applyTypeId==19}">selected="selected"</c:if>>退还厂家</option>
+							</select>
 							</td>
 						</tr>
 						<tr>
@@ -83,8 +86,8 @@
 								value="${condiBean.pinyinCode==null?'':condiBean.pinyinCode}"
 								style="width: 120px" class="input-text"></td>
 							<td>药品编码： <input type="text" name="drugId" id="drugId"
-								placeholder="药品编码"
-								style="width: 120px" class="input-text"></td>
+								placeholder="药品编码" style="width: 120px" class="input-text"
+								value="${condiBean.drugId==0?'':condiBean.drugId}"></td>
 							<td>
 								<button name="serachRecord" id="serachRecord"
 									class="btn btn-success" onclick="submitForm()">
@@ -93,55 +96,60 @@
 							</td>
 						</tr>
 					</table>
-
 				</div>
+			</form>
 
-				<div class="cl pd-5 bg-1 bk-gray mt-20">
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
 
-					<span class="r">共有数据：<strong>${count}</strong> 条
-					</span>
-				</div>
-				<div class="mt-20">
-					<table class="table table-border table-bordered table-bg">
-						<thead>
-							<tr class="text-c">
-								<th width="100">药品编码</th>
-								<th width="100">药品名称</th>
-								<th width="60">数量</th>
-								<th width="60">单价(元)</th>
-								<th width="60">总金额(元)</th>
-								<th width="100">时间</th>
-								<th width="60">经办人</th>
-								<th width="100">供应商</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${outInList}" var="daBean">
-								<tr class="text-c">
-									<td>${daBean.drugId}</td>
-									<td>${daBean.stoDrugBean.drugName}</td>
-									<td>${daBean.applyNum}</td>
-									<td>${daBean.stoDrugBean.purPrice}</td>
-									<td>${daBean.applyNum*daBean.stoDrugBean.purPrice}</td>
-									<td>${daBean.checkDate}</td>
-									<td>${daBean.adminBean.adminName}</td>
-									<td>${daBean.stoDrugBean.drugmanu}</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					</br>
-					<div class="text-c">
-
-						<button type="button" class="btn btn-success"
-							onclick="prePage('${condiBean.pageNum}')">上一页</button>
-						${condiBean.pageNum}/${pageTotal}
-						<button type="button" class="btn btn-success"
-							onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button>
-					</div>
-				</div>
+			<span class="r">共有数据：<strong>${count}</strong> 条
+			</span>
+		</div>
+		<div class="mt-20">
+			<table class="table table-border table-bordered table-bg">
+				<thead>
+					<tr class="text-c">
+						<th width="100">药品编码</th>
+						<th width="100">药品名称</th>
+						<th width="60">数量</th>
+						<th width="60">单价(元)</th>
+						<th width="60">总金额(元)</th>
+						<th width="100">时间</th>
+						<th width="60">经办人</th>
+						<th width="100">供应商</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${outInList}" var="daBean">
+						<tr class="text-c">
+							<td>${daBean.drugId}</td>
+							<td>${daBean.stoDrugBean.drugName}</td>
+							<td>${daBean.applyNum}</td>
+							<td>${daBean.stoDrugBean.purPrice}</td>
+							<td>${daBean.applyNum*daBean.stoDrugBean.purPrice}</td>
+							<td>${daBean.checkDate}</td>
+							<td>${daBean.adminBean.adminName}</td>
+							<td>${daBean.stoDrugBean.drugmanu}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			</br>
+			<div class="text-c">
+				<button type="button" class="btn btn-secondary-outline radius"
+					onclick="prePage('${condiBean.pageNum}')">上一页</button>
+				<label class="label label-default radius"><font size="2">当前页${condiBean.pageNum}/共${pageTotal}页</font></label>
+				<button type="button" class="btn btn-secondary-outline radius"
+					onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button>
+				<input type="text" style="width: 30px" class="input-text" id="page"
+					 onkeyup="this.value=this.value.replace(/\D/g,'')"
+					onafterpaste="this.value=this.value.replace(/\D/g,'')">
+				<button type="submit" class="btn btn-secondary-outline radius"
+					onclick="goPage('${pageTotal}')">
+					跳转
+					</button>
 			</div>
-		</form>
+		</div>
+	</div>
 	</div>
 
 
@@ -192,18 +200,31 @@
 				return;
 			}
 			$("#audit").attr("action", str2);
-			 submitForm();
+			submitForm();
 			/* $("#audit").submit(); */
 		}
-		
-     /*提交表单进行验证 */
-     function submitForm(){
-    	 var drugId = $("#drugId").val();
-    	 if(drugId==''){
-    		 $("#drugId").val(0);
-    	 }
-    	 $("#audit").submit();
-     }
+
+		/*跳转页面*/
+		function goPage(total) {
+			var pageNum = $("#page").val();
+			var str2 = "";
+			if (pageNum > total || pageNum == 0 || pageNum == "") {
+				return;
+			} else {
+				str2 = "drugOutInStatistics.action?pageNum=" + pageNum;
+			}
+			$("#audit").attr("action", str2);
+			submitForm();
+		}
+
+		/*提交表单进行验证 */
+		function submitForm() {
+			var drugId = $("#drugId").val();
+			if (drugId == '') {
+				$("#drugId").val(0);
+			}
+			$("#audit").submit();
+		}
 	</script>
 </body>
 </html>
