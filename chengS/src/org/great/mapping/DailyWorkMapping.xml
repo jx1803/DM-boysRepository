@@ -942,8 +942,7 @@
 	<update id="updayeCaceApply" parameterType="String">
 		update
 		TBLDRUGAPPLY
-		set checkId=6,checkDate=(to_char(sysdate,'yyyy-mm-dd
-		hh24:mi:ss')),auditorId=#{1}
+		set checkId=6,checkDate=(to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')),auditorId=#{1}
 		where drugApplyId=#{0}
 	</update>
 	<select id="selectInfo"
@@ -951,10 +950,7 @@
 		resultType="org.great.bean.BatchDetailBean">
 		select * from tblBatchDetail b ,tblOutAndIn o where
 		b.drugId=#{drugId} and
-		b.manuBatch=#{manuBatch} and o.putBatch
-		=b.putBatch and o.placeId=22 and o.outInId=18
-		and o.drugsource !='药房'
-		and o.drugsource is not null
+		b.manuBatch=#{manuBatch} and b.putbatch is not null
 	</select>
 
 	<select id="selectPhaInfo"
