@@ -110,7 +110,7 @@ $('form').bootstrapValidator({
             }
         }
     });
-});
+
 
 	function addDrug(drugId,drugName,drugmanu,retailPrice,specific,unit,drugNum,manuBatch,putBatch){
 		var str = specific.split('-');
