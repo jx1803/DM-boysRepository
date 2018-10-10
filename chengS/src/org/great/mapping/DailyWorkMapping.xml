@@ -948,7 +948,7 @@
 	<select id="selectInfo"
 		parameterType="org.great.bean.BatchDetailBean"
 		resultType="org.great.bean.BatchDetailBean">
-		select * from tblBatchDetail b ,tblOutAndIn o where
+		select * from tblBatchDetail b where
 		b.drugId=#{drugId} and
 		b.manuBatch=#{manuBatch} and b.putbatch is not null
 	</select>
