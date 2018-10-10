@@ -942,19 +942,15 @@
 	<update id="updayeCaceApply" parameterType="String">
 		update
 		TBLDRUGAPPLY
-		set checkId=6,checkDate=(to_char(sysdate,'yyyy-mm-dd
-		hh24:mi:ss')),auditorId=#{1}
+		set checkId=6,checkDate=(to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')),auditorId=#{1}
 		where drugApplyId=#{0}
 	</update>
 	<select id="selectInfo"
 		parameterType="org.great.bean.BatchDetailBean"
 		resultType="org.great.bean.BatchDetailBean">
-		select * from tblBatchDetail b ,tblOutAndIn o where
+		select * from tblBatchDetail b where
 		b.drugId=#{drugId} and
-		b.manuBatch=#{manuBatch} and o.putBatch
-		=b.putBatch and o.placeId=22 and o.outInId=18
-		and o.drugsource !='药房'
-		and o.drugsource is not null
+		b.manuBatch=#{manuBatch} and b.putbatch is not null
 	</select>
 
 	<select id="selectPhaInfo"
@@ -1139,8 +1135,9 @@
 	<select id="selPhaMinimum" parameterType="java.lang.Integer"
 		resultMap="phaDrugMap">
 		select p.*,s.drugName from tblPhaDrug p,tblstoDrug s where
-		p.drugId=#{0}
-		and p.drugId=s.drugId
+
+		p.drugId=#{0} and p.drugId=s.drugId
+
 	</select>
 	<insert id="insertPhaMinWarn" parameterType="java.lang.String">
 		INSERT INTO TBLWARN
@@ -1278,4 +1275,159 @@
 	select c.*from TBLADMIN a,TBLADMINANDROLE b,tblrole c where a.adminid=b.userid and b.roleid=c.roleid and a.adminaccount=#{0}
 	</select>
 
+
+<!-- //麻醉药品入药房库信息 -->
+<select id="selectSpecidlDrug" parameterType="org.great.bean.CondiBean" resultMap="specialoutInList">
+	select a.*,b.drugname,b.purprice,c.adminname,b.drugmanu from TBLDRUGAPPLY a,tblstodrug b,tbladmin c,tbldrugtype d where a.drugid=b.drugid and a.adminid=c.adminid and b.typeid=d.typeid and d.pid=3 and a.checkid=6 and a.applytypeid=10
+	<if test="adminName!=null and adminName!=''">
+                and c.adminName like concat(concat('%',#{adminName}),'%')
+            </if>
+            <if test="afterDate!=null and afterDate!='' ">
+                and a.CHECKDATE &gt;=#{afterDate}
+            </if>
+            <if test="beforeDate!=null and beforeDate!='' ">
+                and a.CHECKDATE &lt;=#{beforeDate}
+            </if>
+             <if test="null != pinyinCode and !''.equals(pinyinCode)">
+                and b.pinyinCode like concat(concat('%',#{pinyinCode}),'%')
+            </if>
+            <if test="null != drugName and !''.equals(drugName)">
+               and b.drugName like concat(concat('%',#{drugName}),'%')
+            </if>
+            <if test="0!= drugId">
+               and a.drugId like concat(concat('%',#{drugId}),'%')
+            </if>
+            
+</select>
+<resultMap type="org.great.bean.DrugApplyBean" id="specialoutInList">
+     <id property="drugApplyId" column="DRUGAPPLYID" />
+		<result property="drugId" column="drugid" />
+		<result property="applyNum" column="applynum" />
+		<result property="adminId" column="ADMINID" />
+		<result property="applyDate" column="applydate" />
+		<result property="applyReason" column="applyreason" />
+		<result property="applyType" column="applytype" />
+		<result property="checkName" column="checkname" />
+		<result property="checkDate" column="checkdate" />
+		<result property="manuBatch" column="manubatch" />
+		<result property="putBatch" column="putbatch" />
+		<result property="checkId" column="checkid" />
+		<result property="applyTypeId" column="applytypeid" />
+        <result property="auditorId" column="auditorId" />
+        <association property="adminBean" column="ADMINID"
+            javaType="org.great.bean.AdminBean">
+            <id property="adminId" column="adminid"></id>
+            <result property="adminName" column="adminname" />
+        </association>
+        <association property="stoDrugBean" column="drugid"
+            javaType="org.great.bean.StoDrugBean">
+            <id property="drugId" column="drugid" />
+            <result property="drugName" column="drugname" />
+            <result property="drugmanu" column="drugmanu" />
+            <result property="purPrice" column="purPrice" />
+        </association>  
+    </resultMap>
+
+<select id="selectSecialDrugComm" parameterType="org.great.bean.CondiBean" resultType="Integer">
+	select count(*) from TBLDRUGAPPLY a,tblstodrug b,tbladmin c,tbldrugtype d where a.drugid=b.drugid and a.adminid=c.adminid and b.typeid=d.typeid and d.pid=3 and a.checkid=6 and a.applytypeid=10
+		<if test="adminName!=null and adminName!=''">
+                and c.adminName like concat(concat('%',#{adminName}),'%')
+            </if>
+            <if test="afterDate!=null and afterDate!='' ">
+                and a.CHECKDATE &gt;=#{afterDate}
+            </if>
+            <if test="beforeDate!=null and beforeDate!='' ">
+                and a.CHECKDATE &lt;=#{beforeDate}
+            </if>
+             <if test="null != pinyinCode and !''.equals(pinyinCode)">
+                and b.pinyinCode like concat(concat('%',#{pinyinCode}),'%')
+            </if>
+            <if test="null != drugName and !''.equals(drugName)">
+               and b.drugName like concat(concat('%',#{drugName}),'%')
+            </if>
+            <if test="0!= drugId">
+               and a.drugId like concat(concat('%',#{drugId}),'%')
+            </if>
+</select>
+
+<!-- 特殊药品库存查询 -->
+
+<select id="specialdrugstocks" parameterType="org.great.bean.CondiBean" resultMap="phaDrugMap" >
+	select s.*,p.PHADRUGID,p.DRUGNUM,p.USEABLEID,m.param useable,d.drugtype,f.dosageForm,p.MINIMUM,p.MAXIMUM,ROWNUM r from tblphadrug p,tbldrugtype d,tblstodrug s,tbldf f,tblparam m where p.drugid=s.drugid(+) and s.typeid=d.typeid(+) and s.dosageId=f.dosageId(+) and p.useableid=m.paramid(+) and d.pid=3
+<if test=" ''!=drugId and 0 !=drugId">
+			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and s.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		<if test=" ''!=useableId and 0 !=useableId">
+			and p.useableid =#{useableId,jdbcType=NUMERIC}
+		</if>
+			<if test="pinyinCode!=null and pinyinCode!=''">
+				and s.pinyincode like
+				concat(concat('%',#{pinyinCode}),'%')
+			</if>
+			<if test="drugName!=null and drugName!=''">
+				and s.drugname like concat(concat('%',#{drugName}),'%')
+			</if>
+			<if test="useableId!=0">
+				and p.useableid=#{useableId}
+			</if>
+			<!-- <if test="pageNum!=0">
+				)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
+				r&lt;=#{pageNum}*#{pageLimit}
+			</if>
+			<if test="pageNum==0">
+				)
+			</if> -->
+</select>
+
+<select id="specialdrugstocksComm" parameterType="org.great.bean.CondiBean" resultType="Integer">
+	select count(*) from tblphadrug p,tbldrugtype d,tblstodrug s,tbldf f,tblparam m where p.drugid=s.drugid(+) and s.typeid=d.typeid(+) and s.dosageId=f.dosageId(+) and p.useableid=m.paramid(+) and d.pid=3
+	<if test=" ''!=drugId and 0 !=drugId">
+			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and s.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		<if test=" ''!=useableId and 0 !=useableId">
+			and p.useableid =#{useableId,jdbcType=NUMERIC}
+		</if>
+			<if test="pinyinCode!=null and pinyinCode!=''">
+				and s.pinyincode like
+				concat(concat('%',#{pinyinCode}),'%')
+			</if>
+			<if test="drugName!=null and drugName!=''">
+				and s.drugname like concat(concat('%',#{drugName}),'%')
+			</if>
+			<if test="useableId!=0">
+				and p.useableid=#{useableId}
+			</if>
+</select>
+
+<select id="specialdrugsell" parameterType="org.great.bean.CondiBean" resultMap="sellspecialMap">
+	select * from TBLSELL a,tbladmin b,tblstodrug c,tbldrugtype d where a.drugid=c.drugid and a.adminid=b.adminid and d.typeid=c.typeid and d.pid=3 
+</select>
+<resultMap type="org.great.bean.SellBean" id="sellspecialMap">
+		<id property="sellId" column="SELLID"/>
+		<result property="drugId" column="DRUGID"/>
+		<result property="adminId" column="ADMINID"/>
+		<result property="sellNum" column="SELLNUM"/>
+		<result property="sales" column="SALES"/>
+		<result property="sellDate" column="SELLDATE"/>
+		<result property="manuBatch" column="MANUBATCH"/>
+		<result property="putBatch" column="PUTBATCH"/>
+		<association property="batchDetailBean" javaType="org.great.bean.BatchDetailBean">
+			<id property="batchDetailId" column="batchDetailId"/>
+			<result property="purPrice" column="PURPRICE"/>
+		</association>
+		<association property="stoDrugBean" javaType="org.great.bean.StoDrugBean">
+			<id property="drugId" column="DRUGID"/>
+			<result property="drugName" column="DRUGNAME"/>
+		</association>
+		<association property="adminBean" javaType="org.great.bean.AdminBean">
+			<id property="adminId" column="ADMINID"/>
+			<result property="adminName" column="ADMINNAME"/>
+		</association>
+	</resultMap>
 </mapper>

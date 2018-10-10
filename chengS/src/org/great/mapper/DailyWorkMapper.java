@@ -2,6 +2,8 @@ package org.great.mapper;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Param;
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.BatchDetailBean;
@@ -155,5 +157,18 @@ public interface DailyWorkMapper {
 	public void affirmWarn(int warnId);
 	
 	public RoleBean selRole(String adminId);//查找用户角色
+	
+
+	//麻醉药品入库明细
+	public List<PhaDrugBean> selectSpecidlDrug(CondiBean condiBean);
+	//特殊药品入库条数
+	public int selectSecialDrugComm(CondiBean condiBean);//
+	//特殊药品库存查询
+	public List<PhaDrugBean> specialdrugstocks(CondiBean condiBean);
+	//特殊药品库存条数
+	public int specialdrugstocksComm(CondiBean condiBean);
+
+	//特殊药品销售明细
+	public List<PhaDrugBean> specialdrugsell(CondiBean condiBean);
 
 }

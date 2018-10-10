@@ -68,7 +68,9 @@ public class StockWorkBizImpl implements IStockWorkBiz {
 	private BatchDetailBean batchDetailBean;// 出入库详情批次对象
 	@Resource
 	private OutAndInBean outAndInBean;// 出入库记录实体
-
+	@Resource
+	private IDailyWorkBiz dailyWorkBizImpl;// 出入库记录实体
+	
 	private List<BatchDetailBean> purchaseList;// 已采购列表
 
 	/* 采购模块 */
@@ -318,7 +320,7 @@ public class StockWorkBizImpl implements IStockWorkBiz {
 	 *      java.lang.String, org.great.bean.BatchDetailBean)
 	 */
 	@Override
-	public String returnManuAudit(DrugApplyBean drugApplyBean) {
+	public String returnManuAudit(HttpSession session,DrugApplyBean drugApplyBean) {
 		int i = stockWorkMapper.udReturnManuApplyState(drugApplyBean);
 		// 审核通过，修改状态，插入出入库记录表表
 		if (drugApplyBean.getCheckId() == 6) {
@@ -338,6 +340,7 @@ public class StockWorkBizImpl implements IStockWorkBiz {
 			outAndInBean.setTotalMoney(countMoney);
 			outAndInBean.setPutBatch("" + batchDetailBean.getBatchDetailId());
 			stockWorkMapper.insertToOut(outAndInBean);
+			dailyWorkBizImpl.stoMinimunWarn(session,drugApplyBean.getDrugId());
 		} else {
 			// 审核不通过，将入库批次详情表数量，库存数量加回来
 			drugApplyBean.setApplyNum(-drugApplyBean.getApplyNum());// 设置申请退还的数量

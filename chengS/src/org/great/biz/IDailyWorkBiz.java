@@ -3,6 +3,7 @@ package org.great.biz;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.BatchDetailBean;
@@ -96,4 +97,6 @@ public interface IDailyWorkBiz {
 
 	// 确认已处理警告
 	public ModelAndView affirmWarn(HttpServletRequest request, int warnId);
+	
+	public void stoMinimunWarn(HttpSession session, int drugId);
 }

@@ -60,7 +60,8 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	@Override
 	public String breakCheck(HttpServletRequest req,DrugApplyBean drugApplyBean) {
 		int i = dailyWorkMapper.breakCheck(drugApplyBean);
-		 AdminBean admin=(AdminBean) req.getSession().getAttribute("User");//获取管理员信息
+		HttpSession session=req.getSession();
+		 AdminBean admin=(AdminBean) session.getAttribute("User");//获取管理员信息
 		// 如果审核通过，增加药品出库记录
 		if (drugApplyBean.getCheckId() == 6) {
 			batchDetailBean.setDrugId(drugApplyBean.getDrugId());
@@ -72,6 +73,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			outAndInBean.setTotalMoney(drugApplyBean.getApplyMoney());
 			outAndInBean.setPutBatch("" + batchDetailBean.getBatchDetailId());
 			dailyWorkMapper.insertDrugOut(outAndInBean);// 插入药房出库记录
+			phaMinimunWarn(session, drugApplyBean.getDrugId());// 是否低于最低限制
 		}
 		/* 如果审核不通过，则将药房药品数量加回 */
 		else {
@@ -112,7 +114,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			/* 增加申请记录 */
 			da.setPutBatch("" + da.getBdBean().getBatchDetailId());
 			dailyWorkMapper.breakApply(da);
-			phaMinimunWarn(session, da.getDrugId());// 是否低于最低限制
+		
 		}
 		return "pharmacy/breakApply";
 	}
@@ -497,9 +499,8 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			System.out.println("查找出来的信息" + bdBean);
 			bdBean.setHandleNum(drugApplyBean.getApplyNum() * Integer.valueOf(str[0]));
 			dailyWorkMapper.updatePhaBatchNum(bdBean);// 修改相对应药房入库批次数量
-			dailyWorkMapper.updatePhaDrugNum(
-					drugApplyBean.getApplyList().get(i).getApplyNum() * Integer.valueOf(str[0]), bdBean.getDrugId());// 修改药房库存数量
-			phaMinimunWarn(session, bdBean.getDrugId());// 是否低于最低限制
+			dailyWorkMapper.updatePhaDrugNum(bdBean.getHandleNum(), bdBean.getDrugId());// 修改药房库存数量
+			
 		}
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("pharmacy/cacellingApply");
@@ -546,7 +547,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 		BatchDetailBean bdBean = dailyWorkMapper.selectPhaInfo(batchDetailBean);
 		bdBean.setHandleNum(-drugApplyBean.getApplyNum() * Integer.valueOf(str[0]));
 		dailyWorkMapper.updatePhaBatchNum(bdBean);// 增加相对应药房入库批次数量
-		dailyWorkMapper.updateStoDrugNum(-bdBean.getHandleNum(), bdBean.getDrugId());// 增加药房库存数量
+		dailyWorkMapper.updatePhaDrugNum(bdBean.getHandleNum(), bdBean.getDrugId());// 增加药房库存数量
 		return selectCancellingApply(new CondiBean());
 	};
 
@@ -609,7 +610,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 		System.out.println(2);
 		bdBean.setHandleNum(batchDetailBean.getHandleNum());
 		bdBean.setTotalMoney(batchDetailBean.getHandleNum() * bdBean.getPurPrice());
-		dailyWorkMapper.updatePhaDrugNum(-batchDetailBean.getHandleNum(), bdBean.getDrugId());// 修改药库库存
+		dailyWorkMapper.updateStoDrugNum(batchDetailBean.getHandleNum(), bdBean.getDrugId());// 修改药库库存
 		System.out.println(3);
 		dailyWorkMapper.updatePutBatchNum(bdBean.getBatchDetailId(), batchDetailBean.getHandleNum(),
 				bdBean.getDrugId());// 修改药库当前批次数量
@@ -626,7 +627,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 		System.out.println(7);
 		dailyWorkMapper.insetPhaOut(admin.getAdminId());// 插入药房出库记录
 		System.out.println(8);
-
+		phaMinimunWarn(session, bdBean.getDrugId());// 是否低于最低限制
 		System.out.println(9);
 		return selectCancellingApply(new CondiBean());
 
@@ -701,6 +702,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	}
 
 	// 药房药品底限预警
+
 	public void phaMinimunWarn(HttpSession session, int drugId) {
 		PhaDrugBean phaDrugBean = dailyWorkMapper.selPhaMinimum(drugId);
 		if (phaDrugBean.getDrugNum() <= phaDrugBean.getMinimum()) {
@@ -711,6 +713,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	}
 
 	// 药库药品底限预警
+	@Override
 	public void stoMinimunWarn(HttpSession session, int drugId) {
 		StoDrugBean stoDrugBean = dailyWorkMapper.selStoMinimum(drugId);
 		if (stoDrugBean.getInventoryBean().getInventoryNum() <= stoDrugBean.getInventoryBean().getMinimum()) {
