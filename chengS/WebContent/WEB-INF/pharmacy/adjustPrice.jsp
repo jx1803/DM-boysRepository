@@ -31,11 +31,11 @@
 <title>药品价格管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药房日常工作 <span class="c-gray en">&gt;</span> 药品调价<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <!-- 主页面 -->
 	<div class="page-container">
 		<div class="text-c">
-			<form action="toAdjustPrice.action" method="post" id="formSd" >
+			<form action="toAdjustPrice.action" method="post"  id="formSd" >
 			药品名称: 
 			<input type="text" class="input-text" id="drugName" name="drugName" value="${condi.drugName==null?"":condi.drugName}"
 				style="width: 150px"> 
@@ -59,7 +59,7 @@
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" onclick="subSelect()" id="sub" name=""> 搜索药品</button>
+			<button type="submit" class="btn btn-primary radius"  id="sub" name=""> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -73,6 +73,7 @@
 						<th>通用名称</th>
 						<th>规格</th>
 						<th>单位</th>
+						<th>最新进价</th>
 						<th>零售价</th>
 						<th>类别</th>
 						<th>剂型</th>
@@ -94,6 +95,7 @@
 						<td>${sdList.generalName}</td>
 						<td>${sdList.specific}</td>
 						<td>${sdList.unit}</td>
+						<td>${sdList.pruPrice}</td>
 						<td>${sdList.retailPrice}</td>
 						<td>${sdList.drugTypeBean.drugType}</td>
 						<td>${sdList.dfBean.dosageForm}</td>
@@ -104,7 +106,7 @@
 						<td>${sdList.drugmanu}</td>
 						<td>${sdList.proPlace}</td>
 
-						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}',400,300)">修改零售价</a>
+						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}&purPrice=${sdList.pruPrice}',400,300)">修改零售价</a>
 							</td>
 
 					</tr>
@@ -115,12 +117,15 @@
 		<br />
 	
 	<div style="float: right; margain-top: 20px;">
+			
 			<button  class="btn btn-secondary-outline radius" id="pre"
 				name="" onclick="prePage('${pageNum}')">上一页</button>
-			<button  class="btn btn-primary size-S radius" id=""
-				name="">1</button>
+			<label class="label label-default radius"><font size="2">当前页数${pageNum }/共${pageTotal }页 </label>
 			<button  class="btn btn-secondary-outline radius" id="next"
 				name="" onclick="nextPage('${pageNum}','${pageTotal }')">下一页</button>
+				<input type="text" style="width:30px" class="input-text"  id="page" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" name="page" >
+			<button type="button" onclick="jumpPage('${pageTotal }')" class="btn btn-secondary-outline radius" >跳转<button>
+				
 		</div>
 </div>
 
@@ -139,15 +144,14 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 
-function subSelect(){
+
+
+$("#formSd").submit (function(){
 	var drugId=$("#drugId").val();
 	if(drugId==""){
 		$("#drugId").val(0);
-		$("#formSd").submit();
-	}else{
-		$("#formSd").submit();
 	}
-}
+});
 
 /*上一页  */
 function prePage(pageNum) {
@@ -155,29 +159,42 @@ function prePage(pageNum) {
 	if (pageNum > 1) {
 		$("#pre").disabled=false;
 		pageNum -= 1;
-		str1 = "selectAdjustPrice.action?pageNum="
+		str1 = "toAdjustPrice.action?pageNum="
 				+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str1);
-	$("#select").submit();
+	$("#formSd").attr("action", str1);
+	$("#formSd").submit();
 }
 /*下一页  */
 function nextPage(pageNum, total) {
 	var str2 = "";
 	if (pageNum < total) {
 		pageNum = Number(pageNum) + 1;
-		str2 = "selectAdjustPrice.action?pageNum="
+		str2 = "toAdjustPrice.action?pageNum="
 				+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str2);
-	$("#select").submit();
+	$("#formSd").attr("action", str2);
+	$("#formSd").submit();
 } 
 
 	
+/* 跳转页数 */
+function jumpPage(total){
+	var pageNum=$("#page").val();
+	var str="";
+	if(pageNum>total||pageNum==''||pageNum==0){
+		return;
+	}else{
+		str = "toAdjustPrice.action?pageNum="+pageNum
+		$("#formSd").attr("action", str);
+		$("#formSd").submit();
+	}
+}
+
 
 
 /*

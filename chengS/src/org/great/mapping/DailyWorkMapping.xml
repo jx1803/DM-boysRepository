@@ -1135,7 +1135,9 @@
 	<select id="selPhaMinimum" parameterType="java.lang.Integer"
 		resultMap="phaDrugMap">
 		select p.*,s.drugName from tblPhaDrug p,tblstoDrug s where
+
 		p.drugId=#{0} and p.drugId=s.drugId
+
 	</select>
 	<insert id="insertPhaMinWarn" parameterType="java.lang.String">
 		INSERT INTO TBLWARN

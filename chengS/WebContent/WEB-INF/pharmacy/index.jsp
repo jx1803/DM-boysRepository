@@ -30,7 +30,9 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
 
+
 <link href="<%=path%>lib/bootstrapValidator.css" rel="stylesheet" />
+
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -121,7 +123,7 @@
 
 						<li id="Hui-msg"><a href="javascript:;"
 							onclick="member_add('消息提醒','<%=path%>pharmacy/toWarn.action','','510')"
-							title="消息"><span class="badge badge-danger">${warnCount}</span><i
+							title="消息"><span class="badge badge-danger" id="warnId">${warnCount}</span><i
 								class="Hui-iconfont" style="font-size: 18px">&#xe68a;</i></a></li>
 
 						<li id="Hui-skin" class="dropDown right dropDown_hover"><a

@@ -34,20 +34,18 @@
 <title>药房药品盘点</title>
 </head>
 <body>
-	<nav class="breadcrumb">
-	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-	药房日常工作 <span class="c-gray en">&gt;</span> 药房药品盘点 <a
-		class="btn btn-success radius r"
+	<nav class="breadcrumb"> <i class="Hui-iconfont">&#xe67f;</i> 首页
+	<span class="c-gray en">&gt;</span> 药房日常工作 <span class="c-gray en">&gt;</span>
+	药房药品盘点 <a class="btn btn-success radius r"
 		style="line-height: 1.6em; margin-top: 3px"
 		href="javascript:location.replace(location.href);" title="刷新"><i
 		class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
 		<form action="showTakeStock.action" method="post" id="select">
 			<div class="text-c">
-				<div class="text-c"><input type="hidden"
-						 placeholder="请输入药品编码"
-						id="hidId" name="drugId" value="0">
-					日期范围： <input type="text"
+				<div class="text-c">
+					<input type="hidden" placeholder="请输入药品编码" id="hidId" name="drugId"
+						value="0"> 日期范围： <input type="text"
 						onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
 						id="datemin" class="input-text Wdate" name="afterDate"
 						style="width: 120px;"> - <input type="text"
@@ -59,7 +57,7 @@
 						class="input-text" style="width: 250px" placeholder="请输入拼音码" id=""
 						name="pinyinCode"> 药品编码：<input type="text"
 						class="input-text" style="width: 250px" placeholder="请输入药品编码"
-						id="drugId" > 药品分类： <span class="select-box"
+						id="drugId"> <br>药品分类： <span class="select-box"
 						id="addShowDt" style="width: 160px"> <select class="select"
 						size="1" name="typeId" id="typeId">
 							<option value="0">请选择类型</option>
@@ -73,7 +71,8 @@
 							</c:forEach>
 					</select>
 					</span>
-					<button type="button" class="btn btn-success" id="selectButton" name="" onclick="selectSub()">
+					<button type="button" class="btn btn-success" id="selectButton"
+						name="">
 						<i class="Hui-iconfont">&#xe665;</i> 搜索
 					</button>
 				</div>
@@ -95,7 +94,7 @@
 					<th width="90">盘点库存</th>
 					<th width="90">盈亏情况</th>
 					<th width="90">盈亏数量</th>
-					
+
 				</tr>
 			</thead>
 			<tbody id="tbid">
@@ -120,12 +119,20 @@
 
 
 		<div style="float: right; margain-top: 20px;">
-			<button  class="btn btn-secondary-outline radius" id="pre"
-				name="" onclick="prePage('${condiBean.pageNum}')">上一页</button>
-			<button  class="btn btn-primary size-S radius" id=""
-				name="">1</button>
-			<button  class="btn btn-secondary-outline radius" id="next"
-				name="" onclick="nextPage('${condiBean.pageNum}','${pageTotal }')">下一页</button>
+
+			<button class="btn btn-secondary-outline radius" id="pre" name=""
+				onclick="prePage('${condiBean.pageNum}')">上一页</button>
+			<label class="label label-default radius"><font size="2">当前页数${condiBean.pageNum }/共${pageTotal }页
+			</label>
+			<button class="btn btn-secondary-outline radius" id="next" name=""
+				onclick="nextPage('${condiBean.pageNum}','${pageTotal }')">下一页</button>
+			<input type="text" style="width: 30px" class="input-text" id="page"
+				onkeyup="this.value=this.value.replace(/\D/g,'')"
+				onafterpaste="this.value=this.value.replace(/\D/g,'')" >
+			<button type="button" onclick="jumpPage('${pageTotal }')"
+				class="btn btn-secondary-outline radius">
+				跳转
+				<button>
 		</div>
 	</div>
 
@@ -147,27 +154,6 @@
 		src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
-		
-	
-		function selectSub(){
-			var drugId=$("#drugId").val();
-			if(drugId==""){
-				$("#hidId").val("0");
-			}else{
-				$("#hidId").val(drugId);
-			}
-			$("#select").submit();
-		}
-	
-		function subCheck(){
-			$("#tbid :input").each(function(){
-				if($(this).val==""){
-					alert("请完成所有药品盘点。");
-				}
-			});
-			$("#checkForm").submit();
-		}
-	
 		/*上一页  */
 		function prePage(pageNum) {
 			var str1 = "";
@@ -194,6 +180,25 @@
 			$("#select").submit();
 		}
 
+		/* 跳转页数 */
+		function jumpPage(total) {
+			var pageNum = $("#page").val();
+			var str = "";
+			if (pageNum > total || pageNum == '' || pageNum == 0) {
+				return;
+			} else {
+				str = "showTakeStock.action?pageNum=" + pageNum
+				$("#select").attr("action", str);
+				$("#select").submit();
+			}
+		}
+
+		$("#select").submit(function() {
+			var drugId = $("#drugId").val();
+			if (drugId == "") {
+				$("#drugId").val(0);
+			}
+		});
 		/*
 		 参数解释：
 		 title	标题

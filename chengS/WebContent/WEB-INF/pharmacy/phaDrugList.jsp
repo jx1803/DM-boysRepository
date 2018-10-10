@@ -28,17 +28,19 @@
 <title></title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span>药品库存查询 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药房药品统计 <span class="c-gray en">&gt;</span> 药房药品库存 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+
 <!-- 主页面 -->
 	<div class="page-container">
 		<div class="text-c">
-			<form action="showTakeStock.action" method="post" id="formSd" >
+			<form action="selectPhaDrug.action" method="post" id="formSd" >
 			药品名称: 
 			<input type="text" class="input-text" id="drugName" name="drugName" value="${condi.drugName==null?"":condi.drugName}"
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			value="${condi.drugId==null?"":condi.drugId}">
+			value="${condi.drugId==0?'':condi.drugId}">
 			<input type='hidden' id="h_drugId" value="0">
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
@@ -57,7 +59,7 @@
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
+			<button type="button" class="btn btn-primary radius" id="sub" onclick="subSe()" name=""> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -134,32 +136,42 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+	function subSe(){
+		var drugId=$("#drugId").val();
+		if(drugId==''){
+			$("#drugId").val(0);
+			$("#formSd").submit();
+		}else{
+			$("#formSd").submit();
+		}
+	}
+
 /*上一页  */
 function prePage(pageNum) {
 	var str1 = "";
 	if (pageNum > 1) {
 		$("#pre").disabled=false;
 		pageNum -= 1;
-		str1 = "showTakeStock.action?pageNum="
+		str1 = "selectPhaDrug.action?pageNum="
 				+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str1);
-	$("#select").submit();
+	$("#formSd").attr("action", str1);
+	$("#formSd").submit();
 }
 /*下一页  */
 function nextPage(pageNum, total) {
 	var str2 = "";
 	if (pageNum < total) {
 		pageNum = Number(pageNum) + 1;
-		str2 = "showTakeStock.action?pageNum="
+		str2 = "selectPhaDrug.action?pageNum="
 				+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str2);
-	$("#select").submit();
+	$("#formSd").attr("action", str2);
+	$("#formSd").submit();
 } 
 
 	

@@ -28,7 +28,9 @@
 
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>日常工作 <span class="c-gray en">&gt;</span> 药品发药 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品日常工作 <span class="c-gray en">&gt;</span> 药品发药 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+
 	<table>
 		<tr>
 			<td colspan="8">药品发药</td>
@@ -71,7 +73,7 @@
 					<button type="button" class="btn btn-primary" id=""
 					onclick="empty()">清空</button>&nbsp;&nbsp;
 					<button type="button" class="btn btn-default" id=""
-					onclick="subApply()">提交申请</button></div>
+					onclick="subApply()">发药</button></div>
 	
 	<form id="fapply" action="sellDrug.action"  method="post">
 	
@@ -110,7 +112,7 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-
+	widow.top.location.reload();  
 
 
 	var count=0;
