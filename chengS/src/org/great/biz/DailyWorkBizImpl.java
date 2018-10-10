@@ -194,13 +194,13 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 
 	// 药品调价弹窗
 	@Override
-	public ModelAndView adjustLayer(double beforeAdjust, int drugId) {
+	public ModelAndView adjustLayer(double beforeAdjust, int drugId,double purPrice) {
 		ModelAndView mav = new ModelAndView("pharmacy/adjustLayer");
 		mav.addObject("beforeAdjust", beforeAdjust);
 		mav.addObject("drugId", drugId);
 		ParamBean param = dailyWorkMapper.getParam(15);
 		double markup = Double.parseDouble(param.getParam());
-		double maximum = beforeAdjust * markup + beforeAdjust;// 最高零售价
+		double maximum = purPrice * markup + beforeAdjust;// 最高零售价
 		mav.addObject("maximum", maximum);
 		return mav;
 
@@ -277,9 +277,9 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	 * @see org.great.biz.IDailyWorkBiz#forbidDrug(org.great.bean.StoDrugBean)
 	 */
 	@Override
-	public String forbidDrug(StoDrugBean stoDrugBean) {
+	public String forbidDrug(PhaDrugBean phaDrugBean) {
 		dailyWorkMapper.forbidDrug(phaDrugBean);
-		return "redirect:toForbidDrug";
+		return "redirect:toForbidDrug.action";
 	}	
 	/*
 	 * 药品利润计算
@@ -388,6 +388,8 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 		int count=dailyWorkMapper.getTakeStockCount(condiBean);
 		int pageTotal=PageUtil.pageTotal(count);
 		ModelAndView mav =new ModelAndView("pharmacy/showTakeStock");
+		List<DrugTypeBean> typeList=drugAllocatMapper.findAllSecondType();
+		mav.addObject("drugTypeList", typeList);
 		mav.addObject("stockList", list);
 		mav.addObject("pageTotal", pageTotal);
 		mav.addObject("condiBean", condiBean);

@@ -12,6 +12,7 @@ import org.great.bean.AdminBean;
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
+import org.great.bean.PhaDrugBean;
 import org.great.bean.StoDrugBean;
 import org.great.bean.TakeStockBean;
 import org.great.biz.IDailyWorkBiz;
@@ -102,8 +103,8 @@ public class DailyWorkHandle {
 	
 	//价格调整弹窗
 	@RequestMapping("/adjustLayer.action")
-	public ModelAndView adjustLayer(double beforeAdjust,int drugId) {
-		return dailyWorkBizImpl.adjustLayer(beforeAdjust, drugId);
+	public ModelAndView adjustLayer(double beforeAdjust,int drugId,double purPrice) {
+		return dailyWorkBizImpl.adjustLayer(beforeAdjust, drugId,purPrice);
 	
 	}
 	
@@ -143,8 +144,8 @@ public class DailyWorkHandle {
 	//停用药品
 	@Log(operationType = "", operationName = "药品停用")
 	@RequestMapping("/forbidDrug.action")
-	public String forbidDrug(StoDrugBean stoDrugBean) {
-		return dailyWorkBizImpl.forbidDrug(stoDrugBean);
+	public String forbidDrug(PhaDrugBean phaDrugBean) {
+		return dailyWorkBizImpl.forbidDrug(phaDrugBean);
 	}
 	
 	//每个月最后一天自动盘点盈亏

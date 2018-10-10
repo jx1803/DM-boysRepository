@@ -1140,7 +1140,7 @@
 		resultMap="phaDrugMap">
 		select p.*,s.drugName from tblPhaDrug p,tblstoDrug s where
 		p.drugId=#{0}
-		where p.drugId=s.drugId
+		and p.drugId=s.drugId
 	</select>
 	<insert id="insertPhaMinWarn" parameterType="java.lang.String">
 		INSERT INTO TBLWARN

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -59,7 +60,7 @@
 				<td>${drug.stoDrugBean.drugId }</td>
 				<td>${drug.stoDrugBean.specific }</td>
 				<td>${drug.stoDrugBean.unit }</td>
-				<td>${drug.handleNum }</td>
+				<td>${drug.handleNum }(${ fn:split(drug.stoDrugBean.specific,'-')[1]})</td>
 				<td>${drug.stoDrugBean.drugmanu }</td>
 				<td>${drug.proDate }</td>
 				<td>${drug.manuBatch }</td>
@@ -85,32 +86,7 @@
 
 <script type="text/javascript">
 
-$('form').bootstrapValidator({
-　　　　message: 'This value is not valid',
-        　feedbackIcons: {
-            　　　　　　　　valid: 'glyphicon glyphicon-ok',
-            　　　　　　　　invalid: 'glyphicon glyphicon-remove',
-            　　　　　　　　validating: 'glyphicon glyphicon-refresh'
-        　　　　　　　　   },
-        fields: {
-            username: {
-                message: '用户名验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '用户名不能为空'
-                    }
-                }
-            },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: '邮箱地址不能为空'
-                    }
-                }
-            }
-        }
-    });
-});
+
 
 	function addDrug(drugId,drugName,drugmanu,retailPrice,specific,unit,drugNum,manuBatch,putBatch){
 		var str = specific.split('-');

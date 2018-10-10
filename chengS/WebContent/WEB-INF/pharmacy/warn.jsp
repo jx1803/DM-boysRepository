@@ -47,7 +47,7 @@
 						<td>${warnList.eventName }</td>
 						<td>${warnList.warnEvent }</td>
 						<td>${warnList.warnDate }</td>
-						<td><a href="affirmWarn.action?warnId=${warnList.warnId}"><button class="btn btn-success">确认已处理</button></a></td>
+						<td><a href="affirmWarn.action?warnId=${warnList.warnId}"><button onclick="setCount('${warnCount}')" class="btn btn-success">确认已处理</button></a></td>
 
 					</tr>
 				</c:forEach>
@@ -75,6 +75,12 @@
 		src="../lib/jquery.validation/1.14.0/messages_zh.js"></script>
 	<script type="text/javascript">
 		
+	</script>
+	
+	<script type="text/javascript">
+		function setCount(count){
+			parent.$("#warnId").html(count-1);
+		}
 	</script>
 </body>
 </html>

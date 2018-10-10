@@ -8,6 +8,7 @@ import org.great.bean.AdjustPriceBean;
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
+import org.great.bean.PhaDrugBean;
 import org.great.bean.SellBean;
 import org.great.bean.StoDrugBean;
 import org.great.bean.TakeStockBean;
@@ -27,13 +28,13 @@ public interface IDailyWorkBiz {
 	public ModelAndView selectPutDrug(CondiBean condiBean);//获取药品入库批次详情列表
 	public ModelAndView selectBreakCheck(CondiBean condiBean);//获取报损审核列表
 	public ModelAndView selectAdjustPrice(CondiBean condiBean);//获取价格调节记录
-	public ModelAndView adjustLayer(double beforePrice,int drugId);//价格调整弹窗
+	public ModelAndView adjustLayer(double beforePrice,int drugId,double purPrice);//价格调整弹窗
 	public String adjustPrice(AdjustPriceBean adjustPriceBean);//调整药品价格
 	public ModelAndView toAdjustPrice(CondiBean condiBean);//药品调价界面
 	public String sellDrug(HttpServletRequest req,StoDrugBean stoDrugBean);//卖药
 	public ModelAndView sellDrugLayer(CondiBean condiBean);//卖药弹窗
 	public ModelAndView toForbidDrug(CondiBean condiBean);//进入药品停用
-	public String forbidDrug(StoDrugBean stoDrugBean);//停用药品
+	public String forbidDrug(PhaDrugBean phaDrugBean);//停用药品
 	public void checkProfit();//每月一号统计上月药品销售利润
 	public void checkStock();//每月一号盘点上月药品盈亏
 	public String checkStockData(TakeStockBean takeStockBean);//管理员录入药房药品实际库存

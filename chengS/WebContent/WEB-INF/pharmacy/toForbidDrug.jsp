@@ -98,10 +98,10 @@
 						<c:if test="${sdList.useableId==2 }">
 							<td class="f-14">
 							<button  class="btn btn-secondary-outline radius" id=""
-						name="" onclick="location.href='forbidDrug.action?useableId=3&phaDrugId=${sdList.phaDrugId}'">停用</button>
+						name="" onclick="location.href='forbidDrug.action?useableId=437&phaDrugId=${sdList.phaDrugId}'">停用</button>
 							</td>
 						</c:if>
-						<c:if test="${sdList.useableId==3 }">
+						<c:if test="${sdList.useableId==437 }">
 							<td class="f-14">
 								<button  class="btn btn-secondary-outline radius" id=""
 							name="" onclick="location.href='forbidDrug.action?useableId=2&phaDrugId=${sdList.phaDrugId}'">启用</button>
@@ -115,12 +115,19 @@
 		<br />
 	
 	<div style="float: right; margain-top: 20px;">
-			<button  class="btn btn-secondary-outline radius" id="pre"
-				name="" onclick="prePage('${pageNum}')">上一页</button>
-			<button  class="btn btn-primary size-S radius" id=""
-				name="">1</button>
-			<button  class="btn btn-secondary-outline radius" id="next"
-				name="" onclick="nextPage('${pageNum}','${pageTotal }')">下一页</button>
+		<button class="btn btn-secondary-outline radius" id="pre" name=""
+				onclick="prePage('${condiBean.pageNum}')">上一页</button>
+			<label class="label label-default radius"><font size="2">当前页数${condiBean.pageNum }/共${pageTotal }页
+			</label>
+			<button class="btn btn-secondary-outline radius" id="next" name=""
+				onclick="nextPage('${condiBean.pageNum}','${pageTotal }')">下一页</button>
+			<input type="text" style="width: 30px" class="input-text" id="page"
+				onkeyup="this.value=this.value.replace(/\D/g,'')"
+				onafterpaste="this.value=this.value.replace(/\D/g,'')" >
+			<button type="button" onclick="jumpPage('${pageTotal }')"
+				class="btn btn-secondary-outline radius">
+				跳转
+				<button>
 		</div>
 </div>
 
@@ -172,11 +179,29 @@ function nextPage(pageNum, total) {
 	} else {
 		return;
 	}
-	$("#select").attr("action", str2);
-	$("#select").submit();
+	$("#formSd").attr("action", str2);
+	$("#formSd").submit();
 } 
 
-	
+$("#formSd").submit(function() {
+	var drugId = $("#drugId").val();
+	if (drugId == "") {
+		$("#drugId").val(0);
+	}
+});
+
+/* 跳转页数 */
+function jumpPage(total) {
+	var pageNum = $("#page").val();
+	var str = "";
+	if (pageNum > total || pageNum == '' || pageNum == 0) {
+		return;
+	} else {alert(1)
+		str = "toForbidDrug.action?pageNum=" + pageNum
+		$("#formSd").attr("action", str);
+		$("#formSd").submit();
+	}
+}
 
 
 /*
