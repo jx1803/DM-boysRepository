@@ -55,7 +55,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 		<form id="form1" action="<%=path%>user/ConfigurationDel.action" method="post" >
 			<c:forEach items="${rlist }" var="fathId">
 			
-				<dl class="ty-tree-div">
+			
 					<c:if test="${fathId.pid eq 0 }">
 						<dt>${fathId.permission}</dt>
 						<c:forEach items="${rlist }" var="sonId">
@@ -67,7 +67,7 @@ String path = request.getScheme() +"://"+request.getServerName()
 						</c:forEach>
 							<br/>
 					</c:if>
-				</dl>
+			
 			</c:forEach>
 	</form>
 	</div>

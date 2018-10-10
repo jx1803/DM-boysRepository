@@ -38,21 +38,21 @@
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			value="${condi.drugId==null?"":condi.drugId}">
+			value="${condiBean.drugId==null?'':condi.drugId}">
 			<input type='hidden' id="h_drugId" value="0">
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
-			 style="width: 150px" value="${condi.pinyinCode==null?"":condi.pinyinCode}">
+			 style="width: 150px" value="${condiBean.pinyinCode==null?"":condi.pinyinCode}">
 			药品分类：
 			<span class="select-box" id="addShowDt" style="width:160px"> 
 				<select class="select" size="1" name="typeId" id="typeId" >
 						<option value="0">请选择类型</option>
 						<c:forEach items="${drugTypeList}" var="typeList">
-						<c:if test="${typeList.typeId ==condi.typeId }">
-						<option value="${typeList.typeId}" selected="selected">${typeList.drugType}</option>
+						<c:if test="${typeList.stoDrugBean.typeId ==condiBean.typeId }">
+						<option value="${typeList.stoDrugBean.typeId}" selected="selected">${typeList.stoDrugBean.dtBean.drugType}</option>
 						</c:if>
-						<c:if test="${typeList.typeId !=condi.typeId }">
-						<option value="${typeList.typeId}" >${typeList.drugType}</option>
+						<c:if test="${typeList.stoDrugBean.typeId !=condiBean.typeId }">
+						<option value="${typeList.stoDrugBean.typeId}" >${typeList.stoDrugBean.dtBean.drugType}</option>
 						</c:if>
 						</c:forEach>
 				</select>
@@ -85,8 +85,7 @@
 				</thead>
 				<tbody>
 				<c:forEach items="${drugList}" var="sdList" varStatus="vs">
-					<tr class="text-c">
-
+					<tr>
 						<td>${sdList.stoDrugBean.drugId}</td>
 						<td>${sdList.stoDrugBean.drugName}</td>
 						<td>${sdList.stoDrugBean.generalName}</td>
@@ -102,7 +101,7 @@
 						<td>${sdList.minimum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
 						<td>${sdList.maximum }&nbsp;(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
 						<td>${sdList.useable}</td>
-						
+
 					</tr>
 					</c:forEach>
 				</tbody>

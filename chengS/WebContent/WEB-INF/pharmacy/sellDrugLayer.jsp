@@ -136,6 +136,7 @@ $('form').bootstrapValidator({
             }
         }
     });
+
 	function addDrug(drugId,drugName,drugmanu,retailPrice,specific,unit,drugNum,manuBatch,putBatch){
 		var str = specific.split('-');
 		/* window.opener.setValue(drugName,drugmanu,putBatch,manuBatch,purPrice); */
