@@ -45,75 +45,86 @@
 				href="javascript:location.replace(location.href);" title="刷新"><i
 				class="Hui-iconfont">&#xe68f;</i></a>
 		</nav>
-		<form id="audit" action="purchaseApplyLook.action" method="post">
-			<div class="page-container">
+		<div class="page-container">
+			<form id="audit" action="purchaseApplyLook.action" method="post">
 				<div class="text-c">
 					日期范围： <input type="text"
 						onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })"
 						id="logmin" name="afterDate" class="input-text Wdate"
-						value="${condiBean.afterDate==null?'':condiBean.afterDate}" style="width: 120px;"> - <input type="text"
+						value="${condiBean.afterDate==null?'':condiBean.afterDate}"
+						style="width: 120px;"> - <input type="text"
 						onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })"
 						id="logmax" name="beforeDate" class="input-text Wdate"
-						value="${condiBean.beforeDate==null?'':condiBean.beforeDate}" style="width: 120px;"> 申请人：<input type="text"
+						value="${condiBean.beforeDate==null?'':condiBean.beforeDate}"
+						style="width: 120px;"> 申请人：<input type="text"
 						name="adminName" id="adminName" placeholder="申请人"
-						value="${condiBean.adminName==null?'':condiBean.adminName}"style="width: 250px" class="input-text">
-						审核状态：<select name="checkId" id="checkId" >
-						            <option value="0">请选择</option>
-									<option value="23"<c:if test="${checkId==23}">selected="selected"</c:if>>待购买</option>
-									<option value="8" <c:if test="${checkId==8}">selected="selected"</c:if>>审核未通过</option>
-									<option value="7" <c:if test="${checkId==7}">selected="selected"</c:if>>未审核</option>
-							    </select>
+						value="${condiBean.adminName==null?'':condiBean.adminName}"
+						style="width: 250px" class="input-text"> 审核状态：<select
+						name="checkId" id="checkId">
+						<option value="0">请选择</option>
+						<option value="23"
+							<c:if test="${checkId==23}">selected="selected"</c:if>>待购买</option>
+						<option value="8"
+							<c:if test="${checkId==8}">selected="selected"</c:if>>审核未通过</option>
+						<option value="7"
+							<c:if test="${checkId==7}">selected="selected"</c:if>>未审核</option>
+					</select>
 					<button name="serachRecord" id="serachRecord"
 						class="btn btn-success" type="submit">
 						<i class="Hui-iconfont">&#xe665;</i>搜索
 					</button>
 				</div>
-				<div class="cl pd-5 bg-1 bk-gray mt-20">
-				<a
-						class="btn btn-success" onclick="exportExcel()">
-						导出Excel
-					</a>
-					<span class="r">共有数据：<strong>${count}</strong> 条
-					</span>
-				</div>
-				<div class="mt-20">
-					<table class="table table-border table-bordered table-bg">
-						<thead>
+			</form>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+				<a class="btn btn-success" onclick="exportExcel()"> 导出Excel </a> <span
+					class="r">共有数据：<strong>${count}</strong> 条
+				</span>
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg">
+					<thead>
+						<tr class="text-c">
+							<th width="40">药品编码</th>
+							<th width="60">药品名称</th>
+							<th width="100">申请数量</th>
+							<th width="100">申请时间</th>
+							<th width="100">申请理由</th>
+							<th width="60">申请人</th>
+							<th width="60">审核状态</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${drugApplyList}" var="auditApply">
 							<tr class="text-c">
-								<th width="40">药品编码</th>
-								<th width="60">药品名称</th>
-								<th width="100">申请数量</th>
-								<th width="100">申请时间</th>
-								<th width="100">申请理由</th>
-								<th width="60">申请人</th>
-								<th width="60">审核状态</th>
+								<td>${auditApply.stoDrugBean.drugId}</td>
+								<td>${auditApply.stoDrugBean.drugName}</td>
+								<td>${auditApply.applyNum}</td>
+								<td>${auditApply.applyDate}</td>
+								<td>${auditApply.applyReason}</td>
+								<td>${auditApply.adminBean.adminName}</td>
+								<td class="td-status"><span
+									class="label label-success radius">${auditApply.checkName}</span></td>
 							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${drugApplyList }" var="auditApply">
-								<tr class="text-c">
-									<td>${auditApply.stoDrugBean.drugId}</td>
-									<td>${auditApply.stoDrugBean.drugName}</td>
-									<td>${auditApply.applyNum}</td>
-									<td>${auditApply.applyDate}</td>
-									<td>${auditApply.applyReason}</td>
-									<td>${auditApply.adminBean.adminName}</td>
-									<td class="td-status"><span
-										class="label label-success radius">${auditApply.checkName}</span></td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					</br>
-					<div class="text-c">
-						
-						<button type="button" class="btn btn-success" onclick="prePage('${condiBean.pageNum}')">上一页</button>
-						${condiBean.pageNum}/${pageTotal} 
-						<button type="button" class="btn btn-success" onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button><!-- </a> -->
-					</div>
+						</c:forEach>
+					</tbody>
+				</table>
+				</br>
+				<div class="text-c">
+					<button type="button" class="btn btn-secondary-outline radius"
+						onclick="prePage('${condiBean.pageNum}')">上一页</button>
+					<label class="label label-default radius"><font size="2">当前页${condiBean.pageNum}/共${pageTotal}页</font></label>
+					<button type="button" class="btn btn-secondary-outline radius"
+						onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button>
+					<input type="text" style="width: 30px" class="input-text" id="page"
+					  onkeyup="this.value=this.value.replace(/\D/g,'')"
+						onafterpaste="this.value=this.value.replace(/\D/g,'')">
+					<button type="submit" class="btn btn-secondary-outline radius"
+						onclick="goPage('${pageTotal}')">
+						跳转
+						</button>
 				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 
 
@@ -139,47 +150,59 @@
 	<script type="text/javascript">
 		
 	</script>
-<script type="text/javascript">
-	/*上一页  */
-	function prePage(pageNum) {
-		var str1 = "";
-		if (pageNum > 1) {
-			pageNum -= 1;
-			str1 = "purchaseApplyLook.action?pageNum="
-					+ pageNum;
-		} else {
-			return;
+	<script type="text/javascript">
+		/*上一页  */
+		function prePage(pageNum) {
+			var str1 = "";
+			if (pageNum > 1) {
+				pageNum -= 1;
+				str1 = "purchaseApplyLook.action?pageNum=" + pageNum;
+			} else {
+				return;
+			}
+			$("#audit").attr("action", str1);
+			$("#audit").submit();
 		}
-		$("#audit").attr("action", str1);
-		$("#audit").submit();
-	}
-	/*下一页  */
-	function nextPage(pageNum, total) {
-		var str2 = "";
-		if (pageNum < total) {
-			pageNum = Number(pageNum) + 1;
-			str2 = "purchaseApplyLook.action?pageNum="+pageNum;
-	
-		} else {
-			return;
-		}
-		$("#audit").attr("action",str2);
-		
-		$("#audit").submit();
-	} 
+		/*下一页  */
+		function nextPage(pageNum, total) {
+			var str2 = "";
+			if (pageNum < total) {
+				pageNum = Number(pageNum) + 1;
+				str2 = "purchaseApplyLook.action?pageNum=" + pageNum;
 
-	/* 导出Excel */
-	function exportExcel(afterDate,beforeDate,adminName){
-		var afterDate = $("#logmin").val();
-		var beforeDate = $("#logmax").val();
-		var adminName = $("#adminName").val();
-		var r= confirm("确认导出Excel文件？");
-		if(r){
-			location.href = "exportExcel.action?afterDate=" + afterDate
-			+ "&beforeDate=" + beforeDate + "&adminName=" + adminName;
+			} else {
+				return;
+			}
+			$("#audit").attr("action", str2);
+
+			$("#audit").submit();
 		}
-	}
-	
-</script>
+
+		/*跳转页面*/
+		function goPage(total) {
+			var pageNum = $("#page").val();
+			var str2 = "";
+			if (pageNum > total || pageNum == 0 || pageNum == "") {
+				return;
+			} else {
+				str2 = "purchaseApplyLook.action?pageNum=" + pageNum;
+			}
+			$("#audit").attr("action", str2);
+			$("#audit").submit();
+		}
+
+		/* 导出Excel */
+		function exportExcel(afterDate, beforeDate, adminName) {
+			var afterDate = $("#logmin").val();
+			var beforeDate = $("#logmax").val();
+			var adminName = $("#adminName").val();
+			var r = confirm("确认导出Excel文件？");
+			if (r) {
+				location.href = "exportExcel.action?afterDate=" + afterDate
+						+ "&beforeDate=" + beforeDate + "&adminName="
+						+ adminName;
+			}
+		}
+	</script>
 </body>
 </html>

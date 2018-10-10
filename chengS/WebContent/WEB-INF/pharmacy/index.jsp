@@ -30,7 +30,6 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
 
-
 <link href="<%=path%>lib/bootstrapValidator.css" rel="stylesheet" />
 
 <!--[if IE 6]>
