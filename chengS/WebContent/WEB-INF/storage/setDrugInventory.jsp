@@ -106,11 +106,12 @@ String path = request.getScheme() +"://"+request.getServerName()
 	
 	<!-- 主页面 -->
 	<div class="page-container">
-		<form action="findDrugInventory" method="post" id="formDi" >
+		<form action="findDrugInventory.action" method="post" id="formDi" >
 		<div class="text-c">
 			药品编号: <input type="text" class="input-text" id="drugId" name="drugId" 
-			value="${condi.drugId}" style="width: 150px">
-			<button type="submit" class="btn btn-primary radius" id="" name="">
+			value="${condi.drugId==0?"":condi.drugId}" style="width: 150px">
+			<input type='hidden' id="h_drugId" value="0">
+			<button type="button" class="btn btn-primary radius" id="sub" name="">
 				搜索</button>
 		</div>
 		</form>
@@ -150,12 +151,11 @@ String path = request.getScheme() +"://"+request.getServerName()
 		</div>
 		<br />
 		<div style="float: right; margain-top: 20px;">
-			<span ><font size="2">共${pageTotal}页  &nbsp;当前页${condi.page}/${pageTotal}</font></span>  &nbsp; &nbsp; &nbsp;
 			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condi.page}')">上一页</button>
-			<c:forEach var="page" begin="1" end="${pageTotal}">
-			 <button type="submit" class="btn btn-primary size-S radius" onclick="skipPage('${page}')">${page}</button>
-			</c:forEach>
+			<label class="label label-default radius"><font size="2">当前页${condi.page}/共${pageTotal}页</font></label>
 			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal }')">下一页</button>
+			<input type="text" style="width:30px" class="input-text"  id="page" name="page" oninput = "value=value.replace(/[^\d]/g,'')" >
+			<button type="button" class="btn btn-secondary-outline radius"  onclick="return jumpPage('${pageTotal}')">跳转</button>
 		</div>
 	</div>
 	<!--_footer 作为公共模版分离出去-->
@@ -226,7 +226,16 @@ String path = request.getScheme() +"://"+request.getServerName()
         });
     }
 	
-	
+  //提交搜索
+	$(function(){
+		$("#sub").click(function(){
+			var num = $("#drugId").val()
+			if(num==""){ 
+				$("#drugId").val($("#h_drugId").val())
+			}
+			$("#formDi").submit();
+		})
+	})
 	
 		//弹出修改模态框
 		function updModel(inventoryId,minimum,maximum){
@@ -247,6 +256,10 @@ String path = request.getScheme() +"://"+request.getServerName()
 				//attr更改form表单的action属性，改为str1
 				$("#formDi").attr("action",str);
 				//把form表单提交。
+				var num = $("#drugId").val()
+				if(num==""){
+					$("#drugId").val($("#h_drugId").val())
+				}
 				$("#formDi").submit();
 			} else {
 				return;
@@ -263,19 +276,44 @@ String path = request.getScheme() +"://"+request.getServerName()
 				//attr更改form表单的action属性，改为str1
 				$("#formDi").attr("action",str);
 				//把form表单提交。
+				var num = $("#drugId").val()
+				if(num==""){
+					$("#drugId").val($("#h_drugId").val())
+				}
 				$("#formDi").submit();
+				
 			} else {
 				return;
 			}
 		}
-		//点击按钮跳转页面
+		//跳转页面
+		function jumpPage(total){
+			var page = $("#page").val();
+			var str = "";
+			str = "findDrugInventory.action?page="+page;
+			$("#formDi").attr("action",str);
+			
+			if(page=='' || page>total || page==0){
+				$("#page").val('');
+			}else{
+				var num = $("#drugId").val()
+				if(num==""){
+					$("#drugId").val($("#h_drugId").val())
+				}
+				//把form表单提交。
+				$("#formDi").submit();
+			}
+			
+		}
+		
+		/* //点击按钮跳转页面
 		function skipPage(page){
 			var str = "";
 			str = "findDrugInventory.action?page="+page;
 			$("#formDi").attr("action",str);
 			//把form表单提交。
 			$("#formDi").submit();
-		}
+		} */
 	</script>
 </body>
 </html>

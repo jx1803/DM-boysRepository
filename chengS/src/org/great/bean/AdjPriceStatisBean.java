@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
  * 注意：本内容仅限于传一科技内部传阅，禁止外泄以及用于其他的商业目
  */
 @Component
-public class adjPriceStatisBean {
+public class AdjPriceStatisBean {
 	
 	private String generalName;	//药品名称
 	private Object [] dataArray;//调价数据
 	private Object [] countArray;//调价次数
 	
-	public adjPriceStatisBean() {
+	public AdjPriceStatisBean() {
 		
 	}
 

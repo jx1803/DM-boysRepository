@@ -31,7 +31,10 @@
 <title>药品价格管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 
+	首页 <span class="c-gray en">&gt;</span> 
+	药房统计<span class="c-gray en">&gt;</span> 
+	药品调价信息 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <!-- 主页面 -->
 <div class="page-container">
 		<div class="text-c">
@@ -41,7 +44,7 @@
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			value="${condi.drugId==null?"":condi.drugId}">
+			value="${condi.drugId==0?"":condi.drugId}">
 			<input type='hidden' id="h_drugId" value="0">
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
@@ -60,10 +63,7 @@
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
-			<button type="button" class="btn btn-primary radius" id="" name="" onclick="addModal()">
-			<i class="Hui-iconfont">&#xe600;</i> 添加药品
-			</button>
+			<button type="submit" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -75,7 +75,7 @@
 						<th>药品编码</th>
 						<th>药品名称</th>
 						<th>通用名称</th>
-						<th>当前售价</th>
+						<th>当前售价(元)</th>
 						<th>查看调价统计</th>
 					</tr>
 				</thead>
@@ -97,12 +97,11 @@
 		</div>
 		<br />
 		<div style="float: right; margain-top: 20px;">
-			<span ></span><font size="2">共${pageTotal}页  &nbsp;当前页${condi.page}/${pageTotal}</font></span>  &nbsp; &nbsp; &nbsp;
 			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condi.page}')">上一页</button>
-			<c:forEach var="page" begin="1" end="${pageTotal}">
-			 <button type="button" class="btn btn-primary size-S radius" onclick="skipPage('${page}')">${page}</button>
-			</c:forEach>
-			<button type="button" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal }')">下一页</button>
+			<label class="label label-default radius"><font size="2">当前页${condi.page}/共${pageTotal}页</font></label>
+			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal }')">下一页</button>
+			<input type="text" style="width:30px" class="input-text"  id="page" name="page" oninput = "value=value.replace(/[^\d]/g,'')" >
+			<button type="button" class="btn btn-secondary-outline radius"  onclick="return jumpPage('${pageTotal}')">跳转</button>
 		</div>
 	</div>
 <!--_footer 作为公共模版分离出去-->
@@ -166,7 +165,28 @@ function nextPage(page, total) {
 		return;
 	}
 }
-//点击按钮跳转页面
+
+//跳转页面
+function jumpPage(total){
+	var page = $("#page").val();
+	var str = "";
+	str = "findAdjustPrice.action?page="+page;
+	$("#formSd").attr("action",str);
+	
+	if(page=='' || page>total || page==0){
+		$("#page").val('');
+	}else{
+		var num = $("#drugId").val()
+		if(num==""){
+			$("#drugId").val($("#h_drugId").val())
+		}
+		//把form表单提交。
+		$("#formSd").submit();
+	}
+	
+}
+
+/* //点击按钮跳转页面
 function skipPage(page){
 	var str = "";
 	str = "findAdjustPrice.action?page="+page;
@@ -178,7 +198,7 @@ function skipPage(page){
 	}
 	$("#formSd").submit();
 }
-	
+	 */
 
 
 /*

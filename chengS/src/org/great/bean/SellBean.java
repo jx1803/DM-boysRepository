@@ -10,7 +10,6 @@
 
 package org.great.bean;
 
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 

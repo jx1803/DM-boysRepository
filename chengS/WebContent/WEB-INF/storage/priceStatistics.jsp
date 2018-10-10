@@ -39,7 +39,9 @@ String path = request.getScheme() +"://"+request.getServerName()
 </nav>
 <div class="page-container">
 	<input type="hidden" id="drugId" name="drugId" value="${drugId}"/>
-	<div id="container" style="min-width:700px;height:400px"></div>
+	<div id="container" style="min-width:700px;height:400px">
+		<H2 id="myTitle"></H2>
+	</div>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="<%=path%>lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -58,45 +60,59 @@ $(function(){
 		url : 'showPriceStatistics.action?drugId='+drugId,
 		dataType : 'json',
 		success : function(data) {
-			
-			$(function () {
-			    Highcharts.chart('container', {
-			        title: {
-			            text: '药品调价统计',
-			            x: -20 //center
-			        },
-			        subtitle: {
-			            text: data.generalName,	//副标题（药品名）
-			            x: -20
-			        },
-			        xAxis: {
-			            categories:data.countArray	//次数（横坐标）
-			        },
-			        yAxis: {
-			            title: {
-			                text: 'Price (￥)'
-			            },
-			            plotLines: [{
-			                value: 0,
-			                width: 1,
-			                color: '#808080'
-			            }]
-			        },
-			        tooltip: {
-			            valueSuffix: '￥'
-			        },
-			        legend: {
-			            layout: 'vertical',
-			            align: 'right',
-			            verticalAlign: 'middle',
-			            borderWidth: 0
-			        },
-			        series: [{
-			            name: '价格',
-			            data: data.dataArray	//统计数据
-			        }]
-			    });
-			});
+			if( data.generalName !=null){
+				$(function () {
+				    Highcharts.chart('container', {
+				        title: {
+				            text: '药品调价统计',
+				            x: -20 //center
+				        },
+				        subtitle: {
+				            text: data.generalName,	//副标题（药品名）
+				            x: -20
+				        },
+				        xAxis: {
+				            categories:data.countArray	//次数（横坐标）
+				        },
+				        yAxis: {
+				            title: {
+				                text: 'Price (￥)'
+				            },
+				            plotLines: [{
+				                value: 0,
+				                width: 1,
+				                color: '#808080'
+				            }]
+				        },
+				        tooltip: {
+				            valueSuffix: '￥'
+				        },
+				        legend: {
+				            layout: 'vertical',
+				            align: 'right',
+				            verticalAlign: 'middle',
+				            borderWidth: 0
+				        },
+				        series: [{
+				            name: '价格',
+				            data: data.dataArray	//统计数据
+				        }]
+				    });
+				});
+			}else{
+				$(function () {
+				 Highcharts.chart('container', {
+				        title: {
+				            text: '药品调价统计',
+				            x: -20 //center
+				        },
+				        subtitle: {
+				            text:"（暂无调价信息）",	//副标题（药品名）
+				            x: -20
+				        }
+				    });
+				 }); 
+			}
 		}
 	});
 });

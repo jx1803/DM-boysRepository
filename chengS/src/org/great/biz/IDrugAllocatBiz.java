@@ -2,6 +2,7 @@ package org.great.biz;
 
 import java.util.List;
 
+import org.great.bean.AdjPriceStatisBean;
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DfBean;
@@ -10,7 +11,6 @@ import org.great.bean.InventoryBean;
 import org.great.bean.PhaDrugBean;
 import org.great.bean.StoDrugBean;
 import org.great.bean.TabuBean;
-import org.great.bean.adjPriceStatisBean;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -65,6 +65,6 @@ public interface IDrugAllocatBiz {
 	
 	/***************************药品调价统计*****************************/
 	public ModelAndView findAdjustPrice(CondiBean condi) ;
-	public adjPriceStatisBean priceData(AdjustPriceBean adjustPrice);
+	public AdjPriceStatisBean priceData(AdjustPriceBean adjustPrice);
 	public int priceDataSum(AdjustPriceBean adjustPrice);
 }
