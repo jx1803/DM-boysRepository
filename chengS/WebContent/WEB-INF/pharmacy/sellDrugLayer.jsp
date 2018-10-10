@@ -1,38 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Bookmark" href="/favicon.ico">
 <link rel="Shortcut Icon" href="/favicon.ico" />
 <!--[if lt IE 9]>
 <script type="text/javascript" src="lib/html5shiv.js"></script>
 <script type="text/javascript" src="lib/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="../lib/bootstrapValidator.css" />
+<link rel="stylesheet" type="text/css"
+	href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	href="../lib/bootstrapValidator.css" />
 
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	href="../static/h-ui.admin/css/style.css" />
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品列表 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
-<form action="sellDrugLayer.action" method="post" id="select">
-	<div class="text-c"> 
-		药品拼音码：<input type="text" class="input-text" style="width:80px" placeholder="输入拼音码" id="" name="pinyinCode" value="${condiBean.pinyinCode }" >
-		&nbsp;&nbsp;药品名：<input type="text" class="input-text" style="width:120px" placeholder="输入药品名" id="" name="drugName" value="${condiBean.drugName }"><br>
-	
+	<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
+	药品发药<span class="c-gray en">&gt;</span>选择药品 <a
+		class="btn btn-success radius r"
+		style="line-height: 1.6em; margin-top: 3px"
+		href="javascript:location.replace(location.href);" title="刷新"><i
+		class="Hui-iconfont">&#xe68f;</i></a></nav>
 		
-		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
-	</form>
+	<div class="page-container">
+
+		<form action="sellDrugLayer.action" method="post" id="select">
+			<div class="text-c">
+				药品拼音码：<input type="text" class="input-text" style="width: 80px"
+					placeholder="输入拼音码" id="" name="pinyinCode"
+					value="${condiBean.pinyinCode }"> &nbsp;&nbsp;药品名：<input
+					type="text" class="input-text" style="width: 120px"
+					placeholder="输入药品名" id="" name="drugName"
+					value="${condiBean.drugName }"><br>
+
+
+				<button type="submit" class="btn btn-success" id="" name="">
+					<i class="Hui-iconfont">&#xe665;</i> 搜索
+				</button>
+		</form>
 	</div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
@@ -53,64 +76,47 @@
 			</tr>
 		</thead>
 		<tbody>
+
 		<c:forEach items="${drugList }" var="drug">
 			<tr class="text-c">
 				<td>${drug.stoDrugBean.drugName }</td>
 				<td>${drug.stoDrugBean.drugId }</td>
 				<td>${drug.stoDrugBean.specific }</td>
 				<td>${drug.stoDrugBean.unit }</td>
-				<td>${drug.handleNum }</td>
+				<td>${drug.handleNum }(${ fn:split(drug.stoDrugBean.specific,'-')[1]})</td>
 				<td>${drug.stoDrugBean.drugmanu }</td>
 				<td>${drug.proDate }</td>
 				<td>${drug.manuBatch }</td>
 				<td>${drug.stoDrugBean.retailPrice }</td>
 				<td><button class="btn btn-primary" onclick="addDrug('${drug.stoDrugBean.drugId }',
+
 				'${drug.stoDrugBean.drugName }','${drug.stoDrugBean.drugmanu }',
 				'${drug.stoDrugBean.retailPrice }','${drug.stoDrugBean.specific }','${drug.stoDrugBean.unit }',
 				'${drug.handleNum }','${drug.manuBatch }','${drug.batchDetailId }')">添加</button></td>
-			</tr>
+				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-</div>
+	</div>
 
-<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script> 
-<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="../lib/bootstrapValidator.js"></script>
-<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
-<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
-<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript"
+		src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+	<!--/_footer 作为公共模版分离出去-->
+	<script type="text/javascript" src="../lib/bootstrapValidator.js"></script>
+	<script type="text/javascript"
+		src="../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript"
+		src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
-$('form').bootstrapValidator({
-　　　　message: 'This value is not valid',
-        　feedbackIcons: {
-            　　　　　　　　valid: 'glyphicon glyphicon-ok',
-            　　　　　　　　invalid: 'glyphicon glyphicon-remove',
-            　　　　　　　　validating: 'glyphicon glyphicon-refresh'
-        　　　　　　　　   },
-        fields: {
-            username: {
-                message: '用户名验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '用户名不能为空'
-                    }
-                }
-            },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: '邮箱地址不能为空'
-                    }
-                }
-            }
-        }
-    });
-});
+
+
+
 
 	function addDrug(drugId,drugName,drugmanu,retailPrice,specific,unit,drugNum,manuBatch,putBatch){
 		var str = specific.split('-');

@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
@@ -45,7 +46,7 @@ public interface IStockWorkBiz {
 	public ModelAndView returnManuApply(DrugApplyBean drugApplyBean);//提交退还厂家申请
 	public ModelAndView toAllReturnManuApply(CondiBean condiBean);//退还厂家记录查询
 	public ModelAndView toReturnManuAuditList(CondiBean condiBean);//退还厂家未审核记录查询
-	public String returnManuAudit(DrugApplyBean drugApplyBean);//退还审核
+	public String returnManuAudit(HttpSession session,DrugApplyBean drugApplyBean);//退还审核
 	
 	/**导出Excel文件
 	 * @throws Exception */

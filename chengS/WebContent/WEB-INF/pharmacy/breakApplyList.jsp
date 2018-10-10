@@ -25,6 +25,9 @@
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <title>报损申请</title>
+<script language=JavaScript>  
+  widow.top.location.reload();  
+</script> 
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
@@ -87,12 +90,14 @@
 	</table>
 	
 	<div style="float: right; margain-top: 20px;">
-			<button  class="btn btn-secondary-outline radius" id=""
+			<button  class="btn btn-secondary-outline radius" id="pre"
 				name="" onclick="prePage('${pageNum}')">上一页</button>
-			<button  class="btn btn-primary size-S radius" id=""
-				name="">1</button>
-			<button  class="btn btn-secondary-outline radius" id=""
+			<label class="label label-default radius"><font size="2">当前页数${pageNum }/共${pageTotal }页 </label>
+			<button  class="btn btn-secondary-outline radius" id="next"
 				name="" onclick="nextPage('${pageNum}','${pageTotal }')">下一页</button>
+				<input type="text" style="width:30px" class="input-text"  id="page" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" name="page" >
+			<button type="button" onclick="jumpPage('${pageTotal }')" class="btn btn-secondary-outline radius" >跳转<button>
+				
 		</div>
 </div>
 
@@ -139,6 +144,19 @@
 		$("#select").attr("action", str2);
 		$("#select").submit();
 	} 
+	
+	/* 跳转页数 */
+	function jumpPage(total){
+		var pageNum=$("#page").val();
+		var str="";
+		if(pageNum>total||pageNum==''||pageNum==0){
+			return;
+		}else{
+			str = "getDrugApply.action?applyTypeId=12pageNum="+pageNum
+			$("#select").attr("action", str);
+			$("#select").submit();
+		}
+	}
 	
 
 /*

@@ -27,6 +27,9 @@
 	href="<%=path%>static/h-ui.admin/css/style.css" />
 
 <title>退还厂家审核</title>
+<script language=JavaScript>  
+  widow.top.location.reload();  
+</script> 
 </head>
 <body>
 	<nav class="breadcrumb">

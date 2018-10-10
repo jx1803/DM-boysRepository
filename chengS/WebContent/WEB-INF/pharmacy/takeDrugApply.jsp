@@ -28,7 +28,9 @@
 	href="../static/h-ui.admin/css/style.css" />
 
 <title>药品请领</title>
-
+<script language=JavaScript>  
+  widow.top.location.reload();  
+</script> 
 </head>
 <body>
 	<nav class="breadcrumb">

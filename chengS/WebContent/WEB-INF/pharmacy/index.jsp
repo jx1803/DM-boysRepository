@@ -29,8 +29,9 @@
 	href="<%=path%>static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>static/h-ui.admin/css/style.css" />
-<%-- <link rel="stylesheet" href="<%=path%>lib/bootstrap.css" /> --%>
+
 <link href="<%=path%>lib/bootstrapValidator.css" rel="stylesheet" />
+
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -58,8 +59,7 @@
 								<table class="table table-bg">
 									<tbody>
 
-										<input type="hidden"
-											value="${sessionScope.User.adminAccount }" name="accoutAdmin" />
+										<input type="hidden" value="${sessionScope.User.adminAccount }" name="accoutAdmin" />
 										<tr class="row cl form-group">
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												原始密码：</th>
@@ -122,7 +122,7 @@
 
 						<li id="Hui-msg"><a href="javascript:;"
 							onclick="member_add('消息提醒','<%=path%>pharmacy/toWarn.action','','510')"
-							title="消息"><span class="badge badge-danger">${warnCount}</span><i
+							title="消息"><span class="badge badge-danger" id="warnId">${warnCount}</span><i
 								class="Hui-iconfont" style="font-size: 18px">&#xe68a;</i></a></li>
 
 						<li id="Hui-skin" class="dropDown right dropDown_hover"><a

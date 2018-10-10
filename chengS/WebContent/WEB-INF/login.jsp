@@ -17,7 +17,7 @@
 <link href="<%=path %>static/h-ui.admin/css/style.css" rel="stylesheet" type="text/css" />
 <link href="<%=path %>lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
  <link rel="stylesheet" href="<%=path %>lib/jigsaw.css">
- <link rel="stylesheet" href="<%=path %>lib/bootstrap.css"/>
+ <link rel="stylesheet" href="<%=path %>lib/bootstrap.css"/> 
  <link href="<%=path %>lib/bootstrapValidator.css" rel="stylesheet" />
 <title>后台登录 - H-ui.admin v3.1</title>
 <meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
@@ -30,7 +30,7 @@
 <div class="header"></div>
 <div class="loginWraper">
    <div id="loginform" class="loginBox">
-     <form class="form form-horizontal" action="<%=path %>admin/toIndex.action" method="post" name="form1" id="form1">
+     <form class="form form-horizontal" action="<%=path %>admin/toIndex.action" method="post" name="form1" id="form1" target="_parent" >
       <div class="row cl form-group" style="width:100%;">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-xs-8">
@@ -46,7 +46,7 @@
       </div>
       <div class="row cl form-group" style="width:100%;">
       <div class="formControls col-xs-8 col-xs-offset-3">
-          <input class="input-text size-L" type="text" placeholder="验证码"  style="width:150px;" name="loginy" id="loginy" onblur="checkUname()">
+          <input class="input-text size-L" type="text" placeholder="验证码"  style="width:150px;" name="loginy" id="loginy" onkeyup="checkUname()">
           <img src="<%=path %>code/toCaptcha.action" onclick ="getCode()" id="imgCode"> <span id="loginstate"></span> </div>
          <!--  <div style="position:relative; height:40px;top:40px;" ><a style="position:absolute; left:180px; top:10px;" href="javascript:;" onclick="forgetpassword()" >修改密码</a></div> -->
       </div>
@@ -54,14 +54,14 @@
       <div class="row cl form-group" style="width:100%">
         <div class="formControls col-xs-8 col-xs-offset-3" >
          <!--  <input name="" onclick="test1()" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;"> -->
-           <button type="submit" class="btn btn-primary btn-success radius size-L" style="width:150px" name="signup" value="Sign up">登录</button>
+           <button type="submit" class="btn btn-primary btn-success radius size-L" style="width:150px" name="signup" id="signup" value="Sign up">登录</button>
           <button type="reset" class="btn btn-default radius size-L" style="width:150px" name="signup" value="Sign up">取消</button>
         </div>
       </div>
     </form>
   </div>
 </div>  
-
+<input type="hidden" value="${sessionScope.error }" id="error" name="error">
 <div class="footer">Copyright 你的公司名称 by H-ui.admin v3.1</div>
 <script src="<%=path %>lib/jigsaw.js"></script>
 <script type="text/javascript" src="<%=path %>lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -71,6 +71,13 @@
 <script type="text/javascript">
 
  $(function () { 
+	 
+	 var str = $('#error').val();
+	 if(str=="false"){
+		 alert("用户名或密码错误");
+	 }
+	 
+	 
 	$('#form1').bootstrapValidator({
 	feedbackIcons: {
     valid: 'glyphicon glyphicon-ok',
@@ -134,10 +141,18 @@ function checkUname(){
     dataType:"text",
 	type:"post",
    success:function(redata){
-	   console.log(document.getElementById('loginstate'));
-	   document.getElementById('loginstate').innerHTML = redata;
-
-   		},
+	 
+	  
+	   if(redata=="2"){
+		   //2是验证码错误
+		    document.getElementById('loginstate').innerHTML ="验证码错误";
+		   $('#signup').attr('disabled',true);
+		   
+	   }else{
+		   document.getElementById('loginstate').innerHTML="验证码正确"
+			   $('#signup').attr('disabled',false);
+	   }
+   	},
 
 	
    });
