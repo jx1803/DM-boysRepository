@@ -23,7 +23,9 @@
 	href="../static/h-ui.admin/css/style.css" />
 
 <title>药品退库</title>
-
+<script language=JavaScript>  
+  widow.top.location.reload();  
+</script> 
 </head>
 <body>
 	<nav class="breadcrumb">
