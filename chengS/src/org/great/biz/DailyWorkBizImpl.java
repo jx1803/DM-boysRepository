@@ -655,7 +655,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			}
 			if (number > 0) {
 				if (bdLsit.get(i).getHandleNum() >= number) {
-					bdLsit.get(i).setTotalMoney((bdLsit.get(i).getHandleNum() - number) * bdLsit.get(i).getPurPrice());
+					bdLsit.get(i).setTotalMoney(0);
 					bdLsit.get(i).setHandleNum(number);
 					number = 0;
 				} else {

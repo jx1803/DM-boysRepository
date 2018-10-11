@@ -38,7 +38,6 @@ public class LoginHandle {
 	@Log(operationType = "登录", operationName = "登录")
 		@RequestMapping(value = "/toIndex.action")
 		public String toIndex(HttpServletRequest req, HttpServletResponse resp, AdminBean user,String loginy)throws IOException  {
-			PrintWriter out = resp.getWriter();
 		
 			//验证码
 			HttpSession session = req.getSession();
