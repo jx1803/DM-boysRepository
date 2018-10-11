@@ -93,7 +93,7 @@
 		<div class="row cl form-group" style="width:100%">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>办公电话：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="form-control" value="" placeholder="0592-8900110" id="officePhone" name="officePhone"><span id="iphone2"></span>
+				<input type="text" class="form-control" value="" placeholder="" id="officePhone" name="officePhone"><span id="iphone2"></span>
 			</div>
 		</div>
 		<div class="row cl form-group" style="width:100%">
@@ -119,6 +119,7 @@
 					<option value="硕士">硕士</option>
 					<option value="博士">博士</option>
 					<option value="博士后">博士后</option>
+					<option value="其他">其他</option>
 				</select>
 				</span> </div>
 		</div>
@@ -165,7 +166,6 @@
 <script type="text/javascript">
 
 $(function () {
-	alert($('#adminAccount').val());
 	$('#form1').bootstrapValidator({
 	feedbackIcons: {
     valid: 'glyphicon glyphicon-ok',
@@ -224,7 +224,7 @@ $(function () {
             officePhone:{
                 validators: {
                     notEmpty: {
-                        message: '密码不得为空'
+                        message: '电话不得为空'
                     },
                    
                     regexp: {
@@ -236,7 +236,7 @@ $(function () {
             mobilePhone:{
                 validators: {
                     notEmpty: {
-                        message: '密码不得为空'
+                        message: '电话不得为空'
                     },
                     stringLength: {
                         min: 11,
@@ -300,11 +300,11 @@ $(function () {
     		   	
     		   		},
     			error:function(){
-    				alert("123")
     			}
     		   });
         
      }else{
+    	 alert(1)
         document.getElementById("adAccount").innerHTML="输入错误";
      }
  } 
@@ -364,47 +364,7 @@ function test(){
 	 
 } */
 
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
-	$("#form-member-add").validate({
-		rules:{
-			username:{
-				required:true,
-				minlength:2,
-				maxlength:16
-			},
-			sex:{
-				required:true,
-			},
-			mobile:{
-				required:true,
-				isMobile:true,
-			},
-			email:{
-				required:true,
-				email:true,
-			},
-			uploadfile:{
-				required:true,
-			},
-			
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	});
-})
+
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

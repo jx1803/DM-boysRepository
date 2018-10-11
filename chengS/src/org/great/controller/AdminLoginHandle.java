@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.jws.WebParam.Mode;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -61,7 +62,6 @@ public class AdminLoginHandle {
 	public ModelAndView userList(HttpServletRequest request,CondiBean cond) {
 		//带入搜索条件
 		ulist=iUserBiz.UserList(cond);
-		System.out.println("cond+"+cond.getPage());
 		int pagenum=iUserBiz.ResultComm(cond);
 		int pageTotal=PageUtil.pageTotal(pagenum);
 		//总页数带模糊查找的总页数
@@ -103,8 +103,8 @@ public class AdminLoginHandle {
 	//ajax，注册新用户的时候，是否账号已存在
 	@RequestMapping(value="/testAccount.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String testAccount(HttpServletRequest request,AdminBean adbean,String adminAccount) {
-		
+	public String testAccount(HttpServletRequest request,HttpServletResponse response,AdminBean adbean,String adminAccount) {
+		response.reset();
 		AdminBean admin = iUserBiz.reappearUser(adminAccount);
 		if(null==admin) {
 		flag="false";
@@ -231,9 +231,7 @@ public class AdminLoginHandle {
 		if(ulist.size()>0) {
 			ulist.clear();
 		}
-		CondiBean cond = new CondiBean();
-		//return roleList(request,cond);
-		return "redirect:roleList.action";
+		return "forward:roleList.action";
 	}
 	
 	//进入角色信息修改页面
@@ -250,12 +248,12 @@ public class AdminLoginHandle {
 	//角色信息修改保存
 	@Log(operationType = "", operationName = "角色修改")
 	@RequestMapping(value="/roleListSave.action")
-	public ModelAndView roleListSave(HttpServletRequest request,RoleBean rolebean) {
+	public String roleListSave(HttpServletRequest request,RoleBean rolebean) {
 		//进入页面修改
 		iUserBiz.updateRole(rolebean);
-		CondiBean cond = new CondiBean();
-		return roleList(request,cond);
-		//return "redirect:roleList.action";
+//		CondiBean cond = new CondiBean();
+//		return roleList(request,cond);
+		return "redirect:roleList.action";
 	}
 	//角色删除ajax
 	@Log(operationType = "", operationName = "角色删除")

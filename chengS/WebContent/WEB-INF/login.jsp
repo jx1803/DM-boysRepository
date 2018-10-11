@@ -19,17 +19,28 @@
  <link rel="stylesheet" href="<%=path %>lib/jigsaw.css">
  <link rel="stylesheet" href="<%=path %>lib/bootstrap.css"/> 
  <link href="<%=path %>lib/bootstrapValidator.css" rel="stylesheet" />
-<title>后台登录 - H-ui.admin v3.1</title>
-<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
-<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+<title>后台登录 </title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<style type="text/css" >
+
+	#ccont{
+            background-image:url(../images/error.jpg);
+
+            background-position:center;           
+
+             background-repeat:repeat-y；
+        }
+
+</style>
 </head>
 <body>
 
 
 <input type="hidden" id="TenantId" name="TenantId" value="" />
-<div class="header"></div>
-<div class="loginWraper">
-   <div id="loginform" class="loginBox">
+<div class=""></div>
+<div class=loginWraper >
+   <div id="loginform" class="loginBox"><center><div style="font-size:25px">智慧药房管理系统</div></center>
      <form class="form form-horizontal" action="<%=path %>admin/toIndex.action" method="post" name="form1" id="form1" target="_parent" >
       <div class="row cl form-group" style="width:100%;">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
@@ -62,7 +73,6 @@
   </div>
 </div>  
 <input type="hidden" value="${sessionScope.error }" id="error" name="error">
-<div class="footer">Copyright 你的公司名称 by H-ui.admin v3.1</div>
 <script src="<%=path %>lib/jigsaw.js"></script>
 <script type="text/javascript" src="<%=path %>lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="<%=path %>static/h-ui/js/H-ui.min.js"></script>
