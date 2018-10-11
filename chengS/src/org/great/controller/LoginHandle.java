@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.great.bean.AdminBean;
+import org.great.bean.RoleBean;
 import org.great.biz.IUserBiz;
 import org.great.tools.EncryMd5;
 import org.great.tools.Log;
@@ -82,8 +83,11 @@ public class LoginHandle {
 	public ModelAndView toMain(HttpServletRequest req,AdminBean user) {
 		HttpSession session = req.getSession();
 		user=(AdminBean) session.getAttribute("User");
+		int roleid = iUserBiz.selectRoleAndAdmin(user.getAdminId());
+		RoleBean role = iUserBiz.selectRole(roleid);
 		ulist=iUserBiz.selectAllMenu(user);
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("role",role);
 		mav.addObject("ulist", ulist);
 		mav.setViewName("pharmacy/index");
 		return mav;
@@ -115,5 +119,11 @@ public class LoginHandle {
 			}
 			
 			return flag;
+		}
+		
+		//跳去重新登录界面
+		@RequestMapping(value="/toReturnLogin.action")
+		public ModelAndView returnLogin(HttpServletRequest req) {
+			return new ModelAndView("sessionTimeout");
 		}
 }

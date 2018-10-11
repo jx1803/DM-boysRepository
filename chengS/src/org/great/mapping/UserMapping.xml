@@ -68,7 +68,7 @@
 	</resultMap>
 <!-- 用户总页数显示，包括模糊查找时 -->
 	<select id="resultPage" parameterType="org.great.bean.CondiBean" resultType="Integer">
-		select count(*) as result from TBLADMIN u where 1=1 and u.paramid!=4
+	select count(*) from TBLADMIN u,TBLROLE r,TBLDEPT d,TBLPARAM p, TBLADMINANDROLE a where a.roleid=r.roleid and a.userid=u.adminid and u.deptid=d.deptid and u.paramId=p.paramId and u.paramid!=4
 		<if test="null!=entrytime and ''!=entrytime">
 			and u.entryDate&gt;=#{entrytime}
 		</if>
@@ -279,7 +279,7 @@
 	
 	<!-- 所有的菜单列表 -->
 	<select id="selectallmenu" parameterType="org.great.bean.AdminBean" resultType="org.great.bean.PermissionBean">
-		select d.* from  TBLADMIN a,TBLADMINANDROLE b,tblpermission d,tblroleandper e,tblrole f where a.adminid=b.userid and b.roleid=e.roleid and e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0 and a.adminAccount=#{adminAccount} union select h.* from tblpermission h where h.permissionid in(select d.pid from TBLADMIN a,TBLADMINANDROLE b,tblpermission d,tblroleandper e,tblrole f where a.adminid=b.userid and b.roleid=e.roleid and  e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0  and a.adminAccount=#{adminAccount}) 	
+		select d.* from  TBLADMIN a,TBLADMINANDROLE b,tblpermission d,tblroleandper e,tblrole f where a.adminid=b.userid and b.roleid=e.roleid and e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0 and a.adminAccount=#{adminAccount,jdbcType=VARCHAR} union select h.* from tblpermission h where h.permissionid in(select d.pid from TBLADMIN a,TBLADMINANDROLE b,tblpermission d,tblroleandper e,tblrole f where a.adminid=b.userid and b.roleid=e.roleid and  e.roleid=f.roleid and d.permissionid=e.permissionid and d.pid!=0  and a.adminAccount=#{adminAccount,jdbcType=VARCHAR}) 	
 	</select>
 	<!-- 一级菜单 -->
 	<select id="levelonemenu" parameterType="org.great.bean.CondiBean" resultType="org.great.bean.PermissionBean"> 
@@ -323,6 +323,11 @@
 	<insert id="insertsmenu" parameterType="org.great.bean.PermissionBean" >
 		insert into TBLPERMISSION (permissionId,permission,pid,url) values (SPMSSEQ.NEXTVAL,#{permission,jdbcType=VARCHAR},#{pid,jdbcType=NUMERIC},#{url,jdbcType=VARCHAR})		
 	</insert>
+	
+	<!-- 删除菜单与角色关联表 -->
+	<delete id="delMenuAndRole" parameterType="Integer" >
+		 delete from (select * from TBLROLEANDPER w) n  where n.permissionid=#{fid}
+	</delete>
 	
 	<!-- 一级菜单删除 ，一级菜单下的二级也全部删除-->
 	<delete id="menuonedel" parameterType="Integer">

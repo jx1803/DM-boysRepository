@@ -41,7 +41,7 @@ public final class ImageUtil {
 		BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		
 		Graphics graphic = image.getGraphics();
-		graphic.setColor(Color.LIGHT_GRAY);  
+		graphic.setColor(Color.WHITE);  
 		graphic.fillRect(0, 0, WIDTH, HEIGHT);
 		Random ran = new Random();
 		// 画随机字符

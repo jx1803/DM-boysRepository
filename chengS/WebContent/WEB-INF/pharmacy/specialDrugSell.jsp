@@ -28,36 +28,33 @@
 <title></title>
 </head>
 <body>
+
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 药品报损列表 <span class="c-gray en">&gt;</span>特殊药品销售登记 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <!-- 主页面 -->
 	<div class="page-container">
 		<div class="text-c">
-			<form action="showTakeStock.action" method="post" id="formSd" >
+			<form action="specialDrugSell.action" method="post" id="formSd" >
 			药品名称: 
-			<input type="text" class="input-text" id="drugName" name="drugName" value="${condi.drugName==null?"":condi.drugName}"
+			<input type="text" class="input-text" id="drugName" name="drugName" value="${condiBean.drugName==null?"":condiBean.drugName}"
 				style="width: 150px"> 
 		 	 药品编码: 
 			<input type="text" class="input-text" id="drugId" name="drugId" style="width: 150px" 
-			value="${condiBean.drugId==null?'':condi.drugId}">
+			value="${condiBean.drugId==0?'':condiBean.drugId}">
 			<input type='hidden' id="h_drugId" value="0">
 			拼音码:
 			 <input type="text" class="input-text" id="pinyinCode" name="pinyinCode" 
-			 style="width: 150px" value="${condiBean.pinyinCode==null?"":condi.pinyinCode}">
+			 style="width: 150px" value="${condiBean.pinyinCode==null?"":condiBean.pinyinCode}">
 			药品分类：
 			<span class="select-box" id="addShowDt" style="width:160px"> 
 				<select class="select" size="1" name="typeId" id="typeId" >
 						<option value="0">请选择类型</option>
-						<c:forEach items="${drugTypeList}" var="typeList">
-						<c:if test="${typeList.stoDrugBean.typeId ==condiBean.typeId }">
-						<option value="${typeList.stoDrugBean.typeId}" selected="selected">${typeList.stoDrugBean.dtBean.drugType}</option>
-						</c:if>
-						<c:if test="${typeList.stoDrugBean.typeId !=condiBean.typeId }">
-						<option value="${typeList.stoDrugBean.typeId}" >${typeList.stoDrugBean.dtBean.drugType}</option>
-						</c:if>
+						<c:forEach items="${ulist}" var="typeList">
+						<option value="${typeList.typeId }">${typeList.drugType }</option>
+					
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
+			<button type="submit" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -72,32 +69,35 @@
 						<th>规格</th>
 						<th>单位</th>
 						<th>零售价</th>
+						<th>销售数量</th>
+						<th>销售金额(元)</th>
 						<th>类别</th>
 						<th>销售人员</th>
 						<th>销售时间</th>
 						<th>厂家批号</th>
 						<th>入库批次</th>
-						
-						<th>当前状态</th>
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach items="${drugList}" var="sdList" varStatus="vs">
+				<c:forEach items="${list}" var="sdList" varStatus="vs">
 					<tr>
 						<td>${sdList.stoDrugBean.drugId}</td>
 						<td>${sdList.stoDrugBean.drugName}</td>
 						<td>${sdList.stoDrugBean.generalName}</td>
-						<td>${sdList.stoDrugBean.specific}</td>
+						<td>${sdList.stoDrugBean.specific}
+						</td>
 						<td>${sdList.stoDrugBean.unit}</td>
 						<td>${sdList.stoDrugBean.retailPrice}</td>
-						<td>${sdList.stoDrugBean.drugTypeBean.drugType}</td>
-						<td>${sdList.stoDrugBean.dfBean.dosageForm}</td>
-						<td>${sdList.stoDrugBean.antibiotic}</td>
-						<td>${sdList.stoDrugBean.drugmanu}</td>
-						<td>${sdList.stoDrugBean.proPlace}</td>
 						
-						<td>${sdList.useable}</td>
-
+						<td>${sdList.sellNum }(${ fn:split(sdList.stoDrugBean.specific,'-')[1]})</td>
+						<td>${sdList.sales }</td>
+						<td>${sdList.drugTypeBean.drugType}</td>
+						
+						
+						<td>${sdList.adminBean.adminName}</td>
+						<td>${sdList.sellDate}</td>
+						<td>${sdList.manuBatch}</td>
+						<td>${sdList.putBatch}</td>
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -106,12 +106,11 @@
 		<br />
 	
 	<div style="float: right; margain-top: 20px;">
-			<button  class="btn btn-secondary-outline radius" id="pre"
-				name="" onclick="prePage('${condiBean.pageNum}')">上一页</button>
-			<button  class="btn btn-primary size-S radius" id=""
-				name="">1</button>
-			<button  class="btn btn-secondary-outline radius" id="next"
-				name="" onclick="nextPage('${condiBean.pageNum}','${pageTotal }')">下一页</button>
+			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condiBean.page}')">上一页</button>
+			<label class="label label-default radius"><font size="2">当前页${condiBean.page}/共${pageTotal}页</font></label>
+			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condiBean.page}','${pageTotal }')">下一页</button>
+			<input type="text" style="width:30px" class="input-text"  id="page" name="page" >
+			<button type="button" class="btn btn-secondary-outline radius"  onclick="return jumpPage('${pageTotal}')">跳转</button>
 		</div>
 </div>
 
@@ -129,37 +128,53 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+
+$("#formSd").submit (function(){
+	var drugId=$("#drugId").val();
+	if(drugId==""){
+		$("#drugId").val(0);
+	}
+});
+
 /*上一页  */
-function prePage(pageNum) {
+function upPage(pageNum) {
+	
 	var str1 = "";
 	if (pageNum > 1) {
 		$("#pre").disabled=false;
 		pageNum -= 1;
-		str1 = "showTakeStock.action?pageNum="
+		str1 = "specialDrugSell.action?page="
 				+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str1);
-	$("#select").submit();
+	$("#formSd").attr("action", str1);
+	/* $("#formSd").submit(); */
+	submitForm();
 }
 /*下一页  */
 function nextPage(pageNum, total) {
+
 	var str2 = "";
 	if (pageNum < total) {
-		pageNum = Number(pageNum) + 1;
-		str2 = "showTakeStock.action?pageNum="
-				+ pageNum;
+		pageNum =Number(pageNum) + 1;
+		str2 = "specialDrugSell.action?page="+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str2);
-	$("#select").submit();
+	$("#formSd").attr("action", str2);
+	submitForm();
+	/* $("#formSd").submit(); */
 } 
-
-	
-
-
+/*提交表单进行验证 */
+function submitForm(){
+	 var drugId = $("#drugId").val();
+	 if(drugId==''){
+		 $("#drugId").val(0);
+	 }
+	 alert("提交");
+	 $("#formSd").submit();
+}
 /*
 	参数解释：
 	title	标题

@@ -10,6 +10,7 @@ import org.great.bean.BatchDetailBean;
 import org.great.bean.CheckBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DrugApplyBean;
+import org.great.bean.DrugTypeBean;
 import org.great.bean.OutAndInBean;
 import org.great.bean.ParamBean;
 import org.great.bean.PhaDrugBean;
@@ -170,5 +171,9 @@ public interface DailyWorkMapper {
 
 	//特殊药品销售明细
 	public List<PhaDrugBean> specialdrugsell(CondiBean condiBean);
+	//特殊药品条数
+	public int specialsellComm(CondiBean condiBean);
+	//找出特殊药品分类
+	public List<DrugTypeBean> speciadrugType(CondiBean condiBean);
 
 }

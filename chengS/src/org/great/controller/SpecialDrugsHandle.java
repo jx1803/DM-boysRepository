@@ -24,7 +24,6 @@ public class SpecialDrugsHandle {
 	//特殊药品库存
 	@RequestMapping(value="/specialDrugStocks.action")
 	public ModelAndView specialDrugStocks(HttpServletRequest req,CondiBean condiBean) {
-		
 		return specialdrugsBizImpl.specialStocks(condiBean);
 	}
 	
