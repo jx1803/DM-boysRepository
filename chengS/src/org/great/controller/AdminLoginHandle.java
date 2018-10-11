@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.jws.WebParam.Mode;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -103,17 +104,16 @@ public class AdminLoginHandle {
 	//ajax，注册新用户的时候，是否账号已存在
 	@RequestMapping(value="/testAccount.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String testAccount(HttpServletRequest request,AdminBean adbean,String adminAccount) {
-		
+	public String testAccount(HttpServletRequest request,HttpServletResponse response,AdminBean adbean,String adminAccount) {
+		System.out.println("进入aaa"+adminAccount);
+		response.reset();
 		AdminBean admin = iUserBiz.reappearUser(adminAccount);
 		if(null==admin) {
 		flag="false";
 		}else {
 			flag="true";
 		}
-		
 		return flag;
-		
 	}
 	//ajax启用禁用状态改变
 	@Log(operationType = "", operationName = "启用禁用")
@@ -225,7 +225,7 @@ public class AdminLoginHandle {
 	//角色添加保存,一个插入语句
 	@Log(operationType = "", operationName = "角色增加")
 	@RequestMapping(value ="/roleAddSave.action")
-	public String role_add_save(HttpServletRequest request,RoleBean rolebean) {
+	public String roleAddsave(HttpServletRequest request,RoleBean rolebean) {
 		//将语句插入,进入biz层
 		iUserBiz.RoleInsert(rolebean);
 		if(ulist.size()>0) {
