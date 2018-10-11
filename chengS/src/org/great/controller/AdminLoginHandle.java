@@ -61,15 +61,15 @@ public class AdminLoginHandle {
 	public ModelAndView userList(HttpServletRequest request,CondiBean cond) {
 		//带入搜索条件
 		ulist=iUserBiz.UserList(cond);
-		
+		System.out.println("cond+"+cond.getPage());
 		int pagenum=iUserBiz.ResultComm(cond);
-		int pageTotol=PageUtil.pageTotal(pagenum);
+		int pageTotal=PageUtil.pageTotal(pagenum);
 		//总页数带模糊查找的总页数
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("ulist",ulist);//相当于req.sett
 		mav.addObject("blurred",cond);//模糊查找的对象
 		mav.addObject("pagenum",pagenum);
-		mav.addObject("pageTotol",pageTotol);//返回总页数
+		mav.addObject("pageTotal",pageTotal);//返回总页数
 //		mav.addObject("page",cond.getPage());
 		mav.setViewName("user/memberList");
 		return mav;
@@ -81,11 +81,11 @@ public class AdminLoginHandle {
 	public ModelAndView memberDelList(HttpServletRequest request,CondiBean cond) {
 		//带入搜索条件
 		ulist=iUserBiz.userDelList(cond);
-		int pageTotol=PageUtil.pageTotal(iUserBiz.userDelComm(cond));
+		int pageTotal=PageUtil.pageTotal(iUserBiz.userDelComm(cond));
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("blurred",cond);//模糊查找的对象
 		mav.addObject("ulist", ulist);
-		mav.addObject("pageTotol", pageTotol);
+		mav.addObject("pageTotal", pageTotal);
 		mav.addObject("pageNum", iUserBiz.userDelComm(cond));
 		return mav;
 	}
@@ -198,7 +198,10 @@ public class AdminLoginHandle {
 /************角色管理****************************/	
 	//角色管理、然后直接显示角色的数据在页面
 	@RequestMapping(value ="/roleList.action")
-	public ModelAndView roleList(CondiBean cond) {
+	public ModelAndView roleList(HttpServletRequest request,CondiBean cond) {
+		if(ulist!=null) {
+			ulist.clear();
+		}
 		//进入Biz层
 		ulist=iUserBiz.RoleList(cond);
 		//找到角色总页数
@@ -228,7 +231,8 @@ public class AdminLoginHandle {
 		if(ulist.size()>0) {
 			ulist.clear();
 		}
-		
+		CondiBean cond = new CondiBean();
+		//return roleList(request,cond);
 		return "redirect:roleList.action";
 	}
 	
@@ -246,29 +250,36 @@ public class AdminLoginHandle {
 	//角色信息修改保存
 	@Log(operationType = "", operationName = "角色修改")
 	@RequestMapping(value="/roleListSave.action")
-	public String roleListSave(HttpServletRequest request,RoleBean rolebean) {
+	public ModelAndView roleListSave(HttpServletRequest request,RoleBean rolebean) {
 		//进入页面修改
 		iUserBiz.updateRole(rolebean);
-		return "redirect:roleList.action";
+		CondiBean cond = new CondiBean();
+		return roleList(request,cond);
+		//return "redirect:roleList.action";
 	}
 	//角色删除ajax
 	@Log(operationType = "", operationName = "角色删除")
-	@RequestMapping(value="/roleDel.action", method=RequestMethod.POST, produces="application/json;charset=utf-8")
-	@ResponseBody
-	public String roleDel(HttpServletRequest request,int roleid ) {
+	@RequestMapping(value="/roleDel.action")
+	/*@ResponseBody*/
+	public ModelAndView roleDel(HttpServletRequest request,int roleid ) {
 		//删除角色表之前，还需要删除用户与角色关系表
 		System.out.println("取得角色id"+roleid);
 		iUserBiz.delRoleAndUser(roleid);
 		iUserBiz.delRoleAndPer(roleid);
 		//删除角色表
 		iUserBiz.delRole(roleid);
-		 return "redirect:roleList.action";
+		CondiBean cond = new CondiBean();
+		return roleList(request,cond);
+		// return "redirect:roleList.action";
 	}
 	
 	
 /******************部门管理***************/
 	@RequestMapping(value = "/deptList.action")
-	public ModelAndView deptList(CondiBean cond) {
+	public ModelAndView deptList(HttpServletRequest request,CondiBean cond) {
+		if(ulist!=null) {
+			ulist.clear();
+		}
 		ulist=iUserBiz.memberDept(cond);
 		int pageTotal = PageUtil.pageTotal(iUserBiz.deptComm(cond));//总页数
 		ModelAndView mav = new ModelAndView();
@@ -289,10 +300,13 @@ public class AdminLoginHandle {
 
 	//部门删除
 	@Log(operationType = "", operationName = "删除部门")
-	@RequestMapping(value = "/deptlistDel.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
-	public @ResponseBody String delDept(HttpServletRequest request,int deptid) {
-		iUserBiz.delDept(deptid);
-		return "redirect:deptList.action";
+	@RequestMapping(value = "/deptlistDel.action")
+	/*@ResponseBody*/
+	public  ModelAndView delDept(HttpServletRequest request,DeptBean dept) {
+		System.out.println("删除进入"+dept.getDeptId());
+		iUserBiz.delDept(dept.getDeptId());
+		CondiBean cond = new CondiBean();
+		return deptList(request,cond);
 	}
 	
 	//部门编辑
@@ -366,6 +380,7 @@ public class AdminLoginHandle {
 /*****************二级菜单管理************/
 	@RequestMapping(value="/menuLevel2List.action")
 	public ModelAndView Menu_level2(HttpServletRequest request,CondiBean cond) {
+		System.out.println("进入==========="+cond.getPage());
 		ulist = iUserBiz.leveltwoMenu(cond);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("ulist", ulist);
@@ -555,8 +570,8 @@ public class AdminLoginHandle {
 		
 		ModelAndView mav = new ModelAndView();
 		ulist=iUserBiz.selectLog(cond);
-		int pageTotol=PageUtil.pageTotal(iUserBiz.logComm(cond));
-		mav.addObject("pageTotol", pageTotol);
+		int pageTotal=PageUtil.pageTotal(iUserBiz.logComm(cond));
+		mav.addObject("pageTotal", pageTotal);
 		mav.addObject("pageNum", iUserBiz.logComm(cond));
 		mav.addObject("blurred",cond);//模糊查找的对象
 		mav.addObject("log", ulist);

@@ -83,10 +83,15 @@
 									class="btn btn-success" onclick="submitForm()">
 									<i class="Hui-iconfont">&#xe665;</i>搜索
 								</button>
+							
 							</td>
-						</tr>
+						
+						</tr>	
 					</table>
-
+							</div>
+	
+	</div>
+</form>
 				</div>
 
 				<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -124,18 +129,23 @@
 						</tbody>
 					</table>
 					</br>
-					<div class="text-c">
+					<div style="float: right; margain-top: 20px;">
+			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condiBean.pageNum}')">上一页</button>
+			<label class="label label-default radius"><font size="2">当前页${condiBean.page}/共${pageTotal}页</font></label>
+			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condiBean.page}','${pageTotal }')">下一页</button>
+			<input type="text" style="width:30px" class="input-text"  id="page" name="page" >
+			<button type="button" class="btn btn-secondary-outline radius"  onclick="return jumpPage('${pageTotal}')">跳转</button>
+		</div>
+					<%-- <div class="text-c">
 
 						<button type="button" class="btn btn-success"
 							onclick="prePage('${condiBean.pageNum}')">上一页</button>
 						${condiBean.pageNum}/${pageTotal}
 						<button type="button" class="btn btn-success"
 							onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button>
-					</div>
+					</div> --%>
 				</div>
-			</div>
-		</form>
-	</div>
+	
 
 
 	<!--_footer 作为公共模版分离出去-->
@@ -161,32 +171,44 @@
 		
 	</script>
 	<script type="text/javascript">
+	$("#audit").submit (function(){
+	
+		var drugId=$("#drugId").val();
+		if(drugId==""){
+			$("#drugId").val(0);
+		}
+	});
 		/*上一页  */
-		function prePage(pageNum) {
+		function upPage(pageNum) {
+			
 			var str1 = "";
 			if (pageNum > 1) {
 				pageNum -= 1;
-				str1 = "specialDrugsInStorage.action?pageNum=" + pageNum;
+				str1 = "specialDrugsInStorage.action?page=" + pageNum;
 			} else {
 				return;
 			}
-			$("#audit").attr("action", str1);
-			submitForm();
-			/* $("#audit").submit(); */
+			$('#audit').attr("action", str1);
+		
+			 $("#audit").submit();
 		}
 		/*下一页  */
 		function nextPage(pageNum, total) {
+		
 			var str2 = "";
 			if (pageNum < total) {
 				pageNum = Number(pageNum) + 1;
-				str2 = "specialDrugsInStorage.action?pageNum=" + pageNum;
+				str2 = "specialDrugsInStorage.action?page=" + pageNum;
 
 			} else {
 				return;
 			}
+			console.log("11111");
 			$("#audit").attr("action", str2);
-			 submitForm();
-			/* $("#audit").submit(); */
+			
+			$("#audit").submit();
+		
+		 /* 	submitForm(); */
 		}
 		
      /*提交表单进行验证 */
@@ -195,6 +217,7 @@
     	 if(drugId==''){
     		 $("#drugId").val(0);
     	 }
+    	 alert("提交");
     	 $("#audit").submit();
      }
 	</script>

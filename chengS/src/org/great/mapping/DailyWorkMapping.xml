@@ -1280,7 +1280,7 @@
 
 <!-- //麻醉药品入药房库信息 -->
 <select id="selectSpecidlDrug" parameterType="org.great.bean.CondiBean" resultMap="specialoutInList">
-	select a.*,b.drugname,b.purprice,c.adminname,b.drugmanu from TBLDRUGAPPLY a,tblstodrug b,tbladmin c,tbldrugtype d where a.drugid=b.drugid and a.adminid=c.adminid and b.typeid=d.typeid and d.pid=3 and a.checkid=6 and a.applytypeid=10
+	select * from (select ROWNUM rn,a.*,b.drugname,b.purprice,c.adminname,b.drugmanu from TBLDRUGAPPLY a,tblstodrug b,tbladmin c,tbldrugtype d where a.drugid=b.drugid and a.adminid=c.adminid and b.typeid=d.typeid and d.pid=3 and a.checkid=6 and a.applytypeid=10
 	<if test="adminName!=null and adminName!=''">
                 and c.adminName like concat(concat('%',#{adminName}),'%')
             </if>
@@ -1298,8 +1298,8 @@
             </if>
             <if test="0!= drugId">
                and a.drugId like concat(concat('%',#{drugId}),'%')
-            </if>
-            
+            </if>  
+            and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
 </select>
 <resultMap type="org.great.bean.DrugApplyBean" id="specialoutInList">
      <id property="drugApplyId" column="DRUGAPPLYID" />
@@ -1352,11 +1352,12 @@
             </if>
 </select>
 
-<!-- 特殊药品库存查询 -->
 
+
+<!-- 特殊药品库存查询 -->
 <select id="specialdrugstocks" parameterType="org.great.bean.CondiBean" resultMap="phaDrugMap" >
-	select s.*,p.PHADRUGID,p.DRUGNUM,p.USEABLEID,m.param useable,d.drugtype,f.dosageForm,p.MINIMUM,p.MAXIMUM,ROWNUM r from tblphadrug p,tbldrugtype d,tblstodrug s,tbldf f,tblparam m where p.drugid=s.drugid(+) and s.typeid=d.typeid(+) and s.dosageId=f.dosageId(+) and p.useableid=m.paramid(+) and d.pid=3
-<if test=" ''!=drugId and 0 !=drugId">
+	select * from (select ROWNUM rn,s.*,p.PHADRUGID,p.DRUGNUM,p.USEABLEID,m.param useable,d.drugtype,f.dosageForm,p.MINIMUM,p.MAXIMUM,ROWNUM r from tblphadrug p,tbldrugtype d,tblstodrug s,tbldf f,tblparam m where p.drugid=s.drugid(+) and s.typeid=d.typeid(+) and s.dosageId=f.dosageId(+) and p.useableid=m.paramid(+) and d.pid=3
+		<if test=" ''!=drugId and 0 !=drugId">
 			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
 		</if>
 		<if test=" ''!=typeId and 0 !=typeId">
@@ -1365,28 +1366,20 @@
 		<if test=" ''!=useableId and 0 !=useableId">
 			and p.useableid =#{useableId,jdbcType=NUMERIC}
 		</if>
-			<if test="pinyinCode!=null and pinyinCode!=''">
+		<if test="pinyinCode!=null and pinyinCode!=''">
 				and s.pinyincode like
 				concat(concat('%',#{pinyinCode}),'%')
-			</if>
-			<if test="drugName!=null and drugName!=''">
+		</if>
+		<if test="drugName!=null and drugName!=''">
 				and s.drugname like concat(concat('%',#{drugName}),'%')
-			</if>
-			<if test="useableId!=0">
-				and p.useableid=#{useableId}
-			</if>
-			<!-- <if test="pageNum!=0">
-				)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
-				r&lt;=#{pageNum}*#{pageLimit}
-			</if>
-			<if test="pageNum==0">
-				)
-			</if> -->
+		</if>
+			
+	and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
 </select>
 
 <select id="specialdrugstocksComm" parameterType="org.great.bean.CondiBean" resultType="Integer">
 	select count(*) from tblphadrug p,tbldrugtype d,tblstodrug s,tbldf f,tblparam m where p.drugid=s.drugid(+) and s.typeid=d.typeid(+) and s.dosageId=f.dosageId(+) and p.useableid=m.paramid(+) and d.pid=3
-	<if test=" ''!=drugId and 0 !=drugId">
+		<if test=" ''!=drugId and 0 !=drugId">
 			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
 		</if>
 		<if test=" ''!=typeId and 0 !=typeId">
@@ -1407,8 +1400,26 @@
 			</if>
 </select>
 
+
+
+<!-- 特殊药品销售明细 -->
 <select id="specialdrugsell" parameterType="org.great.bean.CondiBean" resultMap="sellspecialMap">
-	select * from TBLSELL a,tbladmin b,tblstodrug c,tbldrugtype d where a.drugid=c.drugid and a.adminid=b.adminid and d.typeid=c.typeid and d.pid=3 
+select * from(select ROWNUM rn,a.*,b.adminname,c.drugname,c.generalname,c.specific,c.unit,c.retailprice,c.dosageid,d.drugtype from TBLSELL a,tbladmin b,tblstodrug c,tbldrugtype d where a.drugid=c.drugid and a.adminid(+)=b.adminid and d.typeid=c.typeid(+) and d.pid=3 
+	<if test=" ''!=drugId and 0 !=drugId">
+			and c.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and d.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		
+			<if test="pinyinCode!=null and pinyinCode!=''">
+				and c.pinyincode like
+				concat(concat('%',#{pinyinCode}),'%')
+			</if>
+			<if test="drugName!=null and drugName!=''">
+				and c.drugname like concat(concat('%',#{drugName}),'%')
+			</if>
+			and ROWNUM&lt;=#{pageup}) where rn&gt;=#{pagedown}
 </select>
 <resultMap type="org.great.bean.SellBean" id="sellspecialMap">
 		<id property="sellId" column="SELLID"/>
@@ -1426,10 +1437,43 @@
 		<association property="stoDrugBean" javaType="org.great.bean.StoDrugBean">
 			<id property="drugId" column="DRUGID"/>
 			<result property="drugName" column="DRUGNAME"/>
+			<result property="generalName" column="GENERALNAME"/>
+			<result property="specific" column="SPECIFIC"/>
+			<result property="unit" column="UNIT"/>
+			<result property="retailPrice" column="RETAILPRICE"/>
+		
+		</association>
+		<association property="drugTypeBean" javaType="org.great.bean.DrugTypeBean">
+			<id property="typeId" column="TYPEID"/>
+			<result property="drugType" column="DRUGTYPE"/>
 		</association>
 		<association property="adminBean" javaType="org.great.bean.AdminBean">
 			<id property="adminId" column="ADMINID"/>
 			<result property="adminName" column="ADMINNAME"/>
 		</association>
 	</resultMap>
+	
+<!-- 特殊药品销售总条数 -->
+<select id="specialsellComm" resultType="Integer" >
+	select count(*) from TBLSELL a,tbladmin b,tblstodrug c,tbldrugtype d where a.drugid=c.drugid and a.adminid=b.adminid and d.typeid=c.typeid and d.pid=3 
+	<if test=" ''!=drugId and 0 !=drugId">
+			and c.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and d.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		
+			<if test="pinyinCode!=null and pinyinCode!=''">
+				and c.pinyincode like
+				concat(concat('%',#{pinyinCode}),'%')
+			</if>
+			<if test="drugName!=null and drugName!=''">
+				and c.drugname like concat(concat('%',#{drugName}),'%')
+			</if>
+			
+</select>
+	<!-- 特殊药品分类 -->
+	<select id="speciadrugType" parameterType="org.great.bean.CondiBean" resultType="org.great.bean.DrugTypeBean">
+		select * from tbldrugtype where pid=3
+	</select>
 </mapper>

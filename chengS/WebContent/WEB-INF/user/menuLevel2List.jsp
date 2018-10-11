@@ -20,7 +20,7 @@
 <title>菜单管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 二级菜单管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 菜单管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 <form id="form1" name="form1" action="<%=path %>user/menuLevel2List.action" method="post" >
 	<div class="text-c"> 菜单搜索：
@@ -32,7 +32,7 @@
 	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"> 
 	
 	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_menu_add('添加角色','<%=path%>user/menuLevel1Add.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加一级菜单</a> 
-	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','<%=path%>user/menuLevel2Add.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加二级菜单</a> </span> <span class="r">共有数据：<strong>${pageNum }</strong> 条</span> </div>
+	<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','<%=path%>user/menuLevel2Add.action','800')"><i class="Hui-iconfont">&#xe600;</i> 添加二级菜单</a> </span>  </div>
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
 			<tr>
@@ -61,13 +61,20 @@
 			</c:forEach>
 		</tbody>
 	</table>
-		<div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">当前页 ${blurred.page}，共 ${pageTotal}页</div>
+	<div style="float: right; margain-top: 20px;">
+			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${blurred.page}')">上一页</button>
+			<label class="label label-default radius"><font size="2">当前页${blurred.page}/共${pageTotal}页</font></label>
+			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${blurred.page}','${pageTotal}')">下一页</button>
+			<input type="text" style="width:30px" class="input-text"  id="page" name="page" >
+			<button type="button" class="btn btn-secondary-outline radius"  onclick="return jumpPage('${pageTotal}')">跳转</button>
+	</div>
+		<%-- <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">当前页 ${blurred.page}，共 ${pageTotal}页</div>
 	<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
 	
 	<button  type="button" onclick="upPage('${blurred.page}')" class="btn btn-secondary-outline radius">上一页</button>
 
 	<button id="DataTables_Table_0_next" class="btn btn-secondary-outline radius" onclick="nextPage('${blurred.page}','${pageTotal}')">下一页</button>
-	</div>
+	</div> --%>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -79,6 +86,21 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
 
+//跳转
+function jumpPage(total){
+			var page = $("#page").val();	//输入框的值
+			var str = "";
+			str = "menuLevel2List.action?page="+page;
+			$("#form1").attr("action",str);
+			
+			if(page=='' || page>total || page==0){
+				$("#page").val('');
+			}else{
+				//把form表单提交。
+				$("#form1").submit();
+			}
+			
+		}
 
 /* 上一页 */
 function upPage(p){
@@ -95,13 +117,17 @@ function upPage(p){
 /* 下一页 */
 function nextPage(p,total){
 	var str2 = "";
-	if(p<total){
+	debugger
+	if(p - 0<total - 0){
 		p = Number(p) + 1;
 		str2 = "menuLevel2List.action?page="+p;
 		$("#form1").attr("action",str2);
 		$("#form1").submit();
 	}
+	
+	
 }
+
 
 function admin_menu_add(title,url,w,h){
 	layer_show(title,url,w,h);
@@ -145,11 +171,12 @@ function admin_twoMenu_del(obj,id){
 			data:'fid='+id,
 			success: function(data){
 				$(obj).parents("tr").remove();
-				layer.msg('已删除!',{icon:1,time:1000});
-				layer.colse();
+			
 			},
 			error:function(data) {
 				console.log(data.msg);
+				layer.msg('已删除!',{icon:1,time:1000});
+				layer.colse();
 			},
 		});		
 	});

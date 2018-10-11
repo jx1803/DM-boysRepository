@@ -32,7 +32,7 @@
 <!-- 主页面 -->
 	<div class="page-container">
 		<div class="text-c">
-			<form action="showTakeStock.action" method="post" id="formSd" >
+			<form action="specialDrugStocks.action" method="post" id="formSd" >
 			药品名称: 
 			<input type="text" class="input-text" id="drugName" name="drugName" value="${condi.drugName==null?"":condi.drugName}"
 				style="width: 150px"> 
@@ -47,17 +47,12 @@
 			<span class="select-box" id="addShowDt" style="width:160px"> 
 				<select class="select" size="1" name="typeId" id="typeId" >
 						<option value="0">请选择类型</option>
-						<c:forEach items="${drugTypeList}" var="typeList">
-						<c:if test="${typeList.stoDrugBean.typeId ==condiBean.typeId }">
-						<option value="${typeList.stoDrugBean.typeId}" selected="selected">${typeList.stoDrugBean.dtBean.drugType}</option>
-						</c:if>
-						<c:if test="${typeList.stoDrugBean.typeId !=condiBean.typeId }">
-						<option value="${typeList.stoDrugBean.typeId}" >${typeList.stoDrugBean.dtBean.drugType}</option>
-						</c:if>
+						<c:forEach items="${ulist}" var="typeList">
+						<option value="${typeList.typeId }">${typeList.drugType }</option>
 						</c:forEach>
 				</select>
 			</span> 
-			<button type="button" class="btn btn-primary radius" id="sub" name=""> 搜索药品</button>
+			<button  class="btn btn-primary radius" id="sub" name="" onclick="submitForm()"> 搜索药品</button>
 			</form>
 		</div>
 		<div class="mt-20">
@@ -110,13 +105,21 @@
 		<br />
 	
 	<div style="float: right; margain-top: 20px;">
+			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condiBean.pageNum}')">上一页</button>
+			<label class="label label-default radius"><font size="2">当前页${condiBean.page}/共${pageTotal}页</font></label>
+			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condiBean.page}','${pageTotal }')">下一页</button>
+			<input type="text" style="width:30px" class="input-text"  id="page" name="page" >
+			<button type="button" class="btn btn-secondary-outline radius"  onclick="return jumpPage('${pageTotal}')">跳转</button>
+		</div>
+		
+	<%-- <div style="float: right; margain-top: 20px;">
 			<button  class="btn btn-secondary-outline radius" id="pre"
 				name="" onclick="prePage('${condiBean.pageNum}')">上一页</button>
 			<button  class="btn btn-primary size-S radius" id=""
 				name="">1</button>
 			<button  class="btn btn-secondary-outline radius" id="next"
 				name="" onclick="nextPage('${condiBean.pageNum}','${pageTotal }')">下一页</button>
-		</div>
+		</div> --%>
 </div>
 
 
@@ -133,36 +136,52 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+$("#formSd").submit (function(){
+	var drugId=$("#drugId").val();
+	if(drugId==""){
+		$("#drugId").val(0);
+	}
+});
 /*上一页  */
-function prePage(pageNum) {
+function upPage(pageNum) {
+	alert("上一页"+pageNum);
 	var str1 = "";
 	if (pageNum > 1) {
 		$("#pre").disabled=false;
 		pageNum -= 1;
-		str1 = "showTakeStock.action?pageNum="
+		str1 = "specialDrugStocks.action?page="
 				+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str1);
-	$("#select").submit();
+	$("#formSd").attr("action", str1);
+	$("#formSd").submit();
 }
 /*下一页  */
 function nextPage(pageNum, total) {
+	alert("下一页"+pageNum);
 	var str2 = "";
 	if (pageNum < total) {
 		pageNum = Number(pageNum) + 1;
-		str2 = "showTakeStock.action?pageNum="
+		str2 = "specialDrugStocks.action?page="
 				+ pageNum;
 	} else {
 		return;
 	}
-	$("#select").attr("action", str2);
-	$("#select").submit();
+	$("#formSd").attr("action", str2);
+	$("#formSd").submit();
 } 
 
-	
 
+
+/*提交表单进行验证 */
+function submitForm(){
+	 var drugId = $("#drugId").val();
+	 if(drugId==''){
+		 $("#drugId").val(0);
+	 }
+	 $("#formSd").submit();
+}
 
 /*
 	参数解释：

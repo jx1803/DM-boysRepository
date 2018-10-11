@@ -400,6 +400,8 @@ public int insertSMenu(PermissionBean pbean) {
 //一级菜单删除
 @Override
 public int MenuOneDel(int pid) {
+	//删除角色与菜单关联表
+	userMapper.delMenuAndRole(pid);
 	userMapper.menutwodel(pid);
 	int i = userMapper.menuonedel(pid);
 	return i;
@@ -408,7 +410,10 @@ public int MenuOneDel(int pid) {
 //删除二级菜单
 @Override
 public int MenuTwoDel(int fid) {
+	
 	// TODO Auto-generated method stub
+	//删除角色与菜单关联表
+	userMapper.delMenuAndRole(fid);
 	return userMapper.menuonedel(fid);
 }
 

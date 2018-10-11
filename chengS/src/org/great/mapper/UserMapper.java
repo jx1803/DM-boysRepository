@@ -63,6 +63,7 @@ public interface UserMapper {
 	//二级菜单管理
 	public List<PermissionBean> leveltwomenu(CondiBean cd);//二级菜单列表，取得是所有的
 	public int insertsmenu(PermissionBean pbean);//添加二级菜单至数据库
+	public int delMenuAndRole(int fid);//删除菜单与角色的关系表
 	public int menutwodel(int permissionId);//二级菜单删除
 	public int menuonedel(int pid);//一级菜单删除
 	//所有的菜单
