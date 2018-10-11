@@ -119,7 +119,7 @@
 		select * FROM TBLDRUGTYPE where pid=#{pid}
 	</select>
 	<!-- 查询所有二级药品类型 -->
-		<select id="findAllSecondType" resultType="org.great.bean.DrugTypeBean" parameterType="org.great.bean.DrugTypeBean">
+	<select id="findAllSecondType" resultType="org.great.bean.DrugTypeBean" parameterType="org.great.bean.DrugTypeBean">
 		select * FROM TBLDRUGTYPE where pid &gt;0
 	</select>
 	

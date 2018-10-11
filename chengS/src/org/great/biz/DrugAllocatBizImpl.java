@@ -1,10 +1,10 @@
 package org.great.biz;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.great.bean.AdjPriceStatisBean;
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DfBean;
@@ -13,7 +13,6 @@ import org.great.bean.InventoryBean;
 import org.great.bean.PhaDrugBean;
 import org.great.bean.StoDrugBean;
 import org.great.bean.TabuBean;
-import org.great.bean.adjPriceStatisBean;
 import org.great.mapper.DailyWorkMapper;
 import org.great.mapper.DrugAllocatMapper;
 import org.great.tools.PageUtil;
@@ -53,8 +52,7 @@ public class DrugAllocatBizImpl implements IDrugAllocatBiz{
 	private InventoryBean it;	//药品入库信息
 	@Resource
 	private PhaDrugBean pd;		//药房药品信息
-	@Resource
-	private adjPriceStatisBean aps;	//药品调价统计信息
+
 /*****************************药品剂型管理**********************/
 	//添加药品剂型
 	@Override
@@ -392,20 +390,22 @@ public class DrugAllocatBizImpl implements IDrugAllocatBiz{
 	
 	//调价数据
 	@Override
-	public adjPriceStatisBean priceData(AdjustPriceBean adjustPrice) {
+	public AdjPriceStatisBean priceData(AdjustPriceBean adjustPrice) {
 		
+		AdjPriceStatisBean aps = new AdjPriceStatisBean();
 		adjustPriceList = damapper.priceData(adjustPrice);
-		
-		Object[] dataArray = new Object[adjustPriceList.size()];
-		Object[] countArray = new  Object[adjustPriceList.size()];
-			for(int i =0;i<adjustPriceList.size();i++) {
-				dataArray[i]=adjustPriceList.get(i).getBeforeAdjust();
-				countArray[i]=i+1;
-			}
-			aps.setDataArray(dataArray);
-			aps.setCountArray(countArray);
-			aps.setGeneralName(adjustPriceList.get(0).getStoDrugBean().getGeneralName());
-			System.out.println(aps.toString());
+		if(adjustPriceList.size()>0) {
+			Object[] dataArray = new Object[adjustPriceList.size()];
+			Object[] countArray = new  Object[adjustPriceList.size()];
+				for(int i =0;i<adjustPriceList.size();i++) {
+					dataArray[i]=adjustPriceList.get(i).getBeforeAdjust();
+					countArray[i]=i+1;
+				}
+				aps.setDataArray(dataArray);
+				aps.setCountArray(countArray);
+				aps.setGeneralName(adjustPriceList.get(0).getStoDrugBean().getGeneralName());
+		}
+		System.out.println(aps.toString());
 		return aps;
 	}
 	//数据总数

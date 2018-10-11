@@ -54,20 +54,19 @@ String path = request.getScheme() +"://"+request.getServerName()
           <div class="ty-transfer-list-body form-group" style="width:100%">
 		<form id="form1" action="<%=path%>user/ConfigurationDel.action" method="post" >
 			<c:forEach items="${rlist }" var="fathId">
-			
-			
+
 					<c:if test="${fathId.pid eq 0 }">
 						<dt>${fathId.permission}</dt>
 						<c:forEach items="${rlist }" var="sonId">
 							<c:if test="${fathId.permissionId == sonId.pid }">
-								<dd class=" ty-tree-div checkbox"">
+								<dd class=" ty-tree-div checkbox">
 									<input name="time" id="1" class="tyue-checkbox-input"  type="checkbox" value="${sonId.permissionId}" />${sonId.permission}</dd>
 									<input type="hidden" name="roleId" value="${roleid }"/>
 							</c:if>
 						</c:forEach>
 							<br/>
 					</c:if>
-			
+
 			</c:forEach>
 	</form>
 	</div>

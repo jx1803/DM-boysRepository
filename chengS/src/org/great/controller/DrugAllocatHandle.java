@@ -1,11 +1,11 @@
 package org.great.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.great.bean.AdjPriceStatisBean;
 import org.great.bean.AdjustPriceBean;
 import org.great.bean.CondiBean;
 import org.great.bean.DfBean;
@@ -14,14 +14,9 @@ import org.great.bean.InventoryBean;
 import org.great.bean.PhaDrugBean;
 import org.great.bean.StoDrugBean;
 import org.great.bean.TabuBean;
-import org.great.bean.adjPriceStatisBean;
 import org.great.biz.IDrugAllocatBiz;
-import org.great.mapper.DrugAllocatMapper;
 import org.great.tools.Log;
-import org.great.tools.PageUtil;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -294,7 +289,7 @@ public class DrugAllocatHandle {
 		@RequestMapping(value="/showPriceStatistics.action", method=RequestMethod.POST, 
 				produces="application/json;charset=utf-8")
 		@ResponseBody
-		public  adjPriceStatisBean  showPriceStatistics(AdjustPriceBean adjustPrice){
+		public  AdjPriceStatisBean  showPriceStatistics(AdjustPriceBean adjustPrice){
 			
 			return iDrugAllocatBiz.priceData(adjustPrice);
 			

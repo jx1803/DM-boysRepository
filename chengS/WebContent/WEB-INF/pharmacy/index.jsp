@@ -36,7 +36,7 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>H-ui.admin v3.1</title>
+<title>SPMS智慧药房 V1.0</title>
 
 </head>
 <body>
@@ -59,13 +59,18 @@
 								<table class="table table-bg">
 									<tbody>
 
+
 										<input type="hidden" value="${sessionScope.User.adminAccount }" name="accoutAdmin" />
+
 										<tr class="row cl form-group">
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												原始密码：</th>
 											<td><input type="password" style="width: 200px"
 												class="form-control" value="" placeholder="" id="password1"
-												name="password"></td>
+												name="password">
+												<input type="hidden"
+											value="${sessionScope.User.adminAccount }" name="accoutAdmin" />	
+											</td>
 										</tr>
 										<tr class="row cl form-group">
 											<th width="100" class="text-r"><span class="c-red">*</span>

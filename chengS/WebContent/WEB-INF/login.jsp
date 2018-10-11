@@ -19,6 +19,7 @@
  <link rel="stylesheet" href="<%=path %>lib/jigsaw.css">
  <link rel="stylesheet" href="<%=path %>lib/bootstrap.css"/> 
  <link href="<%=path %>lib/bootstrapValidator.css" rel="stylesheet" />
+
 <title>后台登录 </title>
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -33,6 +34,7 @@
         }
 
 </style>
+
 </head>
 <body>
 

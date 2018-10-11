@@ -187,12 +187,11 @@ String path = request.getScheme() +"://"+request.getServerName()
 		</div>
 		<br />
 		<div style="float: right; margain-top: 20px;">
-			<span ><font size="2">共${pageTotal}页  &nbsp;当前页${condi.page}/${pageTotal}</font></span>  &nbsp; &nbsp; &nbsp;
 			<button type="submit" class="btn btn-secondary-outline radius"  onclick="upPage('${condi.page}')">上一页</button>
-			<c:forEach var="page" begin="1" end="${pageTotal}">
-			 <button type="submit" class="btn btn-primary size-S radius" onclick="skipPage('${page}')">${page}</button>
-			</c:forEach>
+			<label class="label label-default radius"><font size="2">当前页${condi.page}/共${pageTotal}页</font></label>
 			<button type="submit" class="btn btn-secondary-outline radius" onclick="nextPage('${condi.page}','${pageTotal }')">下一页</button>
+			<input type="text" style="width:30px" class="input-text"  id="page" name="page" oninput = "value=value.replace(/[^\d]/g,'')" >
+			<button type="button" class="btn btn-secondary-outline radius"  onclick="return jumpPage('${pageTotal}')">跳转</button>
 		</div>
 	</div>
 	<!--_footer 作为公共模版分离出去-->
@@ -335,13 +334,20 @@ String path = request.getScheme() +"://"+request.getServerName()
 				return;
 			}
 		}
-		//点击按钮跳转页面
-		function skipPage(page){
+		//跳转页面,total总页数
+		function jumpPage(total){
+			var page = $("#page").val();	//输入框的值
 			var str = "";
 			str = "findDfInfo.action?page="+page;
 			$("#formDf").attr("action",str);
-			//把form表单提交。
-			$("#formDf").submit();
+			
+			if(page=='' || page>total || page==0){
+				$("#page").val('');
+			}else{
+				//把form表单提交。
+				$("#formDf").submit();
+			}
+			
 		}
 		
 	
