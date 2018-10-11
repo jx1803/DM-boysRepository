@@ -334,9 +334,9 @@ String path = request.getScheme() +"://"+request.getServerName()
 				return;
 			}
 		}
-		//跳转页面
+		//跳转页面,total总页数
 		function jumpPage(total){
-			var page = $("#page").val();
+			var page = $("#page").val();	//输入框的值
 			var str = "";
 			str = "findDfInfo.action?page="+page;
 			$("#formDf").attr("action",str);
