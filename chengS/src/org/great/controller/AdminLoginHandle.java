@@ -237,7 +237,7 @@ public class AdminLoginHandle {
 	//进入角色信息修改页面
 	@RequestMapping(value="/roleListUpdate.action")
 	public ModelAndView roleListUpdate(HttpServletRequest request,int roleId) {
-		System.out.println("roleid"+roleId);
+
 		//由id取得角色名称以及角色简介
 		RoleBean rbean=iUserBiz.selectRole(roleId);
 		ModelAndView mav = new ModelAndView();
@@ -261,7 +261,7 @@ public class AdminLoginHandle {
 	/*@ResponseBody*/
 	public ModelAndView roleDel(HttpServletRequest request,int roleid ) {
 		//删除角色表之前，还需要删除用户与角色关系表
-		System.out.println("取得角色id"+roleid);
+
 		iUserBiz.delRoleAndUser(roleid);
 		iUserBiz.delRoleAndPer(roleid);
 		//删除角色表
@@ -301,7 +301,7 @@ public class AdminLoginHandle {
 	@RequestMapping(value = "/deptlistDel.action")
 	/*@ResponseBody*/
 	public  ModelAndView delDept(HttpServletRequest request,DeptBean dept) {
-		System.out.println("删除进入"+dept.getDeptId());
+	
 		iUserBiz.delDept(dept.getDeptId());
 		CondiBean cond = new CondiBean();
 		return deptList(request,cond);
@@ -356,6 +356,7 @@ public class AdminLoginHandle {
 	@RequestMapping(value="/menuLevel1Del.action", method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String MenuLevel1del(HttpServletRequest request,int permissionId) {
+		
 		iUserBiz.MenuOneDel(permissionId);
 		return "redirect:menuLevel2List.action";
 	}
@@ -378,7 +379,6 @@ public class AdminLoginHandle {
 /*****************二级菜单管理************/
 	@RequestMapping(value="/menuLevel2List.action")
 	public ModelAndView Menu_level2(HttpServletRequest request,CondiBean cond) {
-		System.out.println("进入==========="+cond.getPage());
 		ulist = iUserBiz.leveltwoMenu(cond);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("ulist", ulist);
@@ -532,7 +532,8 @@ public class AdminLoginHandle {
 	//删除一级参数
 	@Log(operationType = "", operationName = "一级参数删除")
 	@RequestMapping(value="/oneparaDel.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
-	public @ResponseBody String delParam(HttpServletRequest request,int  paid){
+	public @ResponseBody String delParam(HttpServletRequest request,HttpServletResponse response,int  paid){
+		response.reset();
 		iUserBiz.delOneParam(paid);
 		return "redirect:parameterList.action";
 	}
@@ -540,7 +541,8 @@ public class AdminLoginHandle {
 	//删除二级参数
 	@Log(operationType = "", operationName = "二级参数删除")
 	@RequestMapping(value="/twoparaDel.action",method=RequestMethod.POST, produces="application/json;charset=utf-8")
-	public @ResponseBody String delTwoParam(HttpServletRequest request,int  paramId) {
+	public @ResponseBody String delTwoParam(HttpServletRequest request,HttpServletResponse response,int  paramId) {
+		response.reset();
 		iUserBiz.delTwoParam(paramId);
 		return "redirect:parameterList.action";
 	}

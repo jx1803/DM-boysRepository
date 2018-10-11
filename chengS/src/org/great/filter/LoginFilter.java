@@ -37,7 +37,6 @@ public class LoginFilter implements Filter {
 		HttpServletResponse servletresponse = (HttpServletResponse) response;
 		HttpSession session = servletrequest.getSession();
 		
-		PrintWriter out = servletresponse.getWriter();
 		//绝对路径
 		String path = servletrequest.getScheme() + "://" + servletrequest.getServerName() + ":" + request.getServerPort()
 		+ servletrequest.getContextPath() + "/";
@@ -53,10 +52,7 @@ public class LoginFilter implements Filter {
 		 
 		 String toLogin=contextPath+"admin/toLogin.action";//登录路径
 		
-	/*	 String adminName=servletrequest.getParameter("adminName");
-		 if(adminName=="") {
-			 servletresponse.sendRedirect(path+"user/toLogin.action");
-		 }*/
+	
 		 //如果登录路径等于当前路径直接放过
 		 if(toLogin.equals(currentURL)) {
 			 chain.doFilter(request, response);
@@ -72,7 +68,6 @@ public class LoginFilter implements Filter {
 		 
 		 //如果登录超时后，返回登录界面
 		 if(null==user) {
-			 //PrintWriter out = servletresponse.getWriter();
 			 servletresponse.sendRedirect(path+"admin/toReturnLogin.action");
 			 //out.print("<script>alert('请重新登录');window.top.location.href='admin/toLogin.action';</script>");
 	        return;
