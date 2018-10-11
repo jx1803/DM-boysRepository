@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.great.bean.BatchDetailBean;
 import org.great.bean.CondiBean;
@@ -166,8 +167,8 @@ public class StockWorkHandle {
 	/** 退还厂家审核 */
 	@Log(operationType = "", operationName = "退还审核")
 	@RequestMapping(value = "/returnManuAudit.action")
-	public String returnManuAudit(DrugApplyBean drugApplyBean) {
-		return stockWorkBizImpl.returnManuAudit(drugApplyBean);
+	public String returnManuAudit(HttpSession session,DrugApplyBean drugApplyBean) {
+		return stockWorkBizImpl.returnManuAudit(session,drugApplyBean);
 	}
 
 	/**

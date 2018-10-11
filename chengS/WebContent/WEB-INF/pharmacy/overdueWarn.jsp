@@ -41,7 +41,8 @@
 			日期范围： <input
 				type="text"
 				onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })"
-				name="afterDate" class="input-text Wdate" id="datemax"":condiBean.afterDate}" style="width: 120px;">
+				name="afterDate" class="input-text Wdate" id="datemax"
+				value="${condiBean.afterDate==null?"":condiBean.afterDate}"  style="width: 120px;">
 				 - - <input type="text"
 				onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
 				name="beforeDate" class="input-text Wdate" id="datemin"
@@ -91,6 +92,8 @@
 			</a> ${condiBean.pageNum}/${count} <a
 				href="toOverdueWarn.action?beforeDate=${condiBean.beforeDate}&afterDate=${condiBean.afterDate}&pageNum=${condiBean.pageNum+1}&checkId=${condiBean.checkId}"><button
 					type="button" class="btn btn-success">下一页</button></a>
+					<input type="text" style="width:30px" class="input-text"  id="page" name="page" >
+			<a onclick="toPageNum('${condiBean.beforeDate}','${condiBean.afterDate}','${condiBean.checkId}','${count}')"><button type="button" class="btn btn-secondary-outline radius" >跳转</button></a>
 		</div>
 	</div>
 
@@ -112,8 +115,16 @@
 
 	<script type="text/javascript"
 		src="../lib/jquery.validation/1.14.0/messages_zh.js"></script>
-	<script type="text/javascript">
-		
+<script type="text/javascript">
+		function toPageNum(beforeDate,afterDate,checkId,count){
+			var pageNum=$("#page").val();
+			if (pageNum==""||pageNum==0||pageNum>count){
+			return;				
+			}else {
+				
+			location.href="toOverdueWarn.action?beforeDate="+beforeDate+"&afterDate="+afterDate+"&pageNum="+pageNum+"&checkId="+checkId;	
+			}
+		}
 	</script>
 </body>
 </html>

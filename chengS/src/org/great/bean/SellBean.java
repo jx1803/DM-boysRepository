@@ -29,11 +29,21 @@ public class SellBean {
 	private String sellDate;// 销售时间
 	private String putBatch;//进货批次
 	private String manuBatch;//厂家批号
+	
+	private DrugTypeBean drugTypeBean;//药品分类表实体类
 	private StoDrugBean stoDrugBean;//药品信息
 	private BatchDetailBean batchDetailBean;//药品批次详情对象
 	private AdminBean adminBean;//管理员对象
 	public SellBean() {
 		super();
+	}
+
+	public DrugTypeBean getDrugTypeBean() {
+		return drugTypeBean;
+	}
+
+	public void setDrugTypeBean(DrugTypeBean drugTypeBean) {
+		this.drugTypeBean = drugTypeBean;
 	}
 
 	public int getSellId() {

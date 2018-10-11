@@ -54,62 +54,77 @@
 					日期范围： <input type="text"
 						onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })"
 						id="logmin" name="afterDate" class="input-text Wdate"
-						value="${condiBean.afterDate==null?'':condiBean.afterDate}" style="width: 120px;"> - <input type="text"
+						value="${condiBean.afterDate==null?'':condiBean.afterDate}"
+						style="width: 120px;"> - <input type="text"
 						onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })"
 						id="logmax" name="beforeDate" class="input-text Wdate"
-						value="${condiBean.beforeDate==null?'':condiBean.beforeDate}" style="width: 120px;"> 申请人：<input type="text"
+						value="${condiBean.beforeDate==null?'':condiBean.beforeDate}"
+						style="width: 120px;"> 申请人：<input type="text"
 						name="adminName" id="adminName" placeholder="申请人"
-						value="${condiBean.adminName==null?'':condiBean.adminName}"style="width: 250px" class="input-text">
+						value="${condiBean.adminName==null?'':condiBean.adminName}"
+						style="width: 250px" class="input-text">
 					<button name="serachRecord" id="serachRecord"
 						class="btn btn-success" type="submit">
 						<i class="Hui-iconfont">&#xe665;</i>搜索
 					</button>
 				</div>
-				<div class="cl pd-5 bg-1 bk-gray mt-20">
-					<span class="r">共有数据：<strong>${count}</strong> 条
-					</span>
-				</div>
-				<div class="mt-20">
-					<table class="table table-border table-bordered table-bg">
-						<thead>
-							<tr class="text-c">
-								<th width="40">药品编码</th>
-								<th width="60">药品名称</th>
-								<th width="100">申请数量</th>
-								<th width="100">申请时间</th>
-								<th width="100">申请理由</th>
-								<th width="60">申请人</th>
-								<th width="60">审核状态</th>
-								<th width="100">操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${drugApplyList }" var="auditApply">
-								<tr class="text-c">
-									<td>${auditApply.stoDrugBean.drugId}</td>
-									<td>${auditApply.stoDrugBean.drugName}</td>
-									<td>${auditApply.applyNum}</td>
-									<td>${auditApply.applyDate}</td>
-									<td>${auditApply.applyReason}</td>
-									<td>${auditApply.adminBean.adminName}</td>
-									<td class="td-status"><span
-										class="label label-success radius">${auditApply.checkName}</span></td>
-									
-										<td><a href="<%=path %>storage/purchaseAuditFail.action?drugApplyId=${auditApply.drugApplyId}&checkId=23" class="btn btn-success" onclick="return confirm('确认通过审核？')">通过</a>
-											<a href="<%=path %>storage/purchaseAuditFail.action?drugApplyId=${auditApply.drugApplyId}&checkId=8" class="btn btn-primary" onclick="return confirm('确定不通过审核？')">不通过</a></td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					</br>
-					<div class="text-c">
-							<button type="button" class="btn btn-success" onclick="prePage('${condiBean.pageNum}')">上一页</button>
-						${condiBean.pageNum}/${pageTotal} 
-						<button type="button" class="btn btn-success" onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button><!-- </a> -->
-					</div>
-				</div>
-			</div>
 		</form>
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+			<span class="r">共有数据：<strong>${count}</strong> 条
+			</span>
+		</div>
+		<div class="mt-20">
+			<table class="table table-border table-bordered table-bg">
+				<thead>
+					<tr class="text-c">
+						<th width="40">药品编码</th>
+						<th width="60">药品名称</th>
+						<th width="100">申请数量</th>
+						<th width="100">申请时间</th>
+						<th width="100">申请理由</th>
+						<th width="60">申请人</th>
+						<th width="60">审核状态</th>
+						<th width="100">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${drugApplyList }" var="auditApply">
+						<tr class="text-c">
+							<td>${auditApply.stoDrugBean.drugId}</td>
+							<td>${auditApply.stoDrugBean.drugName}</td>
+							<td>${auditApply.applyNum}</td>
+							<td>${auditApply.applyDate}</td>
+							<td>${auditApply.applyReason}</td>
+							<td>${auditApply.adminBean.adminName}</td>
+							<td class="td-status"><span
+								class="label label-success radius">${auditApply.checkName}</span></td>
+
+							<td><a
+								href="<%=path %>storage/purchaseAuditFail.action?drugApplyId=${auditApply.drugApplyId}&checkId=23"
+								class="btn btn-success" onclick="return confirm('确认通过审核？')">通过</a>
+								<a
+								href="<%=path %>storage/purchaseAuditFail.action?drugApplyId=${auditApply.drugApplyId}&checkId=8"
+								class="btn btn-primary" onclick="return confirm('确定不通过审核？')">不通过</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			</br>
+		<div class="text-c">
+					<button type="button" class="btn btn-secondary-outline radius"
+						onclick="prePage('${condiBean.pageNum}')">上一页</button>
+					<label class="label label-default radius"><font size="2">当前页${condiBean.pageNum}/共${pageTotal}页</font></label>
+					<button type="button" class="btn btn-secondary-outline radius"
+						onclick="nextPage('${condiBean.pageNum}', '${pageTotal}')">下一页</button>
+					<input type="text" style="width: 30px" class="input-text" id="page"
+						onkeyup="this.value=this.value.replace(/\D/g,'')"
+						onafterpaste="this.value=this.value.replace(/\D/g,'')">
+					<button type="submit" class="btn btn-secondary-outline radius"
+						onclick="goPage('${pageTotal}')">
+						跳转
+						</button>
+				</div>
+		</div>
 	</div>
 
 
@@ -133,34 +148,46 @@
 	<script type="text/javascript"
 		src="<%=path%>lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
-	/*上一页  */
-	function prePage(pageNum) {
-		var str1 = "";
-		if (pageNum > 1) {
-			pageNum -= 1;
-			str1 = "drugApplyAudit.action?pageNum="
-					+ pageNum;
-		} else {
-			return;
+		/*上一页  */
+		function prePage(pageNum) {
+			var str1 = "";
+			if (pageNum > 1) {
+				pageNum -= 1;
+				str1 = "drugApplyAudit.action?pageNum=" + pageNum;
+			} else {
+				return;
+			}
+			$("#audit").attr("action", str1);
+			$("#audit").submit();
 		}
-		$("#audit").attr("action", str1);
-		$("#audit").submit();
-	}
-	/*下一页  */
-	function nextPage(pageNum, total) {
-		var str2 = "";
-		if (pageNum < total) {
-			pageNum = Number(pageNum) + 1;
-			str2 = "drugApplyAudit.action?pageNum="
-					+ pageNum;
-		} else {
-			return;
+		/*下一页  */
+		function nextPage(pageNum, total) {
+			var str2 = "";
+			if (pageNum < total) {
+				pageNum = Number(pageNum) + 1;
+				str2 = "drugApplyAudit.action?pageNum=" + pageNum;
+			} else {
+				return;
+			}
+			$("#audit").attr("action", str2);
+			$("#audit").submit();
 		}
-		$("#audit").attr("action", str2);
-		$("#audit").submit();
-	} 
+
+		/*跳转页面*/
+		function goPage(total) {
+			var pageNum = $("#page").val();
+			var str2 = "";
+			if (pageNum > total || pageNum == 0 || pageNum == "") {
+				return;
+			} else {
+				str2 = "drugApplyAudit.action?pageNum=" + pageNum;
+			}
+			$("#audit").attr("action", str2);
+			$("#audit").submit();
+		}
+
 	</script>
-	
-	
+
+
 </body>
 </html>

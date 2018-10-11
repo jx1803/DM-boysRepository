@@ -44,13 +44,13 @@
 			<div class="row cl form-group" style="width:100%">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" name="password" class="form-control" value="" placeholder="" id="password" ><span id="adpwd"></span>
+				<input type="password" name="password" class="form-control" value="" placeholder="" id="password" >
 			</div>
 		</div>
 		<div class="row cl form-group" style="width:100%">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
 			<div class="formControls col-xs-8 col-sm-9 " >
-				<input type="password" class="form-control" value="" placeholder="" id="confirmpwd" name="confirmpwd"><span id="adconfirmpwd"></span>
+				<input type="password" class="form-control" value="" placeholder="" id="confirmPassword" name="confirmPassword">
 			</div>
 		</div>
 		<div class="row cl form-group" style="width:100%">
@@ -93,7 +93,7 @@
 		<div class="row cl form-group" style="width:100%">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>办公电话：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="form-control" value="" placeholder="0592-8900110" id="officePhone" name="officePhone"><span id="iphone2"></span>
+				<input type="text" class="form-control" value="" placeholder="" id="officePhone" name="officePhone"><span id="iphone2"></span>
 			</div>
 		</div>
 		<div class="row cl form-group" style="width:100%">
@@ -119,6 +119,7 @@
 					<option value="硕士">硕士</option>
 					<option value="博士">博士</option>
 					<option value="博士后">博士后</option>
+					<option value="其他">其他</option>
 				</select>
 				</span> </div>
 		</div>
@@ -165,7 +166,6 @@
 <script type="text/javascript">
 
 $(function () {
-	alert($('#adminAccount').val());
 	$('#form1').bootstrapValidator({
 	feedbackIcons: {
     valid: 'glyphicon glyphicon-ok',
@@ -190,33 +190,38 @@ $(function () {
                     },
                 }
             },
+           
             password: {
+                message: '密码验证失败',
                 validators: {
-                    notEmpty: {
-                        message: '密码不得为空'
+                notEmpty: {
+                	message: '密码不能为空'
                     },
                     stringLength: {
-                        min: 5,
+                        min: 6,
                         max: 30,
-                        message: '用户名长度不得小于6位或大于30位'
+                        message: '密码长度不得小于6位或大于30位'
                     },
+               
                     different: {
-                        field: 'adminAccount',
-                        message: '密码不能与账户一致'
+                        field: 'adminName',
+                        message: '密码不得与账户名一致'
                     }
                 }
             },
-            confirmpwd: {
+            confirmPassword: {
+                message: '密码验证失败',
                 validators: {
-                    notEmpty: {
-                        message: '密码不得为空'
-                    },
+                	notEmpty: {
+                    	message: '密码不能为空'
+                        },
+              
                     identical: {
                         field: 'password',
                         message: '密码不一致'
                     },
                     different: {
-                        field: 'adminAccount',
+                        field: 'adminName',
                         message: '密码不得与账户名一致'
                     }
                 }
@@ -224,19 +229,19 @@ $(function () {
             officePhone:{
                 validators: {
                     notEmpty: {
-                        message: '密码不得为空'
+                        message: '办公电话不得为空'
                     },
-                   
+                 
                     regexp: {
-                        regexp: /^[0-9]+$/,
-                        message: '请输入数字'
+                        regexp: /(^[0-9]{3,4}-[0-9]{7,8}$)|(^[0-9]{7,8}$)|(^([0-9]{3,4})[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)/,
+                        message: '办公电话有误'
                     },
                 }
             },
             mobilePhone:{
                 validators: {
                     notEmpty: {
-                        message: '密码不得为空'
+                        message: '电话不得为空'
                     },
                     stringLength: {
                         min: 11,
@@ -281,7 +286,7 @@ $(function () {
 
 
 //修改密码的账号验证
- document.form1.adminAccount.onblur=function(){
+ document.form1.adminAccount.onkeyup=function(){
     var reg=/^[a-zA-Z0-9]{1}[A-Z|a-z|0-9]{4,29}/;
      if(reg.test(this.value)&&this.value.length>=5&&this.value.length<=30){
     		$.ajax({
@@ -300,111 +305,16 @@ $(function () {
     		   	
     		   		},
     			error:function(){
-    				alert("123")
     			}
     		   });
         
      }else{
+    	
         document.getElementById("adAccount").innerHTML="输入错误";
      }
  } 
 
-/* 
 
-function test(){
-	
-	var str1 = "输入正确";
-	var str = "可注册使用";
-	//账号
-	 if(document.getElementById("adAccount").innerHTML!==str){
-		 document.getElementById("adAccount").innerHTML="账号输入错误！";
-         document.form1.account.focus();
-         document.form1.account.value="";
-	 }
-	//名称
-	if(document.getElementById("adName").innerHTML!==str1){
-		document.getElementById("adName").innerHTML="请输入不小于六位的字母或数字！";
-        document.form1.adName.focus();
-        document.form1.adName.value="";
-	 }
-	//密码
-	if(document.getElementById("adpwd").innerHTML!==str1){
-		document.getElementById("adpwd").innerHTML="请输入不小于六位的字母或数字！";
-        document.form1.adpwd.focus();
-        document.form1.adpwd.value="";
-	 }
-	//座机
-	if(document.getElementById("iphone2").innerHTML!==str1){
-		document.getElementById("iphone2").innerHTML="输入错误！";
-        document.form1.iphone2.focus();
-        document.form1.iphone2.value="";
-	 }
-	//手机
-	if(document.getElementById("iphone1").innerHTML!==str1){
-		document.getElementById("iphone1").innerHTML="请输入11位手机号码！";
-        document.form1.iphone1.focus();
-        document.form1.iphone1.value="";
-	 }
-	//邮箱ademail
-	if(document.getElementById("ademail").innerHTML!==str1){
-		document.getElementById("ademail").innerHTML="邮箱格式有错！";
-        document.form1.ademail.focus();
-        document.form1.ademail.value="";
-	 }
-	//身份证idcard
-	if(document.getElementById("adidcard").innerHTML!==str1){
-		document.getElementById("adidcard").innerHTML="请输入18位身份证号码！";
-        document.form1.adidcard.focus();
-        document.form1.adidcard.value="";
-	 }
-	else{
-	
-		 $('#form1').submit(); 
-	}
-	 
-} */
-
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
-	$("#form-member-add").validate({
-		rules:{
-			username:{
-				required:true,
-				minlength:2,
-				maxlength:16
-			},
-			sex:{
-				required:true,
-			},
-			mobile:{
-				required:true,
-				isMobile:true,
-			},
-			email:{
-				required:true,
-				email:true,
-			},
-			uploadfile:{
-				required:true,
-			},
-			
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	});
-})
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

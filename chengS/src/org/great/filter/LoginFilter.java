@@ -37,7 +37,6 @@ public class LoginFilter implements Filter {
 		HttpServletResponse servletresponse = (HttpServletResponse) response;
 		HttpSession session = servletrequest.getSession();
 		
-		
 		//绝对路径
 		String path = servletrequest.getScheme() + "://" + servletrequest.getServerName() + ":" + request.getServerPort()
 		+ servletrequest.getContextPath() + "/";
@@ -51,30 +50,26 @@ public class LoginFilter implements Filter {
 
 		 String path1=contextPath+"/pharmacy/toIndex.action";
 		 
-		 String toLogin=contextPath+"user/toLogin.action";//登录路径
+		 String toLogin=contextPath+"admin/toLogin.action";//登录路径
 		
-	/*	 String adminName=servletrequest.getParameter("adminName");
-		 if(adminName=="") {
-			 servletresponse.sendRedirect(path+"user/toLogin.action");
-		 }*/
+	
 		 //如果登录路径等于当前路径直接放过
-//		 if(toLogin.equals(currentURL)) {
-//			 chain.doFilter(request, response);
-//	        	return;
-//		 }
+		 if(toLogin.equals(currentURL)) {
+			 chain.doFilter(request, response);
+	        	return;
+		 }
 //		 
-//		 //如果是登录界面，也是放行
-//		 if(path1.equals(currentURL)) {
-//			 chain.doFilter(request, response);
-//	        	return;
-//		 }
+		 //如果是登录界面，也是放行
+		 if(path1.equals(currentURL)) {
+			 chain.doFilter(request, response);
+	        	return;
+		 }
 		 
 		 
 		 //如果登录超时后，返回登录界面
 		 if(null==user) {
-			 //PrintWriter out = servletresponse.getWriter();
-			 servletresponse.sendRedirect(path+"admin/toLogin.action");
-			 //out.print("<script>alert('请重新登录');window.top.location.href='user/toLogin.action';</script>");
+			 servletresponse.sendRedirect(path+"admin/toReturnLogin.action");
+			 //out.print("<script>alert('请重新登录');window.top.location.href='admin/toLogin.action';</script>");
 	        return;
 		 }else{
 	        	chain.doFilter(request, response);
