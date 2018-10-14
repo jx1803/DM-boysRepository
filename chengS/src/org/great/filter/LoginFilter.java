@@ -48,19 +48,36 @@ public class LoginFilter implements Filter {
 		 //文本路径，这里应该是到/Web-inf
 		 String contextPath = servletrequest.getContextPath();
 
-		 String path1=contextPath+"/pharmacy/toIndex.action";
-		 
-		 String toLogin=contextPath+"admin/toLogin.action";//登录路径
-		
+		 String path1=contextPath+"/admin/toIndex.action";
+		 String pathMain=contextPath+"/admin/toMain.action";
+		 String toLogin=contextPath+"/admin/toLogin.action";//登录路径
+		 String toReturnLogin=contextPath+"/admin/toReturnLogin.action";
+		 String toCode=contextPath+"/admin/codeTest.action";//验证码路径
+
+		System.out.println(111+currentURL+222+toLogin);
 	
 		 //如果登录路径等于当前路径直接放过
 		 if(toLogin.equals(currentURL)) {
 			 chain.doFilter(request, response);
 	        	return;
 		 }
-//		 
 		 //如果是登录界面，也是放行
 		 if(path1.equals(currentURL)) {
+			 chain.doFilter(request, response);
+	        	return;
+		 }
+		 
+		 if(toCode.equals(currentURL)) {
+			 chain.doFilter(request, response);
+	        	return;
+		 }
+		 //如果登录成功等于当前路径直接放过
+		 if(pathMain.equals(currentURL)) {
+			 chain.doFilter(request, response);
+	        	return;
+		 }
+		 
+		 if(toReturnLogin.equals(currentURL)) {
 			 chain.doFilter(request, response);
 	        	return;
 		 }
@@ -69,10 +86,10 @@ public class LoginFilter implements Filter {
 		 //如果登录超时后，返回登录界面
 		 if(null==user) {
 			 servletresponse.sendRedirect(path+"admin/toReturnLogin.action");
-			 //out.print("<script>alert('请重新登录');window.top.location.href='admin/toLogin.action';</script>");
 	        return;
 		 }else{
 	        	chain.doFilter(request, response);
+	        	return;
 	        }
 	}
 

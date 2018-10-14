@@ -76,21 +76,24 @@ public class UserBizImpl implements IUserBiz {
 		return flag;
 	}
 
-//修改密码
-	public String userChangePsword(AdminBean user,String psword) {
-		user = userMapper.userlogin(user);
-		if(null==user) {
-			//这里还要个弹框//账户密码错误
-			flag="login";
-			
-		}else {
-			//修改密码
-			user.setName(psword);
-			userMapper.changepsword(user);
-			flag="pharmacy/index";
+	//修改密码
+		public String userChangePsword(AdminBean user,String pasword) {
+		
+			AdminBean admin = userMapper.userlogin(user);
+		
+			if(null==admin) {
+				//这里还要个弹框//账户密码错误,
+				flag="1";
+				
+			}else {
+				//修改密码
+				user.setName(pasword);//新没密码set进去name
+				System.out.println("新密码"+user.getName());
+				userMapper.changepsword(user);
+				flag="2";
+			}
+			return flag;
 		}
-		return flag;
-	}
 	
 	//用户管理数据页面显示，
 	@Override

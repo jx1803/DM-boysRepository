@@ -60,31 +60,28 @@
 									<tbody>
 
 
-										<input type="hidden" value="${sessionScope.User.adminAccount }" name="accoutAdmin" />
+										<input type="hidden" value="${sessionScope.User.adminAccount }" name="adminAccount" id="adminAccount"/>
 
 										<tr class="row cl form-group">
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												原始密码：</th>
 											<td><input type="password" style="width: 200px"
-												class="form-control" value="" placeholder="" id="password1"
-												name="password">
-												<input type="hidden"
-											value="${sessionScope.User.adminAccount }" name="accoutAdmin" />	
-											</td>
+												class="form-control" value="" placeholder=""
+												name="password" id="password"></td>
 										</tr>
 										<tr class="row cl form-group">
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												新密码：</th>
 											<td><input type="password" style="width: 200px"
-												class="form-control" value="" placeholder=""
-												id="newpassword" name="newpassword"></td>
+												class="form-control" value="" placeholder=""  id="newPassword"
+												 name="newPassword"></td>
 										</tr>
 										<tr class="row cl form-group">
 											<th width="100" class="text-r"><span class="c-red">*</span>
 												确认密码：</th>
 											<td><input type="password" style="width: 200px"
 												class="form-control" value="" placeholder=""
-												id="new1passowrd" name="new1passowrd"></td>
+												 name="comfirmPassword"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -94,9 +91,10 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="submit"
+						<button type="button"
 							class="btn btn-primary btn-success radius size-L"
-							style="width: 150px" name="signup" value="Sign up">提交</button>
+							style="width: 150px" name="signup" value="Sign up" onclick="changePsw()">提交</button>
+
 					</div>
 				</div>
 				<!-- /.modal-content -->
@@ -150,18 +148,7 @@
 	<aside class="Hui-aside">
 		<div class="menu_dropdown bk_2">
 
-			<%-- <dl id="menu-system">
-			<dt><i class="Hui-iconfont">&#xe62e;</i> 药品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a data-href="<%=path%>storage/findDrugTypeInfo.action" data-title="药品类型" href="javascript:void(0)">药品类型</a></li>
-					<li><a data-href="<%=path%>storage/findDfInfo.action" data-title="药品剂型" href="javascript:void(0)">药品剂型</a></li>
-					<li><a data-href="<%=path%>storage/findDrugInfo.action" data-title="药品字典" href="javascript:void(0)">药品字典</a></li>
-					<li><a data-href="<%=path%>storage/findCompTaboo.action" data-title="配伍禁忌" href="javascript:void(0)">配伍禁忌</a></li>
-					<li><a data-href="system-log.html" data-title="系统日志" href="javascript:void(0)">系统日志</a></li>
-			</ul>
-		</dd>
-	</dl>  --%>
+			
 
 			<c:forEach items="${ulist}" var="list">
 
@@ -185,73 +172,7 @@
 				</dl>
 
 			</c:forEach>
-			<%--  <dd>
-				<ul>
-					<li><a data-href="<%=path%>storage/purchaseApplyShow.action" data-title="药品采购申请" href="javascript:void(0)">药品采购申请</a></li>
-					<li><a data-href="<%=path%>storage/purchaseApplyLook.action" data-title="药品采购申请记录" href="javascript:void(0)">药品采购申请记录</a></li>
-					<li><a data-href="<%=path%>storage/pdInstorage.action" data-title="药品采购入库" href="javascript:void(0)">药品采购入库</a></li>
-					<li><a data-href="admin-permission.html" data-title="退还厂家" href="javascript:void(0)">退还厂家</a></li>
-					<li><a data-href="admin-list.html" data-title="出库审核" href="javascript:void(0)">出库审核</a></li>
-					<li><a data-href="<%=path%>storage/drugApplyAudit.action" data-title="药品采购审核" href="javascript:void(0)">药品采购审核</a></li>
-					<li><a data-href="admin-list.html" data-title="退还审核" href="javascript:void(0)">退还审核</a></li>
-			</ul>
-		</dd> 
-	
-		
-		 	<dl id="menu-comments">
-				<dt>
-					<i class="Hui-iconfont">&#xe622;</i> 日常工作<i
-						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
-				</dt>
-				<dd>
-					<ul>
-						<li><a data-href="<%=path%>pharmacy/toTakeDA.action" data-title="药品请领"
-							href="javascript:;">药品请领</a></li>
-						<li><a data-href="<%=path%>pharmacy/toCaceApply.action" data-title="退库申请"
-							href="javascript:void(0)">退库申请</a></li>
-						<li><a data-href="<%=path%>pharmacy/totakeApplyList.action" data-title="请领审核"
-							href="javascript:void(0)">请领审核</a></li>
-						<li><a data-href="<%=path%>pharmacy/toCancellingApplyList.action"
-							data-title="退库审核" href="javascript:void(0)">退库审核</a></li>
-						<li><a data-href="<%=path%>pharmacy/toAllTakeApply.action" data-title="查看请领记录"
-							href="javascript:void(0)">查看请领记录</a></li>
-						<li><a data-href="<%=path%>pharmacy/toAllCancApply.action" data-title="查看退库记录"
-							href="javascript:void(0)">查看退库记录</a></li>
-							
-							
-							<li><a data-href="<%=path%>pharmacy/toBreakApply.action" data-title="产品管理" href="javascript:void(0)">药品报损</a></li>
-					<li><a data-href="<%=path%>pharmacy/toAdjustPrice.action" data-title="药品调价" href="javascript:void(0)">药品调价</a></li>
-					<li><a data-href="<%=path%>pharmacy/product-list.html" data-title="产品管理" href="javascript:void(0)">药品停用</a></li>
-					<li><a data-href="<%=path%>pharmacy/toSellDrug.action" data-title="产品管理" href="javascript:void(0)">药品发药</a></li>
-					<li><a data-href="<%=path%>pharmacy/product-list.html" data-title="产品管理" href="javascript:void(0)">药品盘点</a></li>
-					<li><a data-href="<%=path%>pharmacy/toBreakCheck.action" data-title="报损审核" href="javascript:void(0)">药品报损审核</a></li>
-					</ul>
-				</dd>
-			</dl>
 			
-			
-			<dl id="menu-member">
-			<dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a data-href="<%=path %>user/memberList.action" data-title="会员列表" href="javascript:;">会员列表</a></li>
-					<li><a data-href="<%=path %>user/memberDelList.action" data-title="删除的会员" href="javascript:;">删除的会员</a></li>
-			</ul>
-		</dd>
-	</dl>
-		<dl id="menu-admin">
-			<dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a data-href="<%=path %>user/roleList.action" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
-					<li><a data-href="<%=path %>user/parameterList.action" data-title="参数配置" href="javascript:void(0)">参数配置</a></li>
-					<li><a data-href="<%=path %>user/deptList.action" data-title="部门管理" href="javascript:void(0)">部门管理</a></li>
-					<li><a data-href="<%=path %>user/logSelect.action" data-title="日志查看" href="javascript:void(0)">日志查看</a></li>
-					<li><a data-href="<%=path %>user/menuLevel2List.action" data-title="菜单管理" href="javascript:void(0)">菜单管理</a></li>
-					<li><a data-href="<%=path %>user/pConfiguration.action" data-title="权限配置" href="javascript:void(0)">权限配置</a></li>
-			</ul>
-		</dd>
-	</dl>  --%>
 
 		</div>
 	</aside>
@@ -305,6 +226,25 @@
 	<script type="text/javascript"
 		src="<%=path%>lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 	<script type="text/javascript">
+	
+	//修改密码变成ajax
+	function changePsw(){
+		$.ajax({
+		    url:"forgetPassword.action",
+		    data:{"adminAccount":$("#adminAccount").val(),"password":$("#password").val(),"newPassword":$('#newPassword').val()},
+		    dataType:"text",
+			type:"post",
+		   success:function(redata){
+			   if(redata=="1"){
+				   alert("密码错误！");
+			   }else if(redata=="2"){
+				   alert("密码修改成功，请重新登录！");
+				   top.location.href="${pageContext.request.contextPath}/admin/toLogin.action";
+			   }
+		   },
+	});
+	}
+	
 		$(function() {
 			addModelFrom2();
 
@@ -339,56 +279,48 @@
 				},
 				fields : {
 
-					password : {
+					password: {
+		                validators: {
+		                    notEmpty: {
+		                        message: '密码不得为空'
+		                    },
+		                    stringLength: {
+		                        min: 6,
+		                        max: 30,
+		                        message: '密码长度不得小于6位或大于30位'
+		                    }
+		                }
+		            },
+					newPassword : {
 						validators : {
-							notEmpty : {
-								message : '密码不得为空'
-							},
-							stringLength : {
-								min : 5,
-								max : 30,
-								message : '密码长度不得小于6位或大于30位'
-							},
-							different : {
-								field : 'adminAccount',
-								message : '密码不能与账户一致'
-							}
+			                    notEmpty: {
+			                        message: '密码不得为空'
+			                    },
+			                    stringLength: {
+			                        min: 6,
+			                        max: 30,
+			                        message: '密码长度不得小于6位或大于30位'
+			                    },
+							
+							
 						}
 					},
-					newpassword : {
-						validators : {
-							notEmpty : {
-								message : '新密码不得为空'
-							},
-							stringLength : {
-								min : 5,
-								max : 30,
-								message : '密码长度不得小于6位或大于30位'
-							},
-							identical : {
-								field : 'new1passowrd',
+					comfirmPassword : {
+						validators: {
+		                    notEmpty: {
+		                        message: '密码不得为空'
+		                    },
+		                    stringLength: {
+		                        min: 6,
+		                        max: 30,
+		                        message: '密码长度不得小于6位或大于30位'
+		                    },
+		                    identical : {
+								field : 'newPassword',
 								message : '密码不一致'
-							},
-							different : {
-								field : 'adminAccount',
-								message : '密码不得与账户名一致'
 							}
-						}
-					},
-					new1passowrd : {
-						validators : {
-							notEmpty : {
-								message : '确认密码不得为空'
-							},
-							identical : {
-								field : 'newpassword',
-								message : '密码不一致'
-							},
-							different : {
-								field : 'adminAccount',
-								message : '密码不得与账户名一致'
-							}
-						}
+		            
+		                }
 					},
 
 				}

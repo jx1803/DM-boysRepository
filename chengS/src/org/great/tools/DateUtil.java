@@ -27,6 +27,8 @@ public class DateUtil {
 		String time = df.format(cal.getTime());
 		return time;
 	}
+	
+	
 
 	// 获取上个月开始时间
 	public static String getBeginDayOfLastMonth() {

@@ -45,13 +45,10 @@
 			<div class="text-c">
 				<div class="text-c">
 					<input type="hidden" placeholder="请输入药品编码" id="hidId" name="drugId"
-						value="0"> 日期范围： <input type="text"
+						value="0"> 盘点日期： <input type="text"
 						onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
-						id="datemin" class="input-text Wdate" name="afterDate"
-						style="width: 120px;"> - <input type="text"
-						onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })"
-						id="datemax" class="input-text Wdate" name="beforeDate"
-						style="width: 120px;"> <br> 药品名称：<input type="text"
+						id="datemin" class="input-text Wdate" name="checkDate"
+						style="width: 120px;"><br> 药品名称：<input type="text"
 						class="input-text" style="width: 250px" placeholder="请输入药品名称"
 						id="" name="drugName"> 拼音码：<input type="text"
 						class="input-text" style="width: 250px" placeholder="请输入拼音码" id=""

@@ -66,15 +66,13 @@
       
       <div class="row cl form-group" style="width:100%">
         <div class="formControls col-xs-8 col-xs-offset-3" >
-         <!--  <input name="" onclick="test1()" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;"> -->
-           <button type="submit" class="btn btn-primary btn-success radius size-L" style="width:150px" name="signup" id="signup" value="Sign up">登录</button>
+           <button type="button" class="btn btn-primary btn-success radius size-L" style="width:150px" name="signup" id="signup" value="Sign up" onclick="toLogin()">登录</button>
           <button type="reset" class="btn btn-default radius size-L" style="width:150px" name="signup" value="Sign up">取消</button>
         </div>
       </div>
     </form>
   </div>
 </div>  
-<input type="hidden" value="${sessionScope.error }" id="error" name="error">
 <script src="<%=path %>lib/jigsaw.js"></script>
 <script type="text/javascript" src="<%=path %>lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="<%=path %>static/h-ui/js/H-ui.min.js"></script>
@@ -82,12 +80,34 @@
 <script type="text/javascript" src=".<%=path %>lib/bootstrap.min.js"></script>
 <script type="text/javascript">
 
+
+function toLogin(){
+    
+	$.ajax({
+    url:"toIndex.action",
+    data:{"adminAccount":$('#adminAccount').val(),"password":$('#password2').val()},
+    dataType:"json",
+	type:"post",
+   success:function(redata){
+	
+	if(redata=="1"){
+		alert("账户密码错误!");
+		top.location.href="${pageContext.request.contextPath}/admin/toLogin.action";
+	}else if(redata=="2"){
+		top.location.href="${pageContext.request.contextPath}/admin/toMain.action";
+	}
+	
+	
+   	},
+   });
+}
+
  $(function () { 
-	 
-	 var str = $('#error').val();
-	 if(str=="false"){
-		 alert("用户名或密码错误");
+	 if($("#loginy").val()==0||$("#loginy").val()==''){
+		   $('#signup').attr('disabled',true); 
 	 }
+	 
+	
 	 
 	 
 	$('#form1').bootstrapValidator({
@@ -130,6 +150,14 @@
                     }
                 }
             },
+            
+            loginy: {
+                validators: {
+                    notEmpty: {
+                        message: '验证码不得为空'
+                    }
+                }
+            }
            
         }
     });

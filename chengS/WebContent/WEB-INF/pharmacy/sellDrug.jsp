@@ -112,7 +112,11 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-	widow.top.location.reload();  
+widow.top.location.reload();
+</script>
+
+<script type="text/javascript">
+	  
 
 
 	var count=0;
