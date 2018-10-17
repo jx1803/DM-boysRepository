@@ -562,7 +562,42 @@
 		t.realnum,t.checkdate,t.adminid,a.adminname,p.param
  		from tbltakestock t,tblstodrug s, tbldrugtype d,tbldf f,tbladmin a,tblparam p
 		where t.drugid =s.drugid(+) and s.typeid = d.typeid(+) and s.dosageid=f.dosageid(+) 
-		and t.adminid=a.adminid(+) and t.paramid=p.paramid(+)
+		and t.adminid=a.adminid(+) and t.paramid=p.paramid(+) and t.realnum is null
+			<if test=" ''!=drugName and null !=drugName">
+			and s.drugName like concat(concat('%',#{drugName,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=drugId and 0 !=drugId">
+			and s.drugId like concat(concat('%',#{drugId,jdbcType=NUMERIC}),'%')
+		</if>
+		<if test=" ''!=pinyinCode and null !=pinyinCode">
+			and s.pinyinCode like
+			concat(concat('%',#{pinyinCode,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test=" ''!=typeId and 0 !=typeId">
+			and s.typeId =#{typeId,jdbcType=NUMERIC}
+		</if>
+		<if test="checkDate!=null and checkDate!=''">
+			and t.checkdate=#{checkDate}
+		</if>
+		<if test="paramId!=0">
+			and t.paramid=#{paramId}
+		</if>
+		<if test="pageNum!=0">
+		)where r&gt;=#{pageNum}*#{pageLimit}-#{pageLimit}+1 and
+		r&lt;=#{pageNum}*#{pageLimit}
+		</if>
+		<if test="pageNum==0">
+			)
+		</if>
+	</select>
+	
+	<!-- 查询药房药品盘点盈亏记录 -->
+	<select id="getTakeStockList" parameterType="org.great.bean.CondiBean" resultMap="stockMap">
+		select * from(select rownum r,s.*,d.drugtype,t.stockid,t.paramid,t.outstorage,t.putstorage,t.drugnum,
+		t.realnum,t.checkdate,t.adminid,a.adminname,p.param
+ 		from tbltakestock t,tblstodrug s, tbldrugtype d,tbldf f,tbladmin a,tblparam p
+		where t.drugid =s.drugid(+) and s.typeid = d.typeid(+) and s.dosageid=f.dosageid(+) 
+		and t.adminid=a.adminid(+) and t.paramid=p.paramid(+) 
 			<if test=" ''!=drugName and null !=drugName">
 			and s.drugName like concat(concat('%',#{drugName,jdbcType=VARCHAR}),'%')
 		</if>

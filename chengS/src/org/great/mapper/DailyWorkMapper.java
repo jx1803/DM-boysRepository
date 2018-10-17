@@ -66,6 +66,7 @@ public interface DailyWorkMapper {
 	public int checkStockData(TakeStockBean takeStockBean);//核对药房药品库存
 	public List<TakeStockBean> selectTakeStockList(CondiBean condiBean);//获取药房盘点盈亏记录
 	public int getTakeStockCount(CondiBean condiBean);//获取药房盘点记录数
+	public List<TakeStockBean>  getTakeStockList(CondiBean condiBean);//获取药房盘点盈亏记录
 
 	
 	

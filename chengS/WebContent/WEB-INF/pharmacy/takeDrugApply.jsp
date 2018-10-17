@@ -158,7 +158,7 @@
 				return;
 			}
 
-			var input = "<input id='"+drugId+"' type='hidden' name='drugList["+count+"].drugName' value='"+drugName+
+			var input = "<input id='"+drugId+"' type='hidden' name='applyList["+count+"].stoDrugBean.drugName' value='"+drugName+
 			"'><input type='hidden' name='applyList["+count+"].drugId' value='"+drugId+
 		"'><input type='hidden' name='applyList["+count+"].adminId' value='"+adminId+
 		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+

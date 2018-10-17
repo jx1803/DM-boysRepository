@@ -150,6 +150,7 @@ public class DailyWorkHandle {
 	
 	//每个月最后一天自动盘点盈亏
 	@Scheduled(cron="0 0 0 1 * ?")
+//	@Scheduled(cron="10 * * * * ?")
 	public void checkTask() {
 		System.out.println("开始盘点啦");
 		dailyWorkBizImpl.checkProfit();

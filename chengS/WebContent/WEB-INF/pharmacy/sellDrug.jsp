@@ -182,9 +182,13 @@ widow.top.location.reload();
 	
 	/* 清空申请记录 */
 	function empty(){
+		var r=confirm("确定要清空吗？");
+		if(r){
 		$("#tbodyId").html("");
 		$("#fapply").html("");
 		count=0;
+			
+		}
 	}
 	
 	/* 提交申请 */

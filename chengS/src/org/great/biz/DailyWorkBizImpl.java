@@ -386,7 +386,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 	/*查询上月药品盘点结果*/
 	@Override
 	public ModelAndView showTakeStock(CondiBean condiBean) {
-		List<TakeStockBean> list=dailyWorkMapper.selectTakeStockList(condiBean);
+		List<TakeStockBean> list=dailyWorkMapper.getTakeStockList(condiBean);
 		int count=dailyWorkMapper.getTakeStockCount(condiBean);
 		int pageTotal=PageUtil.pageTotal(count);
 		ModelAndView mav =new ModelAndView("pharmacy/showTakeStock");

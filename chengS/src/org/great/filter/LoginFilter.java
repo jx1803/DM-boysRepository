@@ -72,10 +72,10 @@ public class LoginFilter implements Filter {
 	        	return;
 		 }
 		 //如果登录成功等于当前路径直接放过
-		 if(pathMain.equals(currentURL)) {
-			 chain.doFilter(request, response);
-	        	return;
-		 }
+//		 if(pathMain.equals(currentURL)) {
+//			 chain.doFilter(request, response);
+//	        	return;
+//		 }
 		 
 		 if(toReturnLogin.equals(currentURL)) {
 			 chain.doFilter(request, response);

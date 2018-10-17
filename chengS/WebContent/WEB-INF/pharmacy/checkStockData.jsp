@@ -157,12 +157,20 @@
 		}
 	
 		function subCheck(){
+			var flag=0;
 			$("#tbid :input").each(function(){
-				if($(this).val==""){
-					alert("请完成所有药品盘点。");
+				if($(this).val()==""){
+					alert("请完善所有药品盘点数量");
+				flag=1;
+				return false;
 				}
 			});
+			if(flag==1){
+				return false;
+			}else{
+				
 			$("#checkForm").submit();
+			}
 		}
 	
 		/*上一页  */
