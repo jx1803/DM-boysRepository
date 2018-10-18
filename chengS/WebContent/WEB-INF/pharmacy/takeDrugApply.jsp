@@ -144,7 +144,7 @@
 			var applyNum = $("#applyNum").val();
 			var applyReason = $("#applyReason").val();
 			var applyMoney = retailPrice * applyNum;
-			var mid = $("#" + drugId).val();
+			var mid = $("#" + drugId+"x").val();
 			if (typeof (mid) != "undefined") {
 				alert("该药品已添加,请重新选择");
 				return;
@@ -158,7 +158,7 @@
 				return;
 			}
 
-			var input = "<input id='"+drugId+"' type='hidden' name='applyList["+count+"].stoDrugBean.drugName' value='"+drugName+
+			var input = "<input id='"+drugId+"x"+"' type='hidden' name='applyList["+count+"].stoDrugBean.drugName' value='"+drugName+
 			"'><input type='hidden' name='applyList["+count+"].drugId' value='"+drugId+
 		"'><input type='hidden' name='applyList["+count+"].adminId' value='"+adminId+
 		"'><input type='hidden' name='applyList["+count+"].applyNum' value='"+applyNum+

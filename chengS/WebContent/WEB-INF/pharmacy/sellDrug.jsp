@@ -142,9 +142,12 @@ widow.top.location.reload();
 		var sales=$("#sales").val();
 		var manuBatch=$("#manuBatch").val();
 		var putBatch=$("#putBatch").val();
-		var mid=$("#"+manuBatch).val();
+		var mid=$("#"+drugId+manuBatch).val();
 		if(typeof(mid)!="undefined"){
 			alert("该药品已添加,请重新选择");
+			 $("#tblSelect"+" :input").each(function(){
+				  $(this).val("");
+			  })
 			return;
 		}
 		
@@ -152,7 +155,7 @@ widow.top.location.reload();
 			alert("请完善药品信息");
 			return;
 		}
-		var input="<input id='"+manuBatch+"' type='hidden' name='drugList["+count+"].drugName' value='"+drugName+
+		var input="<input id='"+drugId+manuBatch+"' type='hidden' name='drugList["+count+"].drugName' value='"+drugName+
 		"'><input type='hidden' name='drugList["+count+"].drugmanu' value='"+drugmanu+
 		"'><input type='hidden' name='drugList["+count+"].retailPrice' value='"+retailPrice+
 		"'><input type='hidden' name='drugList["+count+"].specific' value='"+specific+

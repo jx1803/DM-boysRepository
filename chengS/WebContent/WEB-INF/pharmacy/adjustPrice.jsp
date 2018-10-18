@@ -95,7 +95,7 @@
 						<td>${sdList.generalName}</td>
 						<td>${sdList.specific}</td>
 						<td>${sdList.unit}</td>
-						<td>${sdList.pruPrice}</td>
+						<td>${sdList.purPrice}</td>
 						<td>${sdList.retailPrice}</td>
 						<td>${sdList.drugTypeBean.drugType}</td>
 						<td>${sdList.dfBean.dosageForm}</td>
@@ -106,7 +106,7 @@
 						<td>${sdList.drugmanu}</td>
 						<td>${sdList.proPlace}</td>
 
-						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}&purPrice=${sdList.pruPrice}',400,300)">修改零售价</a>
+						<td class="f-14"><a href="#" onclick="showAdjust('修改价格','adjustLayer.action?beforeAdjust=${sdList.retailPrice}&drugId=${sdList.drugId}&purPrice=${sdList.purPrice}',400,300)">修改零售价</a>
 							</td>
 
 					</tr>

@@ -672,7 +672,7 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 				if (bdBean.size() != 0) {
 					// 去修改详情数量
 					bdLsit.get(i).setHandleNum(-bdLsit.get(i).getHandleNum() * Integer.valueOf(str[0]));
-					dailyWorkMapper.updatePhaBatchNum(bdLsit.get(i));// 增加相对应药房入库批次数量
+					dailyWorkMapper.updatePutBatchNum(bdBean.get(0).getBatchDetailId(),bdLsit.get(i).getHandleNum(),bdLsit.get(i).getDrugId());// 增加相对应药房入库批次数量
 					dailyWorkMapper.insetPhaInt(bdLsit.get(i).getBatchDetailId(), admin.getAdminId());// 插入药房入库库记录
 				} else {
 					bdLsit.get(i).setHandleNum(bdLsit.get(i).getHandleNum() * Integer.valueOf(str[0]));

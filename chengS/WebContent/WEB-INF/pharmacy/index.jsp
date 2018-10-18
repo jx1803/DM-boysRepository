@@ -205,7 +205,7 @@
 	<div class="contextMenu" id="Huiadminmenu">
 		<ul>
 			<li id="closethis">关闭当前</li>
-			<li id="closeall"><iframe scrolling="yes" frameborder="0" src=""></iframe>
+			<li id="closeall">
 				关闭全部</li>
 		</ul>
 	</div>

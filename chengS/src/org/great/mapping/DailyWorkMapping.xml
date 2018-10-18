@@ -754,6 +754,7 @@
 		where
 		s.drugid= b.drugid
 		and o.putBatch=b.batchDetailId
+		 and b.putbatch is null
 		and
 		s.drugid=p.drugid
 		and o.placeId=21 and o.outInId=18
@@ -1036,8 +1037,8 @@
 	<update id="updatePutBatchNum" parameterType="java.lang.Integer">
 		update
 		tblBatchDetail
-		set handleNum=handleNum+#{0} where drugid=#{2} and
-		batchDetailId=#{1}
+		set handleNum=handleNum+#{1} where drugid=#{2} and
+		batchDetailId=#{0}
 	</update>
 	<update id="updatePhaDrugNum" parameterType="java.lang.Integer">
 		update tblPhaDrug
