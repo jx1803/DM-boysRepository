@@ -102,8 +102,6 @@ public class DailyWorkBizImpl implements IDailyWorkBiz {
 			da.setAdminId(admin.getAdminId());// 操作人员id
 
 			/* 预先扣除药房药品库存 */
-//			int n=SpecificUtil.getSpecificNum(da.getDrugId());
-//			da.setApplyNum(da.getApplyNum() * n);// 将报损数量单位设为最小规格单位
 			dailyWorkMapper.reducePhaDrugNum2(da);// 减少库存
 
 			/* 预先扣除药房入库批次详情中的药品数量 */
